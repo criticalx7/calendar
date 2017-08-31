@@ -1,78 +1,88 @@
 package model;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 
 public class Event {
-    private String title;
-    private String note;
-    private String tag;
-    private LocalDate start;
-    private LocalDate end;
-    private Color color;
+    private SimpleStringProperty name = new SimpleStringProperty(this, "name");
+    private SimpleStringProperty note = new SimpleStringProperty(this, "note");
+    private SimpleStringProperty tag = new SimpleStringProperty(this, "tag");
+    private SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
+    private SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
+    private SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
 
-
-    public LocalDate getStart() {
-        return start;
+    public String getName() {
+        return name.get();
     }
 
-    public void setStart(LocalDate start) {
-        this.start = start;
+    public SimpleStringProperty nameProperty() {
+        return name;
     }
 
-    public LocalDate getEnd() {
-        return end;
-    }
-
-    public void setEnd(LocalDate end) {
-        this.end = end;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setName(String name) {
+        this.name.set(name);
     }
 
     public String getNote() {
+        return note.get();
+    }
 
+    public SimpleStringProperty noteProperty() {
         return note;
     }
 
     public void setNote(String note) {
-
-        this.note = note;
+        this.note.set(note);
     }
 
     public String getTag() {
+        return tag.get();
+    }
+
+    public SimpleStringProperty tagProperty() {
         return tag;
     }
 
     public void setTag(String tag) {
-        this.tag = tag;
+        this.tag.set(tag);
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "title='" + title + '\'' +
-                ", note='" + note + '\'' +
-                ", tag='" + tag + '\'' +
-                ", start=" + start +
-                ", end=" + end +
-                ", color=" + color +
-                '}';
+    public LocalDate getStart() {
+        return start.get();
+    }
+
+    public SimpleObjectProperty<LocalDate> startProperty() {
+        return start;
+    }
+
+    public void setStart(LocalDate start) {
+        this.start.set(start);
+    }
+
+    public LocalDate getEnd() {
+        return end.get();
+    }
+
+    public SimpleObjectProperty<LocalDate> endProperty() {
+        return end;
+    }
+
+    public void setEnd(LocalDate end) {
+        this.end.set(end);
+    }
+
+    public Color getColor() {
+        return color.get();
+    }
+
+    public SimpleObjectProperty<Color> colorProperty() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color.set(color);
     }
 }

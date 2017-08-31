@@ -8,10 +8,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddEvent.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MasterView.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("calendar");
-        Scene scene = new Scene(root, 220, 470);
+        Scene scene = new Scene(root, 600, 390);
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
