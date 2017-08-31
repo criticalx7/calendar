@@ -3,8 +3,13 @@ package model;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
-
 import java.time.LocalDate;
+
+/**
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
 
 public class Event {
     private SimpleStringProperty name = new SimpleStringProperty(this, "name");

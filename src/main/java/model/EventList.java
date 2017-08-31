@@ -3,6 +3,12 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
+
 public class EventList {
     private ObservableList<Event> events = FXCollections.observableArrayList();
 
