@@ -11,7 +11,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0"
           prefWidth="220.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-          fx:controller="controller.AddEventController">
+          fx:controller="controller.ProcessEventController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
     </columnConstraints>
@@ -158,7 +158,7 @@
         <padding>
             <Insets right="10.0"/>
         </padding>
-        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addEvent" prefWidth="60.0" text="Add"
+        <Button fx:id="addButton" mnemonicParsing="false" onAction="#handleAdd" prefWidth="60.0" text="Add"
                 textFill="#433d3d">
             <FlowPane.margin>
                 <Insets bottom="10.0"/>

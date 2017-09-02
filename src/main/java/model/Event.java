@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
+
 import java.time.LocalDate;
 
 /**
@@ -12,12 +13,31 @@ import java.time.LocalDate;
 
 
 public class Event {
+    private static int primaryKey;
+    private int id;
     private SimpleStringProperty name = new SimpleStringProperty(this, "name");
     private SimpleStringProperty note = new SimpleStringProperty(this, "note");
     private SimpleStringProperty tag = new SimpleStringProperty(this, "tag");
     private SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
     private SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
     private SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
+
+
+    public static int getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public static void setPrimaryKey(int primaryKey) {
+        Event.primaryKey = primaryKey;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name.get();
@@ -90,4 +110,6 @@ public class Event {
     public void setColor(Color color) {
         this.color.set(color);
     }
+
+
 }

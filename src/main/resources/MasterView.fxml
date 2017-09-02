@@ -38,7 +38,7 @@
                 <FlowPane alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="200.0"
                           GridPane.rowIndex="1">
                     <Button fx:id="addEventButton" mnemonicParsing="false"
-                            onAction="#popUpEventAdder" text="Add Event">
+                            onAction="#handleAddEvent" text="Add Event">
                         <FlowPane.margin>
                             <Insets right="10.0"/>
                         </FlowPane.margin>
@@ -111,9 +111,10 @@
                     <Font name="Verdana Bold" size="20.0"/>
                 </font>
             </Label>
-            <Button layoutX="240.0" layoutY="342.0" mnemonicParsing="false" prefHeight="25.0"
+            <Button fx:id="removeEventButton" layoutX="240.0" layoutY="342.0" mnemonicParsing="false"
+                    onAction="#handleRemoveEvent" prefHeight="25.0"
                     prefWidth="71.0" text="Remove"/>
-            <Button layoutX="187.0" layoutY="342.0" mnemonicParsing="false" prefHeight="25.0"
+            <Button fx:id="editEventButton" layoutX="187.0" layoutY="342.0" mnemonicParsing="false" prefHeight="25.0"
                     prefWidth="46.0" text="Edit"/>
             <AnchorPane fx:id="colorRectangle" layoutY="1.0" prefHeight="25.0" prefWidth="335.0"
                         style="-fx-background-color: #FFFFFF;">

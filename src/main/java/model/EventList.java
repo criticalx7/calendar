@@ -20,9 +20,5 @@ public class EventList {
         return events;
     }
 
-    public void setEvents(ObservableList<Event> events) {
-        this.events = events;
-    }
-
 
 }

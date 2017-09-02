@@ -1,9 +1,7 @@
 package controller;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -30,6 +28,10 @@ public class MainController {
     @FXML
     protected Button addEventButton;
     @FXML
+    protected Button removeEventButton;
+    @FXML
+    protected Button editEventButton;
+    @FXML
     protected TableView<Event> eventTable;
     @FXML
     protected TableColumn<Event, LocalDate> dateCol;
@@ -46,25 +48,88 @@ public class MainController {
     @FXML
     protected AnchorPane colorRectangle;
 
-    private static EventList eventList;
+    private EventList eventList;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private DBManager dbManager;
 
     @FXML
     public void initialize() {
         eventList = new EventList();
+        dbManager = new DBManager(this);
+        dbManager.load();
         setupTable();
     }
 
-    @FXML
-    public void popUpEventAdder(ActionEvent e) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("/AddEvent.fxml"));
-        stage.setScene(new Scene(root));
-        stage.setTitle("Event");
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node) e.getSource()).getScene().getWindow());
-        stage.show();
+    private void showEventDetail(Event event) {
+        if (event != null) {
+            nameLabel.setText(event.getName());
+            String start = dateFormatter.format(event.getStart());
+            String end = dateFormatter.format(event.getEnd());
+            timeLabel.setText(String.format("%s to %s", start, end));
+            tagLabel.setText(event.getTag());
+            noteTextArea.setText(event.getNote());
+            colorRectangle.setStyle(getBackgroundColorFX(event.getColor()));
+
+            // Test log
+            System.out.println("NOW ID: " + event.getId());
+            System.out.println("KEY ID: " + Event.getPrimaryKey());
+        }
     }
 
+
+    private boolean showEventProcessDialog(Event event) {
+
+        try {
+            // Load the .fxml
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/ProcessEvent.fxml"));
+            Parent page = loader.load();
+
+            // create DIALOG
+            Stage stage = new Stage();
+            stage.setTitle("Event");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.setScene(new Scene(page));
+
+            // set Event & Stage (Very crucial)
+            ProcessEventController controller = loader.getController();
+            controller.setDateTimeFormatter(dateFormatter);
+            controller.setCurrentEvent(event);
+            controller.setDialogStage(stage);
+
+            stage.showAndWait();
+
+            return controller.isConfirm();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @FXML
+    private void handleAddEvent() {
+        Event tempEvent = new Event();
+        boolean confirm = showEventProcessDialog(tempEvent);
+        if (confirm) {
+            eventList.addEvent(tempEvent);
+        }
+        dbManager.insert(tempEvent);
+    }
+
+    @FXML
+    private void handleRemoveEvent() {
+        int removeIndex = eventTable.getSelectionModel().getSelectedIndex();
+        int removeId = eventList.getEvents().get(removeIndex).getId();
+        eventTable.getItems().remove(removeIndex);
+        dbManager.delete(removeId);
+        //Test log
+        System.out.println("Removing: " + removeId);
+
+        if (eventList.getEvents().size() <= 0) {
+            removeEventButton.setDisable(true);
+        }
+
+    }
 
     private void setupTable() {
         eventTable.setItems(eventList.getEvents());
@@ -100,7 +165,7 @@ public class MainController {
                 if (empty)
                     setText(null);
                 else
-                    setText(DateTimeFormatter.ofPattern("dd-MM-yyyy").format(item));
+                    setText(dateFormatter.format(item));
             }
         });
     }
@@ -117,20 +182,11 @@ public class MainController {
         return String.format("-fx-background-color: #%02X%02X%02X", r, g, b);
     }
 
-    private void showEventDetail(Event event) {
-        if (event != null) {
-            nameLabel.setText(event.getName());
-            String start = DateTimeFormatter.ofPattern("dd-MM-yy").format(event.getStart());
-            String end = DateTimeFormatter.ofPattern("dd-MM-yy").format(event.getEnd());
-            timeLabel.setText(String.format("%s to %s", start, end));
-            tagLabel.setText(event.getTag());
-            noteTextArea.setText(event.getNote());
-            colorRectangle.setStyle(getBackgroundColorFX(event.getColor()));
-        }
-    }
-
-    public static EventList getEventList() {
+    public EventList getEventList() {
         return eventList;
     }
 
+    public DateTimeFormatter getDateFormatter() {
+        return dateFormatter;
+    }
 }
