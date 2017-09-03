@@ -5,13 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Event;
 import model.EventList;
+import utility.Utility;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,6 +33,8 @@ public class MainController {
     protected Button editEventButton;
     @FXML
     protected TableView<Event> eventTable;
+    @FXML
+    protected TableColumn<Event, String> nameCol;
     @FXML
     protected TableColumn<Event, LocalDate> dateCol;
     @FXML
@@ -58,6 +60,7 @@ public class MainController {
         dbManager = new DBManager(this);
         dbManager.load();
         setupTable();
+
     }
 
     private void showEventDetail(Event event) {
@@ -68,16 +71,12 @@ public class MainController {
             timeLabel.setText(String.format("%s to %s", start, end));
             tagLabel.setText(event.getTag());
             noteTextArea.setText(event.getNote());
-            colorRectangle.setStyle(getBackgroundColorFX(event.getColor()));
-
-            // Test log
-            System.out.println("NOW ID: " + event.getId());
-            System.out.println("KEY ID: " + Event.getPrimaryKey());
+            colorRectangle.setStyle(Utility.getInstance().getBackgroundColorFX(event.getColor()));
         }
     }
 
 
-    private boolean showEventProcessDialog(Event event) {
+    private boolean showEventProcessDialog(Event event, String buttonText) {
 
         try {
             // Load the .fxml
@@ -89,6 +88,7 @@ public class MainController {
             Stage stage = new Stage();
             stage.setTitle("Event");
             stage.initModality(Modality.WINDOW_MODAL);
+            stage.setResizable(false);
             stage.setScene(new Scene(page));
 
             // set Event & Stage (Very crucial)
@@ -96,6 +96,7 @@ public class MainController {
             controller.setDateTimeFormatter(dateFormatter);
             controller.setCurrentEvent(event);
             controller.setDialogStage(stage);
+            controller.okButton.setText(buttonText);
 
             stage.showAndWait();
 
@@ -106,14 +107,35 @@ public class MainController {
         }
     }
 
+    /**
+     * Handle add event button by add event
+     * to the observer list and database.
+     */
     @FXML
     private void handleAddEvent() {
         Event tempEvent = new Event();
-        boolean confirm = showEventProcessDialog(tempEvent);
+        boolean confirm = showEventProcessDialog(tempEvent, "Add");
         if (confirm) {
             eventList.addEvent(tempEvent);
+            dbManager.insert(tempEvent);
+            if (eventList.getEvents().size() >= 1) {
+                removeEventButton.setDisable(false);
+                editEventButton.setDisable(false);
+            }
         }
-        dbManager.insert(tempEvent);
+
+    }
+
+    @FXML
+    private void handleEditEvent() {
+        Event selectedEvent = eventTable.getSelectionModel().getSelectedItem();
+        if (selectedEvent != null) {
+            boolean confirm = showEventProcessDialog(selectedEvent, "Edit");
+            if (confirm) {
+                showEventDetail(selectedEvent);
+                dbManager.update(selectedEvent);
+            }
+        }
     }
 
     @FXML
@@ -122,11 +144,10 @@ public class MainController {
         int removeId = eventList.getEvents().get(removeIndex).getId();
         eventTable.getItems().remove(removeIndex);
         dbManager.delete(removeId);
-        //Test log
-        System.out.println("Removing: " + removeId);
 
         if (eventList.getEvents().size() <= 0) {
             removeEventButton.setDisable(true);
+            editEventButton.setDisable(true);
         }
 
     }
@@ -135,7 +156,7 @@ public class MainController {
         eventTable.setItems(eventList.getEvents());
         colorCol.setCellValueFactory(cellData -> cellData.getValue().colorProperty());
         dateCol.setCellValueFactory(cellData -> cellData.getValue().startProperty());
-        eventTable.getColumns().get(2).setCellValueFactory(new PropertyValueFactory("name"));
+        nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
         colorCol.setSortable(false);
         setupColorCell();
         setupDateColumnFormat();
@@ -151,7 +172,7 @@ public class MainController {
                 if (item == null || empty) {
                     setStyle("");
                 } else {
-                    setStyle(getBackgroundColorFX(item));
+                    setStyle(Utility.getInstance().getBackgroundColorFX(item));
                 }
             }
         });
@@ -173,13 +194,6 @@ public class MainController {
     private void setupSelectionModelListener() {
         eventTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
                 showEventDetail(newValue));
-    }
-
-    public static String getBackgroundColorFX(Color c) {
-        int r = (int) (c.getRed() * 255);
-        int g = (int) (c.getGreen() * 255);
-        int b = (int) (c.getBlue() * 255);
-        return String.format("-fx-background-color: #%02X%02X%02X", r, g, b);
     }
 
     public EventList getEventList() {

@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Event;
+import utility.Utility;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,7 +27,7 @@ public class ProcessEventController {
     @FXML
     protected TextArea noteArea;
     @FXML
-    protected Button addButton;
+    protected Button okButton;
     @FXML
     protected DatePicker startPicker;
     @FXML
@@ -45,8 +46,6 @@ public class ProcessEventController {
         setupDatePicker();
         startPicker.setValue(LocalDate.now());
         endPicker.setValue(LocalDate.now());
-        String defaultColor = "#7290c1";
-        colorPicker.setValue(Color.valueOf(defaultColor));
     }
 
 
@@ -84,8 +83,11 @@ public class ProcessEventController {
                     "so that start time is equal to or before end time");
             alert.showAndWait();
         } else {
-            Event.setPrimaryKey(Event.getPrimaryKey() + 1);
-            currentEvent.setId(Event.getPrimaryKey());
+            // database primary key adding
+            if (currentEvent.getId() == 0) {
+                Event.setPrimaryKey(Event.getPrimaryKey() + 1);
+                currentEvent.setId(Event.getPrimaryKey());
+            }
             currentEvent.setName(nameField.getText());
             currentEvent.setStart(startPicker.getValue());
             currentEvent.setEnd(endPicker.getValue());
@@ -101,7 +103,7 @@ public class ProcessEventController {
     @FXML
     public void changeColor() {
         Color c = colorPicker.getValue();
-        colorPane.setStyle(MainController.getBackgroundColorFX(c));
+        colorPane.setStyle(Utility.getInstance().getBackgroundColorFX(c));
     }
 
     public void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
@@ -110,6 +112,14 @@ public class ProcessEventController {
 
     public void setCurrentEvent(Event currentEvent) {
         this.currentEvent = currentEvent;
+
+        nameField.setText(currentEvent.getName());
+        noteArea.setText(currentEvent.getNote());
+        tagField.setText(currentEvent.getTag());
+        startPicker.setValue(currentEvent.getStart());
+        endPicker.setValue(currentEvent.getEnd());
+        colorPicker.setValue(currentEvent.getColor());
+        changeColor();
     }
 
     public void setDialogStage(Stage dialogStage) {

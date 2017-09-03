@@ -13,7 +13,11 @@ import java.util.Arrays;
  * ID:   5810404901
  */
 
-
+/**
+ * This class handles all interactions with
+ * the database such as load, insert, delete
+ * and update records.
+ */
 class DBManager {
     private String DB_URL = "jdbc:sqlite:Events.db";
     private MainController controller;
@@ -73,11 +77,6 @@ class DBManager {
             conn = DriverManager.getConnection(DB_URL);
 
             // execute SQL statement
-            String name = event.getName();
-            String note = event.getNote();
-            String tag = event.getTag();
-            String startDate = controller.getDateFormatter().format(event.getStart());
-            String endDate = controller.getDateFormatter().format(event.getEnd());
             Color c = event.getColor();
             int r = (int) (c.getRed() * 255);
             int g = (int) (c.getGreen() * 255);
@@ -85,11 +84,11 @@ class DBManager {
             String color = String.format("%d,%d,%d", r, g, b);
             String sql = "INSERT INTO Events (name, note, tag, startDate, endDate, color) VALUES(?,?,?,?,?,?)";
             statement = conn.prepareStatement(sql);
-            statement.setString(1, name);
-            statement.setString(2, note);
-            statement.setString(3, tag);
-            statement.setString(4, startDate);
-            statement.setString(5, endDate);
+            statement.setString(1, event.getName());
+            statement.setString(2, event.getNote());
+            statement.setString(3, event.getTag());
+            statement.setString(4, controller.getDateFormatter().format(event.getStart()));
+            statement.setString(5, controller.getDateFormatter().format(event.getEnd()));
             statement.setString(6, color);
             statement.executeUpdate();
 
@@ -100,8 +99,8 @@ class DBManager {
             try {
                 if (conn != null)
                     conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -130,8 +129,52 @@ class DBManager {
             try {
                 if (conn != null)
                     conn.close();
-            } catch (SQLException se) {
-                se.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Get connection to sqlite database and
+     * update(edit) the event's record
+     *
+     * @param event - event to be update
+     */
+    void update(Event event) {
+        Connection conn = null;
+        PreparedStatement statement;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            conn = DriverManager.getConnection(DB_URL);
+
+            // execute SQL statement
+            Color c = event.getColor();
+            int r = (int) (c.getRed() * 255);
+            int g = (int) (c.getGreen() * 255);
+            int b = (int) (c.getBlue() * 255);
+            String color = String.format("%d,%d,%d", r, g, b);
+            String sql = "UPDATE Events " +
+                    "SET name = ?, note = ?, tag = ?, startDate = ?, endDate = ?, color = ? " +
+                    "WHERE id = ?";
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, event.getName());
+            statement.setString(2, event.getNote());
+            statement.setString(3, event.getTag());
+            statement.setString(4, controller.getDateFormatter().format(event.getStart()));
+            statement.setString(5, controller.getDateFormatter().format(event.getEnd()));
+            statement.setString(6, color);
+            statement.setInt(7, event.getId());
+            statement.executeUpdate();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

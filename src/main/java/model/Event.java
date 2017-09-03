@@ -22,6 +22,14 @@ public class Event {
     private SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
     private SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
 
+    public Event() {
+        setName("");
+        setNote("");
+        setTag("");
+        setStart(LocalDate.now());
+        setEnd(LocalDate.now());
+        setColor(Color.valueOf("#7290c1")); //nice blue color
+    }
 
     public static int getPrimaryKey() {
         return primaryKey;
