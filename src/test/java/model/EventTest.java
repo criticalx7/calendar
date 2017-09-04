@@ -1,13 +1,12 @@
 package model;
 
 import javafx.scene.paint.Color;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -16,12 +15,12 @@ import static org.junit.Assert.*;
 
 public class EventTest {
 
-    private Event event;
-    private LocalDate dummyDate;
-    private Color dummyColor;
+    private static Event event;
+    private static LocalDate dummyDate;
+    private static Color dummyColor;
 
-    @Before
-    public void before() {
+    @BeforeClass
+    public static void before() {
         event = new Event();
         event.setName("Holiday");
         event.setNote("I love holiday");
@@ -64,13 +63,5 @@ public class EventTest {
     public void testEventGetColor() {
         assertEquals(event.getColor(), dummyColor);
     }
-
-    @After
-    public void after() {
-        event = null;
-        dummyDate = null;
-        dummyColor = null;
-    }
-
 
 }

@@ -54,14 +54,6 @@ public class MainController {
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private DBManager dbManager;
 
-    @FXML
-    public void initialize() {
-        eventList = new EventList();
-        dbManager = new DBManager(this);
-        dbManager.load();
-        setupTable();
-
-    }
 
     private void showEventDetail(Event event) {
         if (event != null) {
@@ -128,7 +120,7 @@ public class MainController {
 
     @FXML
     private void handleEditEvent() {
-        Event selectedEvent = eventTable.getSelectionModel().getSelectedItem();
+        Event selectedEvent = eventList.getCurrentEvent();
         if (selectedEvent != null) {
             boolean confirm = showEventProcessDialog(selectedEvent, "Edit");
             if (confirm) {
@@ -141,9 +133,9 @@ public class MainController {
     @FXML
     private void handleRemoveEvent() {
         int removeIndex = eventTable.getSelectionModel().getSelectedIndex();
-        int removeId = eventList.getEvents().get(removeIndex).getId();
-        eventTable.getItems().remove(removeIndex);
-        dbManager.delete(removeId);
+        int removeKey = eventList.getCurrentEvent().getId();
+        eventList.removeEvent(removeIndex);
+        dbManager.delete(removeKey);
 
         if (eventList.getEvents().size() <= 0) {
             removeEventButton.setDisable(true);
@@ -192,12 +184,32 @@ public class MainController {
     }
 
     private void setupSelectionModelListener() {
-        eventTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) ->
-                showEventDetail(newValue));
+        eventTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            eventList.setCurrentEvent(newValue);
+            showEventDetail(eventList.getCurrentEvent());
+        });
+
+        eventList.currentEventProperty().addListener((obs, oldValue, newValue) -> {
+            if (newValue == null) {
+                eventTable.getSelectionModel().clearSelection();
+            } else {
+                eventTable.getSelectionModel().select(newValue);
+            }
+        });
     }
 
     public EventList getEventList() {
         return eventList;
+    }
+
+    public void setEventList(EventList eventList) {
+        this.eventList = eventList;
+        setupTable();
+    }
+
+    public void setDbManager(DBManager dbManager) {
+        this.dbManager = dbManager;
+        dbManager.load();
     }
 
     public DateTimeFormatter getDateFormatter() {

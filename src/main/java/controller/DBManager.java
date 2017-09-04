@@ -8,21 +8,16 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+
 /**
  * Name: Mr.Chatchapol Rasameluangon
  * ID:   5810404901
  */
-
-/**
- * This class handles all interactions with
- * the database such as load, insert, delete
- * and update records.
- */
-class DBManager {
+public class DBManager {
     private String DB_URL = "jdbc:sqlite:Events.db";
     private MainController controller;
 
-    DBManager(MainController controller) {
+    public DBManager(MainController controller) {
         this.controller = controller;
     }
 
