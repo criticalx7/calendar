@@ -5,7 +5,6 @@ import javafx.scene.paint.Color;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 
 
 /**
@@ -13,11 +12,12 @@ import java.util.Arrays;
  * ID:   5810404901
  */
 public class DBManager {
-    private String DB_URL = "jdbc:sqlite:Events.db";
+    private String DB_URL;
     private EventList eventList;
 
-    public DBManager(EventList eventList) {
+    public DBManager(EventList eventList, String db_url) {
         this.eventList = eventList;
+        DB_URL = db_url;
     }
 
     /**
@@ -27,15 +27,13 @@ public class DBManager {
      */
     void load() {
         Connection conn = null;
-        Statement statement;
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(DB_URL);
 
             // execute SQL statement
-            System.out.println("Loading...");
             String sql = "SELECT * FROM Events";
-            statement = conn.createStatement();
+            Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             processEvents(resultSet);
 
@@ -44,8 +42,7 @@ public class DBManager {
             e.printStackTrace();
         } finally {
             try {
-                if (conn != null)
-                    conn.close();
+                if (conn != null) conn.close();
             } catch (SQLException se) {
                 se.printStackTrace();
             }
@@ -60,34 +57,26 @@ public class DBManager {
      */
     void insert(Event event) {
         Connection conn = null;
-        PreparedStatement statement;
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(DB_URL);
 
             // execute SQL statement
-            Color c = event.getColor();
-            int r = (int) (c.getRed() * 255);
-            int g = (int) (c.getGreen() * 255);
-            int b = (int) (c.getBlue() * 255);
-            String color = String.format("%d,%d,%d", r, g, b);
             String sql = "INSERT INTO Events (name, note, tag, startDate, endDate, color) VALUES(?,?,?,?,?,?)";
-            statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, event.getName());
             statement.setString(2, event.getNote());
             statement.setString(3, event.getTag());
             statement.setString(4, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getStart()));
             statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getEnd()));
-            statement.setString(6, color);
+            statement.setString(6, event.getColor().toString());
             statement.executeUpdate();
-
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (conn != null)
-                    conn.close();
+                if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -102,22 +91,21 @@ public class DBManager {
      */
     void delete(int id) {
         Connection conn = null;
-        Statement statement;
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(DB_URL);
 
             // execute SQL statement
             String sql = String.format("DELETE FROM Events WHERE id = %d", id);
-            statement = conn.createStatement();
+            Statement statement = conn.createStatement();
             statement.executeUpdate(sql);
+
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (conn != null)
-                    conn.close();
+                if (conn != null) conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -132,27 +120,20 @@ public class DBManager {
      */
     void update(Event event) {
         Connection conn = null;
-        PreparedStatement statement;
         try {
             Class.forName("org.sqlite.JDBC");
             conn = DriverManager.getConnection(DB_URL);
 
-            // execute SQL statement
-            Color c = event.getColor();
-            int r = (int) (c.getRed() * 255);
-            int g = (int) (c.getGreen() * 255);
-            int b = (int) (c.getBlue() * 255);
-            String color = String.format("%d,%d,%d", r, g, b);
             String sql = "UPDATE Events " +
                     "SET name = ?, note = ?, tag = ?, startDate = ?, endDate = ?, color = ? " +
                     "WHERE id = ?";
-            statement = conn.prepareStatement(sql);
+            PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, event.getName());
             statement.setString(2, event.getNote());
             statement.setString(3, event.getTag());
             statement.setString(4, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getStart()));
             statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getEnd()));
-            statement.setString(6, color);
+            statement.setString(6, event.getColor().toString());
             statement.setInt(7, event.getId());
             statement.executeUpdate();
 
@@ -187,14 +168,19 @@ public class DBManager {
             if (set.getString("color") == null) {
                 event.setColor(Color.valueOf("#7290c1"));
             } else {
-                int[] color = Arrays.stream(set.getString("color")
-                        .split(","))
-                        .mapToInt(Integer::parseInt)
-                        .toArray();
-                event.setColor(Color.rgb(color[0], color[1], color[2]));
+                event.setColor(Color.valueOf(set.getString("color")));
             }
             Event.setPrimaryKey(set.getInt("id"));
             eventList.getEvents().add(event);
         }
     }
+
+    public void setDB_URL(String db_url) {
+        DB_URL = db_url;
+    }
+
+    public String getDB_URL() {
+        return DB_URL;
+    }
+
 }

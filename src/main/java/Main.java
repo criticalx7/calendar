@@ -24,14 +24,14 @@ public class Main extends Application {
         //setup model and controller
         MainController mc = loader.getController();
         EventList eventList = new EventList();
-        DBManager dbManager = new DBManager(eventList);
+        DBManager dbManager = new DBManager(eventList, "jdbc:sqlite:Events.db");
         eventList.setDatabaseManager(dbManager);
         eventList.loadEvent();
         mc.setEventList(eventList);
 
         // setup the primary stage
         Scene scene = new Scene(root, 600, 390);
-        primaryStage.setTitle("calendar");
+        primaryStage.setTitle("Calendar");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
