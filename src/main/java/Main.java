@@ -1,10 +1,10 @@
-import controller.DBManager;
 import controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.DBManager;
 import model.EventList;
 
 /**
@@ -17,16 +17,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // load main page
+        // loadEvent main page
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MasterView.fxml"));
         Parent root = loader.load();
 
-        //setup controller dependencies
+        //setup model and controller
         MainController mc = loader.getController();
-        DBManager dbManager = new DBManager(mc);
         EventList eventList = new EventList();
+        DBManager dbManager = new DBManager(eventList);
+        eventList.setDatabaseManager(dbManager);
+        eventList.loadEvent();
         mc.setEventList(eventList);
-        mc.setDbManager(dbManager);
 
         // setup the primary stage
         Scene scene = new Scene(root, 600, 390);

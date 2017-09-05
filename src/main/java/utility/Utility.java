@@ -18,4 +18,6 @@ public class Utility {
         int b = (int) (c.getBlue() * 255);
         return String.format("-fx-background-color: #%02X%02X%02X", r, g, b);
     }
+
+
 }

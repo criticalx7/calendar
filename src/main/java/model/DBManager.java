@@ -1,11 +1,10 @@
-package controller;
+package model;
 
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
-import model.Event;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 
@@ -15,10 +14,10 @@ import java.util.Arrays;
  */
 public class DBManager {
     private String DB_URL = "jdbc:sqlite:Events.db";
-    private MainController controller;
+    private EventList eventList;
 
-    public DBManager(MainController controller) {
-        this.controller = controller;
+    public DBManager(EventList eventList) {
+        this.eventList = eventList;
     }
 
     /**
@@ -42,11 +41,6 @@ public class DBManager {
 
             resultSet.close();
         } catch (ClassNotFoundException | SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("There was an ERROR");
-            alert.setHeaderText("DATABASE ERROR");
-            alert.setContentText("Unable to load data from database");
-            alert.showAndWait();
             e.printStackTrace();
         } finally {
             try {
@@ -82,8 +76,8 @@ public class DBManager {
             statement.setString(1, event.getName());
             statement.setString(2, event.getNote());
             statement.setString(3, event.getTag());
-            statement.setString(4, controller.getDateFormatter().format(event.getStart()));
-            statement.setString(5, controller.getDateFormatter().format(event.getEnd()));
+            statement.setString(4, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getStart()));
+            statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getEnd()));
             statement.setString(6, color);
             statement.executeUpdate();
 
@@ -156,8 +150,8 @@ public class DBManager {
             statement.setString(1, event.getName());
             statement.setString(2, event.getNote());
             statement.setString(3, event.getTag());
-            statement.setString(4, controller.getDateFormatter().format(event.getStart()));
-            statement.setString(5, controller.getDateFormatter().format(event.getEnd()));
+            statement.setString(4, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getStart()));
+            statement.setString(5, DateTimeFormatter.ofPattern("dd-MM-yyyy").format(event.getEnd()));
             statement.setString(6, color);
             statement.setInt(7, event.getId());
             statement.executeUpdate();
@@ -188,8 +182,8 @@ public class DBManager {
             event.setName(set.getString("name"));
             event.setNote(set.getString("note"));
             event.setTag(set.getString("tag"));
-            event.setStart(LocalDate.parse(set.getString("startDate"), controller.getDateFormatter()));
-            event.setEnd(LocalDate.parse(set.getString("endDate"), controller.getDateFormatter()));
+            event.setStart(LocalDate.parse(set.getString("startDate"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            event.setEnd(LocalDate.parse(set.getString("endDate"), DateTimeFormatter.ofPattern("dd-MM-yyyy")));
             if (set.getString("color") == null) {
                 event.setColor(Color.valueOf("#7290c1"));
             } else {
@@ -200,7 +194,7 @@ public class DBManager {
                 event.setColor(Color.rgb(color[0], color[1], color[2]));
             }
             Event.setPrimaryKey(set.getInt("id"));
-            controller.getEventList().addEvent(event);
+            eventList.getEvents().add(event);
         }
     }
 }

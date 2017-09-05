@@ -1,8 +1,5 @@
 package model;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +26,7 @@ public class EventListTest {
     @Test
     public void addEvent() throws Exception {
         eventList.addEvent(dummyEvent);
-        assertEquals(1, eventList.getEvents().size());
-        assertEquals(dummyEvent, eventList.getEvents().get(0));
+        assertEquals(dummyEvent.getId(), eventList.getEvents().get(0).getId());
     }
 
     @Test
@@ -40,18 +36,11 @@ public class EventListTest {
         assertEquals(0, eventList.getEvents().size());
     }
 
-    @Test
-    public void getEvents() throws Exception {
-        ObservableList<Event> l = FXCollections.observableArrayList();
-        assertNotNull(eventList.getEvents());
-        assertEquals(l.getClass().getSimpleName(), eventList.getEvents().getClass().getSimpleName());
-    }
 
     @Test
     public void getCurrentEvent() throws Exception {
         eventList.setCurrentEvent(dummyEvent);
         assertEquals(dummyEvent, eventList.getCurrentEvent());
-
     }
 
     @Test
@@ -61,11 +50,5 @@ public class EventListTest {
         assertEquals(dummyEvent, eventList.getCurrentEvent());
     }
 
-    @Test
-    public void currentEventProperty() throws Exception {
-        SimpleObjectProperty<Event> p = new SimpleObjectProperty<>(null);
-        assertNotNull(eventList.currentEventProperty());
-        assertEquals(p.getClass().getSimpleName(), eventList.currentEventProperty().getClass().getSimpleName());
-    }
 
 }

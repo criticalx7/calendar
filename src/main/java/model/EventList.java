@@ -16,16 +16,42 @@ public class EventList {
 
     private final ObjectProperty<Event> currentEvent = new SimpleObjectProperty<>(null);
 
+    private DBManager databaseManager;
+
+    public void loadEvent() {
+        databaseManager.load();
+    }
+
     public void addEvent(Event event) {
+        Event.setPrimaryKey(Event.getPrimaryKey() + 1);
+        event.setId(Event.getPrimaryKey());
         events.add(event);
+        if (databaseManager != null) databaseManager.insert(event);
     }
 
     public void removeEvent(int removeIndex) {
+        int removeKey = events.get(removeIndex).getId();
         events.remove(removeIndex);
+        if (databaseManager != null) databaseManager.delete(removeKey);
+
     }
+
+    public void editEvent(Event event) {
+        if (databaseManager != null) databaseManager.update(event);
+    }
+
 
     public ObservableList<Event> getEvents() {
         return events;
+    }
+
+
+    public void setDatabaseManager(DBManager dbManager) {
+        this.databaseManager = dbManager;
+    }
+
+    public DBManager getDatabaseManager() {
+        return databaseManager;
     }
 
 
@@ -40,7 +66,5 @@ public class EventList {
     public ObjectProperty<Event> currentEventProperty() {
         return currentEvent;
     }
-
-
 
 }

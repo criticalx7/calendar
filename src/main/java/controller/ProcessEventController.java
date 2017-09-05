@@ -83,18 +83,12 @@ public class ProcessEventController {
                     "so that start time is equal to or before end time");
             alert.showAndWait();
         } else {
-            // database primary key adding
-            if (currentEvent.getId() == 0) {
-                Event.setPrimaryKey(Event.getPrimaryKey() + 1);
-                currentEvent.setId(Event.getPrimaryKey());
-            }
             currentEvent.setName(nameField.getText());
             currentEvent.setStart(startPicker.getValue());
             currentEvent.setEnd(endPicker.getValue());
             currentEvent.setTag(tagField.getText());
             currentEvent.setColor(colorPicker.getValue());
             currentEvent.setNote(noteArea.getText());
-
             confirmation = true;
             dialogStage.close();
         }
@@ -106,11 +100,11 @@ public class ProcessEventController {
         colorPane.setStyle(Utility.getInstance().getBackgroundColorFX(c));
     }
 
-    public void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
+    void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
         this.dateTimeFormatter = dateTimeFormatter;
     }
 
-    public void setCurrentEvent(Event currentEvent) {
+    void setCurrentEvent(Event currentEvent) {
         this.currentEvent = currentEvent;
 
         nameField.setText(currentEvent.getName());
@@ -122,11 +116,11 @@ public class ProcessEventController {
         changeColor();
     }
 
-    public void setDialogStage(Stage dialogStage) {
+    void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
 
-    public boolean isConfirm() {
+    boolean isConfirm() {
         return confirmation;
     }
 }

@@ -52,7 +52,7 @@ public class MainController {
 
     private EventList eventList;
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private DBManager dbManager;
+    private Stage processDialog;
 
 
     private void showEventDetail(Event event) {
@@ -100,8 +100,8 @@ public class MainController {
     }
 
     /**
-     * Handle add event button by add event
-     * to the observer list and database.
+     * Handle add event button by calling showEventProcessDialog method
+     * to process new event and add it to events model by model's addEvent method
      */
     @FXML
     private void handleAddEvent() {
@@ -109,7 +109,6 @@ public class MainController {
         boolean confirm = showEventProcessDialog(tempEvent, "Add");
         if (confirm) {
             eventList.addEvent(tempEvent);
-            dbManager.insert(tempEvent);
             if (eventList.getEvents().size() >= 1) {
                 removeEventButton.setDisable(false);
                 editEventButton.setDisable(false);
@@ -118,24 +117,15 @@ public class MainController {
 
     }
 
-    @FXML
-    private void handleEditEvent() {
-        Event selectedEvent = eventList.getCurrentEvent();
-        if (selectedEvent != null) {
-            boolean confirm = showEventProcessDialog(selectedEvent, "Edit");
-            if (confirm) {
-                showEventDetail(selectedEvent);
-                dbManager.update(selectedEvent);
-            }
-        }
-    }
 
+    /**
+     * Handle remove event button by calling removeEvent method from events model and
+     * passing removed event index from SelectionModel to it
+     */
     @FXML
     private void handleRemoveEvent() {
         int removeIndex = eventTable.getSelectionModel().getSelectedIndex();
-        int removeKey = eventList.getCurrentEvent().getId();
         eventList.removeEvent(removeIndex);
-        dbManager.delete(removeKey);
 
         if (eventList.getEvents().size() <= 0) {
             removeEventButton.setDisable(true);
@@ -144,19 +134,36 @@ public class MainController {
 
     }
 
+    /**
+     * Handle edit event button by calling showEventProcessDialog method
+     * to edit currently selected event and updating database in the process
+     */
+    @FXML
+    private void handleEditEvent() {
+        Event selectedEvent = eventList.getCurrentEvent();
+        if (selectedEvent != null) {
+            boolean confirm = showEventProcessDialog(selectedEvent, "Edit");
+            if (confirm) {
+                showEventDetail(selectedEvent);
+                eventList.editEvent(selectedEvent);
+            }
+        }
+    }
+
+
+    /**
+     * This private method call after setEventList() to properly setup
+     * the TableView's appearance and functionality
+     */
     private void setupTable() {
+        // setup cells value of TableView's column
         eventTable.setItems(eventList.getEvents());
         colorCol.setCellValueFactory(cellData -> cellData.getValue().colorProperty());
         dateCol.setCellValueFactory(cellData -> cellData.getValue().startProperty());
         nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+
+        // Setup Color column format so that it show color cell
         colorCol.setSortable(false);
-        setupColorCell();
-        setupDateColumnFormat();
-        setupSelectionModelListener();
-
-    }
-
-    private void setupColorCell() {
         colorCol.setCellFactory(c -> new TableCell<Event, Color>() {
             @Override
             protected void updateItem(Color item, boolean empty) {
@@ -168,9 +175,8 @@ public class MainController {
                 }
             }
         });
-    }
 
-    private void setupDateColumnFormat() {
+        // Setup Date column format so that it show formatted date
         dateCol.setCellFactory(c -> new TableCell<Event, LocalDate>() {
             @Override
             protected void updateItem(LocalDate item, boolean empty) {
@@ -181,9 +187,8 @@ public class MainController {
                     setText(dateFormatter.format(item));
             }
         });
-    }
 
-    private void setupSelectionModelListener() {
+        // Setup TableView SelectionModel property so that it is sync with a currentEventProperty in eventList
         eventTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             eventList.setCurrentEvent(newValue);
             showEventDetail(eventList.getCurrentEvent());
@@ -196,23 +201,18 @@ public class MainController {
                 eventTable.getSelectionModel().select(newValue);
             }
         });
+
     }
 
-    public EventList getEventList() {
-        return eventList;
-    }
 
+    /**
+     * This setter method set the events model and setup the TableView
+     *
+     * @param eventList - to be used events model
+     */
     public void setEventList(EventList eventList) {
         this.eventList = eventList;
         setupTable();
     }
 
-    public void setDbManager(DBManager dbManager) {
-        this.dbManager = dbManager;
-        dbManager.load();
-    }
-
-    public DateTimeFormatter getDateFormatter() {
-        return dateFormatter;
-    }
 }
