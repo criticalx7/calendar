@@ -7,6 +7,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
+
 public class EventListTest {
     private EventList eventList;
     private Event dummyEvent;

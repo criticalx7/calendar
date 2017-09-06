@@ -38,6 +38,13 @@ public class DBManager {
             processEvents(resultSet);
 
             resultSet.close();
+
+            sql = "SELECT * FROM sqlite_sequence";
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(sql);
+            resultSet.next();
+            Event.setPrimaryKey(resultSet.getInt("seq"));
+            System.out.println(Event.getPrimaryKey());
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
@@ -170,7 +177,6 @@ public class DBManager {
             } else {
                 event.setColor(Color.valueOf(set.getString("color")));
             }
-            Event.setPrimaryKey(set.getInt("id"));
             eventList.getEvents().add(event);
         }
     }

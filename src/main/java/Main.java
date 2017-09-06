@@ -18,7 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // loadEvent main page
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MasterView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/MasterView.fxml"));
         Parent root = loader.load();
 
         //setup model and controller

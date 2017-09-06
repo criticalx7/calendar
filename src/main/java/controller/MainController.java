@@ -73,7 +73,7 @@ public class MainController {
         try {
             // Load the .fxml
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/ProcessEvent.fxml"));
+            loader.setLocation(getClass().getResource("/fxml/ProcessEvent.fxml"));
             Parent page = loader.load();
 
             // create DIALOG
