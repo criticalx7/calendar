@@ -15,7 +15,6 @@ import utility.Utility;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -51,15 +50,12 @@ public class MainController {
     protected AnchorPane colorRectangle;
 
     private EventList eventList;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private Stage processDialog;
-
 
     private void showEventDetail(Event event) {
         if (event != null) {
             nameLabel.setText(event.getName());
-            String start = dateFormatter.format(event.getStart());
-            String end = dateFormatter.format(event.getEnd());
+            String start = Event.getDefaultDatePattern().format(event.getStart());
+            String end = Event.getDefaultDatePattern().format(event.getEnd());
             timeLabel.setText(String.format("%s to %s", start, end));
             tagLabel.setText(event.getTag());
             noteTextArea.setText(event.getNote());
@@ -85,7 +81,7 @@ public class MainController {
 
             // set Event & Stage (Very crucial)
             ProcessEventController controller = loader.getController();
-            controller.setDateTimeFormatter(dateFormatter);
+            controller.setDateTimeFormatter(Event.getDefaultDatePattern());
             controller.setCurrentEvent(event);
             controller.setDialogStage(stage);
             controller.okButton.setText(buttonText);
@@ -184,7 +180,7 @@ public class MainController {
                 if (empty)
                     setText(null);
                 else
-                    setText(dateFormatter.format(item));
+                    setText(Event.getDefaultDatePattern().format(item));
             }
         });
 

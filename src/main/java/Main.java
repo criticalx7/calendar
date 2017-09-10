@@ -24,7 +24,7 @@ public class Main extends Application {
         //setup model and controller
         MainController mc = loader.getController();
         EventList eventList = new EventList();
-        DBManager dbManager = new DBManager(eventList, "jdbc:sqlite:Events.db");
+        DBManager dbManager = new DBManager(eventList);
         eventList.setDatabaseManager(dbManager);
         eventList.loadEvent();
         mc.setEventList(eventList);

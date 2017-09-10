@@ -14,6 +14,7 @@
     <root id="root">
       <element id="archive" name="calendar.jar">
         <element id="module-output" name="calendar" />
+        <element id="library" level="project" name="Maven: org.xerial:sqlite-jdbc:3.20.0" />
       </element>
     </root>
   </artifact>

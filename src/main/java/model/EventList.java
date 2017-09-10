@@ -31,7 +31,6 @@ public class EventList {
 
     public void removeEvent(int removeIndex) {
         int removeKey = events.get(removeIndex).getId();
-        System.out.println(removeKey);
         events.remove(removeIndex);
         if (databaseManager != null) databaseManager.delete(removeKey);
 

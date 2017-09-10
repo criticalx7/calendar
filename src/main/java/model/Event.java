@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -13,6 +14,9 @@ import java.time.LocalDate;
 
 
 public class Event {
+
+    private static DateTimeFormatter defaultDatePattern = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static String defaultColor = "0x7290c1ff";
     private static int primaryKey;
     private int id;
     private SimpleStringProperty name = new SimpleStringProperty(this, "name");
@@ -29,6 +33,14 @@ public class Event {
         setStart(LocalDate.now());
         setEnd(LocalDate.now());
         setColor(Color.valueOf("#7290c1")); //nice blue color
+    }
+
+    public static DateTimeFormatter getDefaultDatePattern() {
+        return defaultDatePattern;
+    }
+
+    public static String getDefaultColor() {
+        return defaultColor;
     }
 
     public static int getPrimaryKey() {
