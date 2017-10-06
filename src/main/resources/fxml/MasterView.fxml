@@ -12,7 +12,7 @@
 <?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.MainController">
+            fx:controller="viewmodel.controller.MasterView">
     <MenuBar layoutY="1.0" prefHeight="25.0" prefWidth="600.0">
         <Menu mnemonicParsing="false" text="File">
             <MenuItem mnemonicParsing="false" text="Close"/>

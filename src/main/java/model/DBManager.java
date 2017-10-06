@@ -152,10 +152,10 @@ public class DBManager {
      * Get connection to sqlite database and
      * delete(remove) the event's record based on primary key id
      *
-     * @param id - primary id of the event
+     * @param event - Event to be removed
      */
-    void delete(int id) {
-
+    void delete(Event event) {
+        int id = event.getId();
         String sql = String.format("DELETE FROM Events WHERE id = %d", id);
         try (Connection conn = DriverManager.getConnection(DB_URL);
              Statement statement = conn.createStatement()) {

@@ -1,13 +1,13 @@
-package controller;
+package viewmodel.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import model.Event;
 import utility.Utility;
+import view.ViewManager;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
  */
 
 
-public class ProcessEventController {
+public class EventProcessor {
 
     @FXML
     protected TextField nameField;
@@ -39,8 +39,8 @@ public class ProcessEventController {
 
     private DateTimeFormatter dateTimeFormatter;
     private Event currentEvent;
-    private Stage dialogStage;
     private boolean confirmation = false;
+    private ViewManager viewManager;
 
     public void initialize() {
         setupDatePicker();
@@ -69,19 +69,18 @@ public class ProcessEventController {
     @FXML
     public void handleAdd() {
         if (nameField.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("There was an ERROR");
-            alert.setHeaderText("No event's name");
-            alert.setContentText("Please put at least one character in the name field");
-            alert.showAndWait();
+            viewManager.showErrorDialog(
+                    "There was an ERROR",
+                    "No event's name",
+                    "Please put at least one character in the name field");
             nameField.requestFocus();
         } else if (startPicker.getValue().isAfter(endPicker.getValue())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("There was an ERROR");
-            alert.setHeaderText("End is before start");
-            alert.setContentText("Your event's end time is before start time. Please change times" +
-                    "so that start time is equal to or before end time");
-            alert.showAndWait();
+            viewManager.showErrorDialog(
+                    "There was an ERROR",
+                    "No event's name",
+                    "Your event's end time is before start time. Please change times" +
+                            "so that start time is equal to or before end time");
+
         } else {
             currentEvent.setName(nameField.getText());
             currentEvent.setStart(startPicker.getValue());
@@ -90,21 +89,21 @@ public class ProcessEventController {
             currentEvent.setColor(colorPicker.getValue());
             currentEvent.setNote(noteArea.getText());
             confirmation = true;
-            dialogStage.close();
+            okButton.getScene().getWindow().hide();
         }
     }
 
     @FXML
     public void changeColor() {
         Color c = colorPicker.getValue();
-        colorPane.setStyle(Utility.getInstance().getBackgroundColorFX(c));
+        colorPane.setStyle(Utility.getBackgroundColorFX(c));
     }
 
-    void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
+    public void setDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
         this.dateTimeFormatter = dateTimeFormatter;
     }
 
-    void setCurrentEvent(Event currentEvent) {
+    public void setCurrentEvent(Event currentEvent) {
         this.currentEvent = currentEvent;
 
         nameField.setText(currentEvent.getName());
@@ -116,11 +115,11 @@ public class ProcessEventController {
         changeColor();
     }
 
-    void setDialogStage(Stage dialogStage) {
-        this.dialogStage = dialogStage;
+    public boolean isConfirm() {
+        return confirmation;
     }
 
-    boolean isConfirm() {
-        return confirmation;
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
     }
 }

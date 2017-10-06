@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>viewmodel.controller.MonthView</OriginalElement>
+  <nodes>
+    <node x="0.0" y="0.0">viewmodel.component.EventBox</node>
+    <node x="258.95625" y="426.0">viewmodel.controller.EventProcessor</node>
+    <node x="260.9145833333333" y="109.0">model.EventList</node>
+    <node x="128.99045781893008" y="0.0">viewmodel.component.DateCell</node>
+    <node x="148.77934670781897" y="258.0">viewmodel.controller.MonthView</node>
+    <node x="298.95625" y="258.0">model.DBManager</node>
+    <node x="222.95625" y="347.0">view.ViewManager</node>
+    <node x="325.1118569958848" y="0.0">model.Event</node>
+    <node x="27.100000000000023" y="109.0">viewmodel.component.ComponentFactory</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="viewmodel.component.ComponentFactory" target="viewmodel.component.DateCell">
+      <point x="56.625" y="-14.5" />
+      <point x="159.22500000000002" y="89.0" />
+      <point x="156.59045781893008" y="89.0" />
+      <point x="-18.400000000000006" y="14.5" />
+    </edge>
+    <edge source="view.ViewManager" target="model.Event">
+      <point x="52.5" y="-14.5" />
+      <point x="335.45625" y="327.0" />
+      <point x="419.45625" y="327.0" />
+      <point x="419.45625" y="69.0" />
+      <point x="382.8618569958848" y="69.0" />
+      <point x="19.250000000000014" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="model.Event">
+      <point x="24.22222222222223" y="-14.5" />
+      <point x="227.5015689300412" y="198.0" />
+      <point x="250.41458333333333" y="198.0" />
+      <point x="250.41458333333333" y="59.0" />
+      <point x="336.6618569958848" y="59.0" />
+      <point x="-26.949999999999996" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.EventProcessor" target="view.ViewManager">
+      <point x="-51.19999999999999" y="-14.5" />
+      <point x="271.75625" y="406.0" />
+      <point x="242.95625" y="406.0" />
+      <point x="-40.0" y="14.5" />
+    </edge>
+    <edge source="view.ViewManager" target="viewmodel.controller.EventProcessor">
+      <point x="40.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="model.DBManager" target="model.Event">
+      <point x="27.5" y="-14.5" />
+      <point x="381.45625" y="238.0" />
+      <point x="385.73837448559675" y="238.0" />
+      <point x="385.73837448559675" y="89.0" />
+      <point x="367.46185699588483" y="89.0" />
+      <point x="3.8500000000000085" y="14.5" />
+    </edge>
+    <edge source="model.EventList" target="model.Event">
+      <point x="0.0" y="-14.5" />
+      <point x="308.4145833333333" y="79.0" />
+      <point x="352.0618569958848" y="79.0" />
+      <point x="-11.549999999999997" y="14.5" />
+    </edge>
+    <edge source="view.ViewManager" target="model.EventList">
+      <point x="7.5" y="-14.5" />
+      <point x="290.45625" y="327.0" />
+      <point x="288.45625" y="327.0" />
+      <point x="288.45625" y="238.0" />
+      <point x="302.4770833333333" y="238.0" />
+      <point x="-5.9375" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="viewmodel.component.DateCell">
+      <point x="-24.22222222222223" y="-14.5" />
+      <point x="179.05712448559674" y="158.0" />
+      <point x="188.6" y="158.0" />
+      <point x="188.6" y="89.0" />
+      <point x="174.99045781893008" y="89.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="view.ViewManager" target="model.DBManager">
+      <point x="37.5" y="-14.5" />
+      <point x="320.45625" y="317.0" />
+      <point x="381.45625" y="317.0" />
+      <point x="27.5" y="14.5" />
+    </edge>
+    <edge source="view.ViewManager" target="viewmodel.controller.MonthView">
+      <point x="-52.5" y="-14.5" />
+      <point x="230.45625" y="327.0" />
+      <point x="166.94601337448563" y="327.0" />
+      <point x="-36.333333333333336" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="view.ViewManager">
+      <point x="0.0" y="14.5" />
+      <point x="203.27934670781897" y="317.0" />
+      <point x="245.45625" y="317.0" />
+      <point x="-37.5" y="-14.5" />
+    </edge>
+    <edge source="viewmodel.component.ComponentFactory" target="viewmodel.component.EventBox">
+      <point x="-56.625" y="-14.5" />
+      <point x="45.97500000000002" y="89.0" />
+      <point x="48.0" y="89.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="model.DBManager" target="model.EventList">
+      <point x="-45.833333333333314" y="-14.5" />
+      <point x="308.1229166666667" y="238.0" />
+      <point x="314.3520833333333" y="238.0" />
+      <point x="5.9375" y="14.5" />
+    </edge>
+    <edge source="model.EventList" target="model.DBManager">
+      <point x="41.5625" y="14.5" />
+      <point x="349.9770833333333" y="238.0" />
+      <point x="363.1229166666667" y="238.0" />
+      <point x="9.166666666666657" y="-14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="model.EventList">
+      <point x="36.33333333333333" y="-14.5" />
+      <point x="239.61268004115232" y="208.0" />
+      <point x="266.8520833333333" y="208.0" />
+      <point x="-41.5625" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="viewmodel.component.ComponentFactory">
+      <point x="-36.33333333333334" y="-14.5" />
+      <point x="166.94601337448563" y="228.0" />
+      <point x="102.60000000000002" y="228.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.MonthView" target="viewmodel.component.EventBox">
+      <point x="-48.44444444444446" y="-14.5" />
+      <point x="154.83490226337452" y="238.0" />
+      <point x="14.4375" y="238.0" />
+      <point x="14.4375" y="89.0" />
+      <point x="16.0" y="89.0" />
+      <point x="-32.0" y="14.5" />
+    </edge>
+    <edge source="viewmodel.controller.EventProcessor" target="model.Event">
+      <point x="51.19999999999999" y="-14.5" />
+      <point x="374.15625" y="406.0" />
+      <point x="441.03906893004114" y="406.0" />
+      <point x="441.03906893004114" y="49.0" />
+      <point x="398.26185699588484" y="49.0" />
+      <point x="34.65000000000002" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7095380029806261" x="340.5412728418398" y="232.21571098508713" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

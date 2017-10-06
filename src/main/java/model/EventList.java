@@ -26,14 +26,18 @@ public class EventList {
         Event.setPrimaryKey(Event.getPrimaryKey() + 1);
         event.setId(Event.getPrimaryKey());
         events.add(event);
-        if (databaseManager != null) databaseManager.insert(event);
+        if (databaseManager != null) new Thread(() -> databaseManager.insert(event)).start();
     }
 
     public void removeEvent(int removeIndex) {
-        int removeKey = events.get(removeIndex).getId();
+        Event event = events.get(removeIndex);
         events.remove(removeIndex);
-        if (databaseManager != null) databaseManager.delete(removeKey);
+        if (databaseManager != null) new Thread(() -> databaseManager.delete(event)).start();
+    }
 
+    public void cancelEvent(Event event) {
+        event.setCancel(true);
+        if (databaseManager != null) new Thread(() -> databaseManager.delete(event)).start();
     }
 
     public void editEvent(Event event) {

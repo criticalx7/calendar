@@ -1,19 +1,15 @@
-package controller;
+package viewmodel.controller;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import model.Event;
 import model.EventList;
 import utility.Utility;
+import view.ViewManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 /**
@@ -22,7 +18,7 @@ import java.time.LocalDate;
  */
 
 
-public class MainController {
+public class MasterView {
 
     @FXML
     protected Button addEventButton;
@@ -50,6 +46,7 @@ public class MainController {
     protected AnchorPane colorRectangle;
 
     private EventList eventList;
+    private ViewManager viewManager;
 
     private void showEventDetail(Event event) {
         if (event != null) {
@@ -59,50 +56,18 @@ public class MainController {
             timeLabel.setText(String.format("%s to %s", start, end));
             tagLabel.setText(event.getTag());
             noteTextArea.setText(event.getNote());
-            colorRectangle.setStyle(Utility.getInstance().getBackgroundColorFX(event.getColor()));
-        }
-    }
-
-
-    private boolean showEventProcessDialog(Event event, String buttonText) {
-
-        try {
-            // Load the .fxml
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/fxml/ProcessEvent.fxml"));
-            Parent page = loader.load();
-
-            // create DIALOG
-            Stage stage = new Stage();
-            stage.setTitle("Event");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.setResizable(false);
-            stage.setScene(new Scene(page));
-
-            // set Event & Stage (Very crucial)
-            ProcessEventController controller = loader.getController();
-            controller.setDateTimeFormatter(Event.getDefaultDatePattern());
-            controller.setCurrentEvent(event);
-            controller.setDialogStage(stage);
-            controller.okButton.setText(buttonText);
-
-            stage.showAndWait();
-
-            return controller.isConfirm();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
+            colorRectangle.setStyle(Utility.getBackgroundColorFX(event.getColor()));
         }
     }
 
     /**
-     * Handle add event button by calling showEventProcessDialog method
+     * Handle add event button by   calling showEventProcessDialog method
      * to process new event and add it to events model by model's addEvent method
      */
     @FXML
     private void handleAddEvent() {
         Event tempEvent = new Event();
-        boolean confirm = showEventProcessDialog(tempEvent, "Add");
+        boolean confirm = viewManager.showEventProcessDialog(tempEvent);
         if (confirm) {
             eventList.addEvent(tempEvent);
             if (eventList.getEvents().size() >= 1) {
@@ -138,7 +103,7 @@ public class MainController {
     private void handleEditEvent() {
         Event selectedEvent = eventList.getCurrentEvent();
         if (selectedEvent != null) {
-            boolean confirm = showEventProcessDialog(selectedEvent, "Edit");
+            boolean confirm = viewManager.showEventProcessDialog(selectedEvent);
             if (confirm) {
                 showEventDetail(selectedEvent);
                 eventList.editEvent(selectedEvent);
@@ -167,7 +132,7 @@ public class MainController {
                 if (item == null || empty) {
                     setStyle("");
                 } else {
-                    setStyle(Utility.getInstance().getBackgroundColorFX(item));
+                    setStyle(Utility.getBackgroundColorFX(item));
                 }
             }
         });
@@ -198,6 +163,11 @@ public class MainController {
             }
         });
 
+        eventTable.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            final TableHeaderRow header = (TableHeaderRow) eventTable.lookup("TableHeaderRow");
+            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
+        });
+
     }
 
 
@@ -211,4 +181,7 @@ public class MainController {
         setupTable();
     }
 
+    public void setViewManager(ViewManager viewManager) {
+        this.viewManager = viewManager;
+    }
 }

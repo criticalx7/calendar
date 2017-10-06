@@ -1,5 +1,6 @@
 package model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
@@ -19,12 +20,13 @@ public class Event {
     private static String defaultColor = "0x7290c1ff";
     private static int primaryKey;
     private int id;
-    private SimpleStringProperty name = new SimpleStringProperty(this, "name");
-    private SimpleStringProperty note = new SimpleStringProperty(this, "note");
-    private SimpleStringProperty tag = new SimpleStringProperty(this, "tag");
-    private SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
-    private SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
-    private SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
+    private final SimpleStringProperty name = new SimpleStringProperty(this, "name");
+    private final SimpleStringProperty note = new SimpleStringProperty(this, "note");
+    private final SimpleStringProperty tag = new SimpleStringProperty(this, "tag");
+    private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
+    private final SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
+    private final SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
+    private SimpleBooleanProperty cancel = new SimpleBooleanProperty(this, "cancel", false);
 
     public Event() {
         setName("");
@@ -32,7 +34,13 @@ public class Event {
         setTag("");
         setStart(LocalDate.now());
         setEnd(LocalDate.now());
-        setColor(Color.valueOf("#7290c1")); //nice blue color
+        setColor(Color.valueOf(defaultColor)); //nice blue color
+    }
+
+    public Event(LocalDate start) {
+        this();
+        setStart(start);
+        setEnd(start);
     }
 
     public static DateTimeFormatter getDefaultDatePattern() {
@@ -131,5 +139,29 @@ public class Event {
         this.color.set(color);
     }
 
+    public boolean isCancel() {
+        return cancel.get();
+    }
 
+    public SimpleBooleanProperty cancelProperty() {
+        return cancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        this.cancel.set(cancel);
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", name=" + name +
+                ", note=" + note +
+                ", tag=" + tag +
+                ", start=" + start +
+                ", end=" + end +
+                ", color=" + color +
+                ", cancel=" + cancel +
+                '}';
+    }
 }
