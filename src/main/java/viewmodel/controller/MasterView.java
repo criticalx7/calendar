@@ -1,6 +1,5 @@
 package viewmodel.controller;
 
-import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -163,11 +162,9 @@ public class MasterView {
             }
         });
 
-        eventTable.skinProperty().addListener((obs, oldSkin, newSkin) -> {
-            final TableHeaderRow header = (TableHeaderRow) eventTable.lookup("TableHeaderRow");
-            header.reorderingProperty().addListener((o, oldVal, newVal) -> header.setReordering(false));
-        });
-
+        colorCol.setReorderable(false);
+        nameCol.setReorderable(false);
+        dateCol.setReorderable(false);
     }
 
 

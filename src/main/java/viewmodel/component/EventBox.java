@@ -19,13 +19,20 @@ public class EventBox extends HBox {
     EventBox() {
         super();
         // set the rigidArea between label and button
+        button.setVisible(false);
         setAlignment(Pos.CENTER_LEFT);
         Pane rigidArea = new Pane();
         setHgrow(rigidArea, Priority.ALWAYS);
 
         // add style and color
-        setOnMouseEntered(action -> setStyle(Utility.getBackgroundColorFX(getColor().saturate())));
-        setOnMouseExited(action -> setStyle(Utility.getBackgroundColorFX(getColor())));
+        setOnMouseEntered(action -> {
+            button.setVisible(true);
+            setStyle(Utility.getBackgroundColorFX(getColor().saturate()));
+        });
+        setOnMouseExited(action -> {
+            button.setVisible(false);
+            setStyle(Utility.getBackgroundColorFX(getColor()));
+        });
         color.addListener((obv, oldColor, newColor) -> setStyle(Utility.getBackgroundColorFX(newColor)));
         nameLabel.getStyleClass().setAll("event-label");
         button.getStyleClass().setAll("event-closeBtn");

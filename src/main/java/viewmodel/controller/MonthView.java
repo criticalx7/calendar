@@ -79,8 +79,8 @@ public class MonthView {
         LocalDate firstDateOfMonth = currentMonth.withDayOfMonth(1);
         int firstDayOfWeek = firstDateOfMonth.getDayOfWeek().getValue() % 7;
         int indexDay = 0;
-        for (int i = 0; i < gridView.getRowConstraints().size(); i++) {
-            for (int j = 0; j < gridView.getColumnConstraints().size(); j++) {
+        for (int i = 0; i < gridView.getRowCount(); i++) {
+            for (int j = 0; j < gridView.getColumnCount(); j++) {
                 DateCell cell = gridCells[i][j];
                 LocalDate currentDate = firstDateOfMonth.plusDays(indexDay - firstDayOfWeek);
                 cell.getChildren().clear();
