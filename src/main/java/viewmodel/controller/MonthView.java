@@ -1,10 +1,8 @@
 package viewmodel.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -26,6 +24,7 @@ import java.util.Locale;
 
 public class MonthView {
 
+
     //note: #817153 golden color
 
     @FXML
@@ -33,9 +32,13 @@ public class MonthView {
     @FXML
     protected Label monthLabel, yearLabel;
     @FXML
+    public GridPane dayOfWeekGrid;
+    @FXML
     protected GridPane gridView;
     @FXML
     protected TextField searchBar;
+    @FXML
+    protected Button moreButton;
 
     private DateCell[][] gridCells;
     private LocalDate currentMonth;
@@ -169,6 +172,17 @@ public class MonthView {
             }
         }
     }
+
+    // this is some place holder for more
+    @FXML
+    private void handleMore() {
+        ContextMenu more = new ContextMenu();
+        MenuItem menuItem1 = new MenuItem("Search");
+        more.getItems().setAll(menuItem1);
+        more.setAutoHide(true);
+        more.show(moreButton, Side.BOTTOM,0, 0);
+    }
+
     // currently hacked
     private boolean handleCancel(Event event) {
         Boolean confirm = viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent();
@@ -180,6 +194,7 @@ public class MonthView {
         this.eventList = eventList;
         updateView();
     }
+
 
     public void setViewManager(ViewManager viewManager) {
         this.viewManager = viewManager;

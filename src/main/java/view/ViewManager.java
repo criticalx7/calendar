@@ -41,7 +41,6 @@ public class ViewManager {
         Scene scene = new Scene(root, 700, 600);
         primaryStage.setTitle("Calendar");
         primaryStage.setScene(scene);
-        //primaryStage.setResizable(false);
         primaryStage.show();
     }
 
@@ -76,8 +75,7 @@ public class ViewManager {
     public Optional<ButtonType> showConfirmationDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Are you sure you want to 'delete' this event");
-        Optional<ButtonType> buttonType = alert.showAndWait();
-        return buttonType;
+        return alert.showAndWait();
     }
 
     public void showErrorDialog(String title, String header, String text) {
