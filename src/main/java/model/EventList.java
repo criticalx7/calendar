@@ -13,35 +13,33 @@ import javafx.collections.ObservableList;
 
 public class EventList {
     private final ObservableList<Event> events = FXCollections.observableArrayList();
-
     private final ObjectProperty<Event> currentEvent = new SimpleObjectProperty<>(null);
-
-    private DBManager databaseManager;
+    private EventSource eventSource;
 
     public void loadEvent() {
-        databaseManager.load();
+        if (eventSource != null) eventSource.load();
     }
 
     public void addEvent(Event event) {
         Event.setPrimaryKey(Event.getPrimaryKey() + 1);
         event.setId(Event.getPrimaryKey());
         events.add(event);
-        if (databaseManager != null) new Thread(() -> databaseManager.insert(event)).start();
+        if (eventSource != null) new Thread(() -> eventSource.insert(event)).start();
     }
 
     public void removeEvent(int removeIndex) {
         Event event = events.get(removeIndex);
         events.remove(removeIndex);
-        if (databaseManager != null) new Thread(() -> databaseManager.delete(event)).start();
+        if (eventSource != null) new Thread(() -> eventSource.delete(event)).start();
     }
 
     public void cancelEvent(Event event) {
         event.setCancel(true);
-        if (databaseManager != null) new Thread(() -> databaseManager.delete(event)).start();
+        if (eventSource != null) new Thread(() -> eventSource.delete(event)).start();
     }
 
     public void editEvent(Event event) {
-        if (databaseManager != null) databaseManager.update(event);
+        if (eventSource != null) eventSource.update(event);
     }
 
 
@@ -50,12 +48,8 @@ public class EventList {
     }
 
 
-    public void setDatabaseManager(DBManager dbManager) {
-        this.databaseManager = dbManager;
-    }
-
-    public DBManager getDatabaseManager() {
-        return databaseManager;
+    public void setEventSource(EventSource source) {
+        this.eventSource = source;
     }
 
 

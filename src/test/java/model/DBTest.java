@@ -25,11 +25,11 @@ public class DBTest {
         eventList = new EventList();
         dummyEvent = new Event();
         dummyEvent.setName("DBTEST");
-        dbManager = new DBManager(eventList);
-        dbManager.setDB_URL("jdbc:sqlite:EventsTest.db");
-        eventList.setDatabaseManager(dbManager);
+        String url = "jdbc:sqlite:EventsTest.db";
+        dbManager = new DBManager(eventList, url);
+        eventList.setEventSource(dbManager);
         eventList.loadEvent();
-        conn = DriverManager.getConnection(dbManager.getDB_URL());
+        conn = DriverManager.getConnection(url);
     }
 
     @After
