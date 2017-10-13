@@ -1,8 +1,8 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.DBManager;
 import model.EventList;
-import model.EventSource;
+import persitence.DBManager;
+import persitence.EventSource;
 import view.ViewManager;
 
 /**
@@ -12,17 +12,32 @@ import view.ViewManager;
 
 
 public class Main extends Application {
+    private EventSource defaultSource;
+    private EventList model;
+
+    @Override
+    public void init() throws Exception {
+        model = new EventList();
+        defaultSource = new DBManager(model);
+        model.setEventSource(defaultSource);
+        defaultSource.setup();
+        // current view model doesn't support auto invalidation so we need to block the thread.
+        ((DBManager) defaultSource).getTaskFuture().get();
+        model.loadEvent();
+        // current view model doesn't support auto invalidation so we need to block the thread.
+        ((DBManager) defaultSource).getTaskFuture().get();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        EventList eventList = new EventList();
-        EventSource defaultSource = new DBManager(eventList, null);
-        eventList.setEventSource(defaultSource);
-        eventList.loadEvent();
-
         ViewManager view = new ViewManager(primaryStage);
-        view.setupSceneGraph(eventList);
+        view.setupSceneGraph(model);
         view.start();
+    }
+
+    @Override
+    public void stop() {
+        defaultSource.close();
     }
 
     public static void main(String[] args) {

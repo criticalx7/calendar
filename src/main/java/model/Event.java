@@ -26,7 +26,7 @@ public class Event {
     private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
     private final SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
     private final SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
-    private SimpleBooleanProperty cancel = new SimpleBooleanProperty(this, "cancel", false);
+    private final SimpleBooleanProperty cancel = new SimpleBooleanProperty(this, "cancel", false);
 
     public Event() {
         setName("");

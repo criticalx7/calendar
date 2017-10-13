@@ -4,6 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import persitence.EventSource;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -24,18 +25,18 @@ public class EventList {
         Event.setPrimaryKey(Event.getPrimaryKey() + 1);
         event.setId(Event.getPrimaryKey());
         events.add(event);
-        if (eventSource != null) new Thread(() -> eventSource.insert(event)).start();
+        if (eventSource != null) eventSource.insert(event);
     }
 
     public void removeEvent(int removeIndex) {
         Event event = events.get(removeIndex);
         events.remove(removeIndex);
-        if (eventSource != null) new Thread(() -> eventSource.delete(event)).start();
+        if (eventSource != null) eventSource.delete(event);
     }
 
     public void cancelEvent(Event event) {
         event.setCancel(true);
-        if (eventSource != null) new Thread(() -> eventSource.delete(event)).start();
+        if (eventSource != null) eventSource.delete(event);
     }
 
     public void editEvent(Event event) {
@@ -47,11 +48,9 @@ public class EventList {
         return events;
     }
 
-
     public void setEventSource(EventSource source) {
         this.eventSource = source;
     }
-
 
     public final Event getCurrentEvent() {
         return currentEvent.get();

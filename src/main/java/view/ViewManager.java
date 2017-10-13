@@ -38,7 +38,7 @@ public class ViewManager {
         primaryStage.setScene(scene);
     }
 
-    public void start(){
+    public void start() {
         primaryStage.show();
     }
 
@@ -73,8 +73,7 @@ public class ViewManager {
     public Optional<ButtonType> showConfirmationDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Are you sure you want to 'delete' this event");
-        Optional<ButtonType> buttonType = alert.showAndWait();
-        return buttonType;
+        return alert.showAndWait();
     }
 
     public void showErrorDialog(String title, String header, String text) {
