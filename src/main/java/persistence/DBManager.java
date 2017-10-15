@@ -1,4 +1,4 @@
-package persitence;
+package persistence;
 
 import javafx.concurrent.Task;
 import model.Event;
@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -17,6 +18,7 @@ import java.util.concurrent.Future;
  * ID:   5810404901
  */
 public class DBManager implements EventSource {
+    private static final AtomicInteger primaryKey = new AtomicInteger(0);
     private static String DB_URL;
     private final EventList eventList;
     private final ExecutorService executor;
@@ -43,7 +45,7 @@ public class DBManager implements EventSource {
      * @param eventList A Event model
      * @param url       Database driver url
      */
-    public DBManager(EventList eventList, String url) {
+     DBManager(EventList eventList, String url) {
         this(eventList);
         DB_URL = url;
     }
@@ -52,6 +54,7 @@ public class DBManager implements EventSource {
     /**
      * Issues a task to setup directory and database file.
      */
+    @Override
     public void setup() {
         currentTask = new SetupTask();
         taskFuture = executor.submit(currentTask);
@@ -62,11 +65,11 @@ public class DBManager implements EventSource {
      * Issues a task to query the event records,
      * process them into objects and set them into the events list.
      */
+    @Override
     public void load() {
         LoadTask loadTask = new LoadTask();
         loadTask.setOnSucceeded(event -> eventList.getEvents().setAll(loadTask.getValue()));
         currentTask = loadTask;
-        // block the thread because current viewModel still not allow for immediate update.
         taskFuture = executor.submit(currentTask);
     }
 
@@ -76,9 +79,11 @@ public class DBManager implements EventSource {
      *
      * @param event - event to be insert
      */
+    @Override
     public void insert(Event event) {
+        event.setId(primaryKey.incrementAndGet());
         currentTask = new InsertTask(event);
-        executor.submit(currentTask);
+        taskFuture = executor.submit(currentTask);
     }
 
 
@@ -88,9 +93,10 @@ public class DBManager implements EventSource {
      *
      * @param event - Event to be removed
      */
+    @Override
     public void delete(Event event) {
         currentTask = new DeleteTask(event);
-        executor.submit(currentTask);
+        taskFuture = executor.submit(currentTask);
     }
 
 
@@ -100,9 +106,10 @@ public class DBManager implements EventSource {
      *
      * @param event - event to be update
      */
+    @Override
     public void update(Event event) {
         currentTask = new UpdateTask(event);
-        executor.submit(currentTask);
+        taskFuture = executor.submit(currentTask);
     }
 
 
@@ -125,7 +132,23 @@ public class DBManager implements EventSource {
         return DriverManager.getConnection(DB_URL);
     }
 
+    /**
+     * Getter of a primary key.
+     *
+     * @return A table's primary key
+     */
+    static AtomicInteger getPrimaryKey() {
+        return primaryKey;
+    }
+
+
+    /**
+     * Get a current task Future for observation.
+     *
+     * @return Current task's Future
+     */
     public Future getTaskFuture() {
         return taskFuture;
     }
+
 }

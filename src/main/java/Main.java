@@ -1,8 +1,8 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.EventList;
-import persitence.DBManager;
-import persitence.EventSource;
+import persistence.DBManager;
+import persistence.EventSource;
 import view.ViewManager;
 
 /**
@@ -21,7 +21,6 @@ public class Main extends Application {
         defaultSource = new DBManager(model);
         model.setEventSource(defaultSource);
         defaultSource.setup();
-        // current view model doesn't support auto invalidation so we need to block the thread.
         ((DBManager) defaultSource).getTaskFuture().get();
         model.loadEvent();
         // current view model doesn't support auto invalidation so we need to block the thread.

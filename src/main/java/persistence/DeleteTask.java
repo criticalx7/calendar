@@ -1,4 +1,4 @@
-package persitence;
+package persistence;
 
 import javafx.concurrent.Task;
 import model.Event;

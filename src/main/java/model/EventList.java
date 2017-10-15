@@ -4,7 +4,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import persitence.EventSource;
+import persistence.EventSource;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -22,8 +22,6 @@ public class EventList {
     }
 
     public void addEvent(Event event) {
-        Event.setPrimaryKey(Event.getPrimaryKey() + 1);
-        event.setId(Event.getPrimaryKey());
         events.add(event);
         if (eventSource != null) eventSource.insert(event);
     }

@@ -1,4 +1,4 @@
-package persitence;
+package persistence;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,7 +47,7 @@ class LoadTask extends Task<ObservableList<Event>> {
         statement = con.createStatement();
         resultSet = statement.executeQuery(sql);
         resultSet.next();
-        Event.setPrimaryKey(resultSet.getInt("seq"));
+        DBManager.getPrimaryKey().set(resultSet.getInt("seq"));
         statement.close();
         return events;
     }
