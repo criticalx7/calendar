@@ -7,7 +7,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.DBManager;
 import model.Event;
 import model.EventList;
 import viewmodel.controller.EventProcessor;
@@ -20,20 +19,16 @@ public class ViewManager {
     private final Stage primaryStage;
 
     public ViewManager(Stage stage) {
-        primaryStage = stage;
+        this.primaryStage = stage;
     }
 
-    public void start() throws IOException {
+    public void setupSceneGraph(EventList eventList) throws IOException {
         // loadEvent main page
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MonthView.fxml"));
         Parent root = loader.load();
 
-        //setup model and controller
+        //setup controller
         MonthView mc = loader.getController();
-        EventList eventList = new EventList();
-        DBManager dbManager = new DBManager(eventList);
-        eventList.setDatabaseManager(dbManager);
-        eventList.loadEvent();
         mc.setEventList(eventList);
         mc.setViewManager(this);
 
@@ -41,7 +36,9 @@ public class ViewManager {
         Scene scene = new Scene(root, 700, 600);
         primaryStage.setTitle("Calendar");
         primaryStage.setScene(scene);
-        //primaryStage.setResizable(false);
+    }
+
+    public void start() {
         primaryStage.show();
     }
 
@@ -76,8 +73,7 @@ public class ViewManager {
     public Optional<ButtonType> showConfirmationDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Are you sure you want to 'delete' this event");
-        Optional<ButtonType> buttonType = alert.showAndWait();
-        return buttonType;
+        return alert.showAndWait();
     }
 
     public void showErrorDialog(String title, String header, String text) {
