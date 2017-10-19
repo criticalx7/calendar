@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="216.0" stylesheets="@../css/MFXTheme.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewmodel.controller.SearchView">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="79.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="353.0" minHeight="10.0" prefHeight="257.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <effect>
+        <DropShadow />
+    </effect>
+    <VBox prefWidth="216.0" spacing="5.0" style="-fx-background-color: #303030; -fx-border-color: #814567; -fx-border-width: 0 0 5 0;">
+        <GridPane.margin>
+            <Insets />
+        </GridPane.margin>
+        <padding>
+            <Insets top="7.0" />
+        </padding>
+        <Label prefHeight="20.0" prefWidth="94.0" text="Search Event:" textFill="#e4e4e4">
+            <font>
+                <Font name="Segoe UI Semilight" size="14.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="10.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="searchBar" onAction="#onSearch" promptText="Eg. 31-01-2017" styleClass="MXText-field">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </TextField>
+    </VBox>
+    <ListView fx:id="searchList" prefHeight="260.0" prefWidth="219.0" GridPane.rowIndex="1">
+        <GridPane.margin>
+            <Insets />
+        </GridPane.margin>
+    </ListView>
+</GridPane>
