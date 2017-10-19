@@ -1,6 +1,6 @@
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.EventList;
+import model.EventManager;
 import persistence.DBManager;
 import persistence.EventSource;
 import view.ViewManager;
@@ -13,11 +13,11 @@ import view.ViewManager;
 
 public class Main extends Application {
     private EventSource defaultSource;
-    private EventList model;
+    private EventManager model;
 
     @Override
     public void init() throws Exception {
-        model = new EventList();
+        model = new EventManager();
         defaultSource = new DBManager(model);
         model.setEventSource(defaultSource);
         defaultSource.setup();

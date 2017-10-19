@@ -5,7 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import model.Event;
-import model.EventList;
+import model.EventManager;
 import utility.Utility;
 import view.ViewManager;
 
@@ -44,7 +44,7 @@ public class MasterView {
     @FXML
     protected AnchorPane colorRectangle;
 
-    private EventList eventList;
+    private EventManager eventManager;
     private ViewManager viewManager;
 
     private void showEventDetail(Event event) {
@@ -60,16 +60,16 @@ public class MasterView {
     }
 
     /**
-     * Handle add event button by   calling showEventProcessDialog method
+     * Handle add event button by   calling showEventEditor method
      * to process new event and add it to events model by model's addEvent method
      */
     @FXML
     private void handleAddEvent() {
         Event tempEvent = new Event();
-        boolean confirm = viewManager.showEventProcessDialog(tempEvent);
+        boolean confirm = viewManager.showEventEditor(tempEvent);
         if (confirm) {
-            eventList.addEvent(tempEvent);
-            if (eventList.getEvents().size() >= 1) {
+            eventManager.addEvent(tempEvent);
+            if (eventManager.getEvents().size() >= 1) {
                 removeEventButton.setDisable(false);
                 editEventButton.setDisable(false);
             }
@@ -85,9 +85,9 @@ public class MasterView {
     @FXML
     private void handleRemoveEvent() {
         int removeIndex = eventTable.getSelectionModel().getSelectedIndex();
-        eventList.removeEvent(removeIndex);
+        eventManager.removeEvent(removeIndex);
 
-        if (eventList.getEvents().size() <= 0) {
+        if (eventManager.getEvents().size() <= 0) {
             removeEventButton.setDisable(true);
             editEventButton.setDisable(true);
         }
@@ -95,29 +95,29 @@ public class MasterView {
     }
 
     /**
-     * Handle edit event button by calling showEventProcessDialog method
+     * Handle edit event button by calling showEventEditor method
      * to edit currently selected event and updating database in the process
      */
     @FXML
     private void handleEditEvent() {
-        Event selectedEvent = eventList.getCurrentEvent();
+        Event selectedEvent = eventManager.getCurrentEvent();
         if (selectedEvent != null) {
-            boolean confirm = viewManager.showEventProcessDialog(selectedEvent);
+            boolean confirm = viewManager.showEventEditor(selectedEvent);
             if (confirm) {
                 showEventDetail(selectedEvent);
-                eventList.editEvent(selectedEvent);
+                eventManager.editEvent(selectedEvent);
             }
         }
     }
 
 
     /**
-     * This private method call after setEventList() to properly setup
+     * This private method call after setEventManager() to properly setup
      * the TableView's appearance and functionality
      */
     private void setupTable() {
         // setup cells value of TableView's column
-        eventTable.setItems(eventList.getEvents());
+        eventTable.setItems(eventManager.getEvents());
         colorCol.setCellValueFactory(cellData -> cellData.getValue().colorProperty());
         dateCol.setCellValueFactory(cellData -> cellData.getValue().startProperty());
         nameCol.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
@@ -148,13 +148,13 @@ public class MasterView {
             }
         });
 
-        // Setup TableView SelectionModel property so that it is sync with a currentEventProperty in eventList
+        // Setup TableView SelectionModel property so that it is sync with a currentEventProperty in eventManager
         eventTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            eventList.setCurrentEvent(newValue);
-            showEventDetail(eventList.getCurrentEvent());
+            eventManager.setCurrentEvent(newValue);
+            showEventDetail(eventManager.getCurrentEvent());
         });
 
-        eventList.currentEventProperty().addListener((obs, oldValue, newValue) -> {
+        eventManager.currentEventProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue == null) {
                 eventTable.getSelectionModel().clearSelection();
             } else {
@@ -171,10 +171,10 @@ public class MasterView {
     /**
      * This setter method set the events model and setup the TableView
      *
-     * @param eventList - to be used events model
+     * @param eventManager - to be used events model
      */
-    public void setEventList(EventList eventList) {
-        this.eventList = eventList;
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
         setupTable();
     }
 

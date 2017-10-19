@@ -2,7 +2,7 @@ package persistence;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.EventList;
+import model.EventManager;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class LoadTaskTest extends Application {
     private static final Logger LOGGER = Logger.getLogger(LoadTaskTest.class.getName());
     private DBManager dbManager;
-    private EventList eventList;
+    private EventManager eventManager;
 
     @BeforeClass
     public static void setUpClass() throws InterruptedException {
@@ -35,9 +35,9 @@ public class LoadTaskTest extends Application {
 
     @Before
     public void setup() throws Exception {
-        eventList = new EventList();
-        dbManager = new DBManager(eventList, "jdbc:sqlite:EventsTest.db");
-        eventList.setEventSource(dbManager);
+        eventManager = new EventManager();
+        dbManager = new DBManager(eventManager, "jdbc:sqlite:EventsTest.db");
+        eventManager.setEventSource(dbManager);
     }
 
     @Test
@@ -46,8 +46,8 @@ public class LoadTaskTest extends Application {
         while (!dbManager.getTaskFuture().isDone()) {
             // do nothing
         }
-        int size = eventList.getEvents().size();
-        String name = eventList.getEvents().get(0).getName();
+        int size = eventManager.getEvents().size();
+        String name = eventManager.getEvents().get(0).getName();
         assertEquals( 1, size);
         assertEquals( "test", name);
         LOGGER.info(String.format("Size: %d%nName: %s", size, name));

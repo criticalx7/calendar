@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 public class Event {
 
     private static DateTimeFormatter defaultDatePattern = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private static String defaultColor = "0x7290c1ff";
+    private static String defaultColor = "#814567";
     private int id;
     private final SimpleStringProperty name = new SimpleStringProperty(this, "name");
     private final SimpleStringProperty note = new SimpleStringProperty(this, "note");
@@ -31,12 +31,12 @@ public class Event {
      * Basic constructor for blank event.
      */
     public Event() {
-        setName("event");
+        setName("");
         setNote("");
         setTag("");
         setStart(LocalDate.now());
         setEnd(LocalDate.now());
-        setColor(Color.valueOf(defaultColor)); //nice blue color
+        setColor(Color.valueOf(defaultColor));
     }
 
 

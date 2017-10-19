@@ -1,15 +1,14 @@
 package viewmodel.controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Event;
-import model.EventList;
+import model.EventManager;
 import view.ViewManager;
 import viewmodel.component.ComponentFactory;
 import viewmodel.component.DateCell;
@@ -26,6 +25,7 @@ import java.util.Locale;
 
 public class MonthView {
 
+
     //note: #817153 golden color
 
     @FXML
@@ -33,13 +33,17 @@ public class MonthView {
     @FXML
     protected Label monthLabel, yearLabel;
     @FXML
+    public GridPane dayOfWeekGrid;
+    @FXML
     protected GridPane gridView;
     @FXML
     protected TextField searchBar;
+    @FXML
+    protected Button moreButton;
 
     private DateCell[][] gridCells;
     private LocalDate currentMonth;
-    private EventList eventList;
+    private EventManager eventManager;
     private ViewManager viewManager;
 
     @FXML
@@ -54,8 +58,8 @@ public class MonthView {
      * date cells and add them to GridPane
      */
     private void initGridCells() {
-        int row = gridView.getRowConstraints().size();
-        int col = gridView.getColumnConstraints().size();
+        int row = gridView.getRowCount();
+        int col = gridView.getColumnCount();
         gridCells = new DateCell[row][col];
         for (int i = 0; i < row; i++)
             for (int j = 0; j < col; j++) {
@@ -102,7 +106,7 @@ public class MonthView {
         cell.getChildren().add(cell.getDateLabel());
 
         // main loop to lay events
-        for (Event event : eventList.getEvents().filtered(e -> !e.isCancel())) {
+        for (Event event : eventManager.getEvents().filtered(e -> !e.isCancel())) {
             if (cell.getDate().equals(event.getStart()) && cell.getChildren().size() < 4) {
                 EventBox eventBox = createEventBox(event);
                 cell.getChildren().add(eventBox);
@@ -131,7 +135,7 @@ public class MonthView {
         cell.setOnMouseClicked(action -> {
             Event temp = new Event(cell.getDate());
             Boolean confirm = handleAdd(temp);
-            if (confirm) cell.getChildren().add(createEventBox(temp));
+            if (confirm && cell.getChildren().size() < 4) cell.getChildren().add(createEventBox(temp));
         });
         return cell;
     }
@@ -149,37 +153,44 @@ public class MonthView {
     }
 
     private boolean handleAdd(Event event) {
-        boolean confirm = viewManager.showEventProcessDialog(event);
-        if (confirm) eventList.addEvent(event);
+        boolean confirm = viewManager.showEventEditor(event);
+        if (confirm) eventManager.addEvent(event);
         return confirm;
     }
 
     private void handleEdit(Event event) {
-        boolean confirm = viewManager.showEventProcessDialog(event);
-        if (confirm) eventList.editEvent(event);
+        boolean confirm = viewManager.showEventEditor(event);
+        if (confirm) eventManager.editEvent(event);
     }
 
     @FXML
     private void handleSearch() {
-        String toSearch = searchBar.getText();
-        for (Event event: eventList.getEvents().filtered(e -> !e.isCancel())) {
-            if (Event.getDefaultDatePattern().format(event.getStart()).equals((toSearch))) {
-                handleEdit(event);
-                return;
-            }
-        }
+        ObservableList<Event> results = eventManager.search(searchBar.getText());
+        viewManager.showSearchDialog(eventManager, results);
     }
+
+    // this is some place holder for more functions
+    @FXML
+    private void handleMore() {
+        ContextMenu more = new ContextMenu();
+        MenuItem menuItem1 = new MenuItem("Search");
+        more.getItems().setAll(menuItem1);
+        more.setAutoHide(true);
+        more.show(moreButton, Side.BOTTOM, 0, 0);
+    }
+
     // currently hacked
     private boolean handleCancel(Event event) {
         Boolean confirm = viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent();
-        if (confirm) eventList.cancelEvent(event);
+        if (confirm) eventManager.cancelEvent(event);
         return confirm;
     }
 
-    public void setEventList(EventList eventList) {
-        this.eventList = eventList;
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
         updateView();
     }
+
 
     public void setViewManager(ViewManager viewManager) {
         this.viewManager = viewManager;

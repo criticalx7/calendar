@@ -2,7 +2,7 @@ package persistence;
 
 import javafx.concurrent.Task;
 import model.Event;
-import model.EventList;
+import model.EventManager;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DBManager implements EventSource {
     private static final AtomicInteger primaryKey = new AtomicInteger(0);
     private static String DB_URL;
-    private final EventList eventList;
+    private final EventManager eventManager;
     private final ExecutorService executor;
     private Task currentTask;
     private Future taskFuture;
@@ -29,11 +29,11 @@ public class DBManager implements EventSource {
      * Basic constructor which accept model.
      * This uses default URL based on user home directory.
      *
-     * @param eventList A Event model
+     * @param eventManager A Event model
      */
-    public DBManager(EventList eventList) {
+    public DBManager(EventManager eventManager) {
         DB_URL = String.format("jdbc:sqlite:%s/CalendarDB/Events.db", System.getProperty("user.home"));
-        this.eventList = eventList;
+        this.eventManager = eventManager;
         executor = Executors.newFixedThreadPool(1);
     }
 
@@ -42,11 +42,11 @@ public class DBManager implements EventSource {
      * Constructor which accepts both model and URL.
      * This allows custom source location to be specify.
      *
-     * @param eventList A Event model
-     * @param url       Database driver url
+     * @param eventManager A Event model
+     * @param url          Database driver url
      */
-     DBManager(EventList eventList, String url) {
-        this(eventList);
+    DBManager(EventManager eventManager, String url) {
+        this(eventManager);
         DB_URL = url;
     }
 
@@ -68,7 +68,7 @@ public class DBManager implements EventSource {
     @Override
     public void load() {
         LoadTask loadTask = new LoadTask();
-        loadTask.setOnSucceeded(event -> eventList.getEvents().setAll(loadTask.getValue()));
+        loadTask.setOnSucceeded(event -> eventManager.getEvents().setAll(loadTask.getValue()));
         currentTask = loadTask;
         taskFuture = executor.submit(currentTask);
     }
