@@ -9,3 +9,4 @@ out
 gen
 src/main/resources/fxml/test.fxml
 target/
+/src/main/resources/css/JMetroDarkTheme.css
