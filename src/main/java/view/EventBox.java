@@ -1,4 +1,4 @@
-package viewmodel.component;
+package view;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.StringProperty;
@@ -39,27 +39,30 @@ public class EventBox extends HBox {
         getChildren().addAll(nameLabel, rigidArea, button);
     }
 
-    public StringProperty textProperty() {
-        return nameLabel.textProperty();
-    }
 
     public Button getButton() {
         return button;
     }
 
-    public void setText(String text) {
-        nameLabel.setText(text);
-    }
-
-    public Color getColor() {
+    private Color getColor() {
         return color.get();
     }
 
-    public SimpleObjectProperty<Color> colorProperty() {
-        return color;
+  
+    public void setText(String text) {
+        nameLabel.setText(text);
     }
 
     public void setColor(Color color) {
         this.color.set(color);
     }
+
+    StringProperty textProperty() {
+        return nameLabel.textProperty();
+    }
+
+    SimpleObjectProperty<Color> colorProperty() {
+        return color;
+    }
+
 }

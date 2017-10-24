@@ -1,9 +1,12 @@
+import controller.EventManager;
+import controller.MainController;
+import controller.ViewManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.EventManager;
-import persistence.DBManager;
-import persistence.EventSource;
-import view.ViewManager;
+import org.sqlite.SQLiteDataSource;
+import persistence.DatabaseManager;
+
+import javax.sql.DataSource;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -12,31 +15,36 @@ import view.ViewManager;
 
 
 public class Main extends Application {
-    private EventSource defaultSource;
-    private EventManager model;
+    private DatabaseManager dao;
+
 
     @Override
     public void init() throws Exception {
-        model = new EventManager();
-        defaultSource = new DBManager(model);
-        model.setEventSource(defaultSource);
-        defaultSource.setup();
-        ((DBManager) defaultSource).getTaskFuture().get();
-        model.loadEvent();
-        // current view model doesn't support auto invalidation so we need to block the thread.
-        ((DBManager) defaultSource).getTaskFuture().get();
+        // Main source initialized, attempt to create event.
+        DataSource dataSource = new SQLiteDataSource();
+        String url = String.format("jdbc:sqlite:%s/CalendarDB/Events.db", System.getProperty("user.home"));
+        ((SQLiteDataSource) dataSource).setUrl(url);
+        dao = new DatabaseManager(dataSource);
+        dao.setup();
+        dao.getTaskFuture().get();
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ViewManager view = new ViewManager(primaryStage);
-        view.setupSceneGraph(model);
-        view.start();
+        // model
+        EventManager em = new EventManager();
+        em.setEventSource(dao);
+        em.loadEvent();
+        // view
+        ViewManager vm = new ViewManager(primaryStage);
+        // main control
+        MainController mc = new MainController(em, vm);
+        mc.start();
     }
 
     @Override
     public void stop() {
-        defaultSource.close();
+        dao.close();
     }
 
     public static void main(String[] args) {

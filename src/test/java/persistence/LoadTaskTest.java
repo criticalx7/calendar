@@ -1,65 +1,45 @@
 package persistence;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import model.EventManager;
+import de.saxsys.javafx.test.JfxRunner;
+import javafx.collections.ObservableList;
+import model.Event;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.sqlite.SQLiteDataSource;
 
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 
-public class LoadTaskTest extends Application {
+@RunWith(JfxRunner.class)
+class LoadTaskTest {
     private static final Logger LOGGER = Logger.getLogger(LoadTaskTest.class.getName());
-    private DBManager dbManager;
-    private EventManager eventManager;
+    private DatabaseManager dbManager;
+    private ObservableList<Event> mockEventList;
 
-    @BeforeClass
-    public static void setUpClass() throws InterruptedException {
-        // Initialise Java FX
-
-        LOGGER.info("About to launch FX App");
-        Thread t = new Thread("JavaFX Init Thread") {
-            public void run() {
-                Application.launch(LoadTaskTest.class);
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        LOGGER.info("JavaFX thread started");
-        Thread.sleep(10000);
-    }
 
     @Before
     public void setup() throws Exception {
-        eventManager = new EventManager();
-        dbManager = new DBManager(eventManager, "jdbc:sqlite:EventsTest.db");
-        eventManager.setEventSource(dbManager);
+        SQLiteDataSource dataSource = new SQLiteDataSource();
+        dataSource.setUrl("jdbc:sqlite:EventsTest.db");
+        dbManager = new DatabaseManager(dataSource);
     }
 
     @Test
     public void load() throws Exception {
-        dbManager.load();
-        while (!dbManager.getTaskFuture().isDone()) {
-            // do nothing
-        }
-        int size = eventManager.getEvents().size();
-        String name = eventManager.getEvents().get(0).getName();
-        assertEquals( 1, size);
-        assertEquals( "test", name);
-        LOGGER.info(String.format("Size: %d%nName: %s", size, name));
-
+        mockEventList = dbManager.load();
+        assertEquals(1, mockEventList.size());
+        assertEquals("test", mockEventList.get(0).getName());
+        LOGGER.info(String.format("Size: %d%nName: %s", mockEventList.size(), mockEventList.get(0)));
     }
 
     @After
     public void after() {
+        dbManager.close();
+        dbManager = null;
+        mockEventList = null;
     }
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // dont need to implement
-    }
 }

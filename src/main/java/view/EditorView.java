@@ -1,4 +1,4 @@
-package viewmodel.controller;
+package view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -19,32 +19,32 @@ import java.util.Locale;
  */
 
 
-public class EventEditor {
+public class EditorView {
 
     @FXML
-    protected AnchorPane headerPane;
+    private AnchorPane headerPane;
     @FXML
-    protected Label dayLabel;
+    private Label dayLabel;
     @FXML
-    protected Label monthYearLabel;
+    private Label monthYearLabel;
     @FXML
-    protected TextField nameField;
+    private TextField nameField;
     @FXML
-    protected Label nameErrorText;
+    private Label nameErrorText;
     @FXML
-    protected DatePicker startPicker;
+    private DatePicker startPicker;
     @FXML
     protected CheckBox repeatBox;
     @FXML
     protected CheckBox allDayBox;
     @FXML
-    protected TextField tagField;
+    private TextField tagField;
     @FXML
-    protected ColorPicker colorPicker;
+    private ColorPicker colorPicker;
     @FXML
-    protected TextArea noteArea;
+    private TextArea noteArea;
     @FXML
-    protected Button saveButton;
+    private Button saveButton;
 
     private Event currentEvent;
     private boolean confirmation = false;
@@ -91,7 +91,7 @@ public class EventEditor {
     }
 
     @FXML
-    public void changeColor() {
+    private void changeColor() {
         Color c = colorPicker.getValue();
         headerPane.setStyle(Utility.getBorderColorFX(c));
     }

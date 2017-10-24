@@ -25,7 +25,7 @@ class UpdateTask extends Task {
 
     @Override
     protected Void call() throws Exception {
-        try (Connection con = DBManager.getConnection()) {
+        try (Connection con = DatabaseManager.getConnection()) {
             System.out.println("Update task initialize...");
             update(con);
         }

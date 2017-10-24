@@ -21,7 +21,7 @@ class LoadTask extends Task<ObservableList<Event>> {
 
     @Override
     protected ObservableList<Event> call() throws Exception {
-        try (Connection con = DBManager.getConnection()) {
+        try (Connection con = DatabaseManager.getConnection()) {
             System.out.println("Load task initialize...");
             return load(con);
         }
@@ -47,7 +47,7 @@ class LoadTask extends Task<ObservableList<Event>> {
         statement = con.createStatement();
         resultSet = statement.executeQuery(sql);
         resultSet.next();
-        DBManager.getPrimaryKey().set(resultSet.getInt("seq"));
+        DatabaseManager.primaryKey.set(resultSet.getInt("seq"));
         statement.close();
         return events;
     }
