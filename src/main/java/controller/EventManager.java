@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Event;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import persistence.EventSource;
 
 /**
@@ -15,11 +17,16 @@ import persistence.EventSource;
  */
 
 
+@Component
 public class EventManager {
     private final ObservableList<Event> events = FXCollections.observableArrayList();
     private final ObjectProperty<Event> currentEvent = new SimpleObjectProperty<>(null);
     private EventSource eventSource;
 
+    @Autowired
+    public EventManager(EventSource eventSource) {
+        this.eventSource = eventSource;
+    }
 
     //--------------------------- Simple CRUD Operation ---------------------------
     public void loadEvent() {

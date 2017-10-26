@@ -18,7 +18,7 @@ public class MainSearcher implements Searcher {
         } else {
             result = list
                     .filtered(e -> !e.isCancel())
-                    .filtered(e -> e.getName().equals(text));
+                    .filtered(e -> e.getName().toLowerCase().equals(text.toLowerCase()));
         }
         return result;
     }

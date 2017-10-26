@@ -26,8 +26,7 @@ public class EventManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        eventManager = new EventManager();
-        eventManager.setEventSource(new MockDatabase());
+        eventManager = new EventManager(new MockDatabase());
         event1 = new Event();
         event2 = new Event();
         event1.setId(999);
