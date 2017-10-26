@@ -1,13 +1,13 @@
-package viewmodel.controller;
+package view;
 
+import controller.EventManager;
+import controller.ViewManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import model.Event;
-import model.EventManager;
 import utility.Utility;
-import view.ViewManager;
 
 import java.time.LocalDate;
 
@@ -22,27 +22,27 @@ public class MasterView {
     @FXML
     protected Button addEventButton;
     @FXML
-    protected Button removeEventButton;
+    private Button removeEventButton;
     @FXML
-    protected Button editEventButton;
+    private Button editEventButton;
     @FXML
-    protected TableView<Event> eventTable;
+    private TableView<Event> eventTable;
     @FXML
-    protected TableColumn<Event, String> nameCol;
+    private TableColumn<Event, String> nameCol;
     @FXML
-    protected TableColumn<Event, LocalDate> dateCol;
+    private TableColumn<Event, LocalDate> dateCol;
     @FXML
-    protected TableColumn<Event, Color> colorCol;
+    private TableColumn<Event, Color> colorCol;
     @FXML
-    protected Label nameLabel;
+    private Label nameLabel;
     @FXML
-    protected Label timeLabel;
+    private Label timeLabel;
     @FXML
-    protected Label tagLabel;
+    private Label tagLabel;
     @FXML
-    protected TextArea noteTextArea;
+    private TextArea noteTextArea;
     @FXML
-    protected AnchorPane colorRectangle;
+    private AnchorPane colorRectangle;
 
     private EventManager eventManager;
     private ViewManager viewManager;
@@ -124,7 +124,7 @@ public class MasterView {
 
         // Setup Color column format so that it show color cell
         colorCol.setSortable(false);
-        colorCol.setCellFactory(c -> new TableCell<Event, Color>() {
+        colorCol.setCellFactory(c -> new TableCell<>() {
             @Override
             protected void updateItem(Color item, boolean empty) {
                 super.updateItem(item, empty);
@@ -137,7 +137,7 @@ public class MasterView {
         });
 
         // Setup Date column format so that it show formatted date
-        dateCol.setCellFactory(c -> new TableCell<Event, LocalDate>() {
+        dateCol.setCellFactory(c -> new TableCell<>() {
             @Override
             protected void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
@@ -159,6 +159,7 @@ public class MasterView {
                 eventTable.getSelectionModel().clearSelection();
             } else {
                 eventTable.getSelectionModel().select(newValue);
+                eventTable.getSelectionModel().getSelectedIndex();
             }
         });
 

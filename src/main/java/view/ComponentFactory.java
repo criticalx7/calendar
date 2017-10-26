@@ -1,6 +1,6 @@
-package viewmodel.component;
+package view;
 
-public class ComponentFactory {
+class ComponentFactory {
 
     public static DateCell createDateCell() {
         return new DateCell();

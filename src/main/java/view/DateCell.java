@@ -1,11 +1,11 @@
-package viewmodel.component;
+package view;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 
-public class DateCell extends VBox {
+class DateCell extends VBox {
     private LocalDate date;
     private final Label dateLabel = new Label();
 
@@ -15,16 +15,16 @@ public class DateCell extends VBox {
         dateLabel.getStyleClass().setAll("dateLabel");
     }
 
-    public void setDate(LocalDate date) {
+    void setDate(LocalDate date) {
         this.date = date;
         dateLabel.setText(String.valueOf(date.getDayOfMonth()));
     }
 
-    public LocalDate getDate() {
+    LocalDate getDate() {
         return date;
     }
 
-    public Label getDateLabel() {
+    Label getDateLabel() {
         return dateLabel;
     }
 

@@ -1,4 +1,4 @@
-package search;
+package common;
 
 import javafx.collections.ObservableList;
 import model.Event;
@@ -6,4 +6,5 @@ import model.Event;
 public interface Searcher {
 
     ObservableList<Event> search(ObservableList<Event> list, String text);
+
 }

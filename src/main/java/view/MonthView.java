@@ -1,6 +1,6 @@
-package viewmodel.controller;
+package view;
 
-import javafx.collections.ObservableList;
+import controller.MainController;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
@@ -8,11 +8,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.Event;
-import model.EventManager;
-import view.ViewManager;
-import viewmodel.component.ComponentFactory;
-import viewmodel.component.DateCell;
-import viewmodel.component.EventBox;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -31,20 +26,21 @@ public class MonthView {
     @FXML
     protected Button forwardBtn, backwardBtn;
     @FXML
-    protected Label monthLabel, yearLabel;
+    private Label monthLabel;
+    @FXML
+    private Label yearLabel;
     @FXML
     public GridPane dayOfWeekGrid;
     @FXML
-    protected GridPane gridView;
+    private GridPane gridView;
     @FXML
-    protected TextField searchBar;
+    private TextField searchBar;
     @FXML
-    protected Button moreButton;
+    private Button moreButton;
 
     private DateCell[][] gridCells;
     private LocalDate currentMonth;
-    private EventManager eventManager;
-    private ViewManager viewManager;
+    private MainController controller;
 
     @FXML
     public void initialize() {
@@ -106,7 +102,7 @@ public class MonthView {
         cell.getChildren().add(cell.getDateLabel());
 
         // main loop to lay events
-        for (Event event : eventManager.getEvents().filtered(e -> !e.isCancel())) {
+        for (Event event : controller.getEventManager().getEvents().filtered(e -> !e.isCancel())) {
             if (cell.getDate().equals(event.getStart()) && cell.getChildren().size() < 4) {
                 EventBox eventBox = createEventBox(event);
                 cell.getChildren().add(eventBox);
@@ -120,11 +116,11 @@ public class MonthView {
         box.colorProperty().bind(event.colorProperty());
         // make box box clickable
         box.setOnMouseClicked(action -> {
-            handleEdit(event);
+            controller.handleEdit(event);
             action.consume();
         });
         box.getButton().setOnAction(e -> {
-            boolean confirm = handleCancel(event);
+            boolean confirm = controller.handleCancel(event);
             ((VBox) box.getParent()).getChildren().remove(box);
         });
         return box;
@@ -134,7 +130,7 @@ public class MonthView {
         DateCell cell = ComponentFactory.createDateCell();
         cell.setOnMouseClicked(action -> {
             Event temp = new Event(cell.getDate());
-            Boolean confirm = handleAdd(temp);
+            Boolean confirm = controller.handleAdd(temp);
             if (confirm && cell.getChildren().size() < 4) cell.getChildren().add(createEventBox(temp));
         });
         return cell;
@@ -152,21 +148,9 @@ public class MonthView {
         updateView();
     }
 
-    private boolean handleAdd(Event event) {
-        boolean confirm = viewManager.showEventEditor(event);
-        if (confirm) eventManager.addEvent(event);
-        return confirm;
-    }
-
-    private void handleEdit(Event event) {
-        boolean confirm = viewManager.showEventEditor(event);
-        if (confirm) eventManager.editEvent(event);
-    }
-
     @FXML
     private void handleSearch() {
-        ObservableList<Event> results = eventManager.search(searchBar.getText());
-        viewManager.showSearchDialog(eventManager, results);
+        controller.handleSearch(searchBar.getText());
     }
 
     // this is some place holder for more functions
@@ -179,20 +163,8 @@ public class MonthView {
         more.show(moreButton, Side.BOTTOM, 0, 0);
     }
 
-    // currently hacked
-    private boolean handleCancel(Event event) {
-        Boolean confirm = viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent();
-        if (confirm) eventManager.cancelEvent(event);
-        return confirm;
-    }
-
-    public void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
+    public void setController(MainController controller) {
+        this.controller = controller;
         updateView();
-    }
-
-
-    public void setViewManager(ViewManager viewManager) {
-        this.viewManager = viewManager;
     }
 }

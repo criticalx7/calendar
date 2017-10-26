@@ -1,5 +1,6 @@
 package persistence;
 
+import javafx.collections.ObservableList;
 import model.Event;
 
 public interface EventSource {
@@ -18,7 +19,7 @@ public interface EventSource {
      * The initialization of the source should be left
      * for a developers to design it themselves.
      */
-    void load();
+    ObservableList<Event> load();
 
 
     /**
@@ -26,7 +27,7 @@ public interface EventSource {
      *
      * @param event - the event to be inserted
      */
-    void insert(Event event);
+    void insert(final Event event);
 
 
     /**
@@ -34,7 +35,7 @@ public interface EventSource {
      *
      * @param event - the event to be deleted
      */
-    void delete(Event event);
+    void delete(final Event event);
 
 
     /**
@@ -42,7 +43,7 @@ public interface EventSource {
      *
      * @param event - the event to be updated
      */
-    void update(Event event);
+    void update(final Event event);
 
 
     /**

@@ -25,7 +25,7 @@ class InsertTask extends Task {
 
     @Override
     protected Void call() throws Exception {
-        try (Connection con = DBManager.getConnection()) {
+        try (Connection con = DatabaseManager.getConnection()) {
             System.out.println("Insert task initialize...");
             insert(con);
         }

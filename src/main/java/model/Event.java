@@ -22,7 +22,7 @@ public class Event {
     private final SimpleStringProperty name = new SimpleStringProperty(this, "name");
     private final SimpleStringProperty note = new SimpleStringProperty(this, "note");
     private final SimpleStringProperty tag = new SimpleStringProperty(this, "tag");
-    private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
+    private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "show");
     private final SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
     private final SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
     private final SimpleBooleanProperty cancel = new SimpleBooleanProperty(this, "cancel", false);
@@ -41,9 +41,9 @@ public class Event {
 
 
     /**
-     * Construct an event with a start time.
+     * Construct an event with a show time.
      *
-     * @param start - Event's start time
+     * @param start - Event's show time
      */
     public Event(LocalDate start) {
         this();
@@ -140,7 +140,7 @@ public class Event {
 
 
     /**
-     * @return An event's start time
+     * @return An event's show time
      */
     public LocalDate getStart() {
         return start.get();
@@ -148,7 +148,7 @@ public class Event {
 
 
     /**
-     * @param start An event's start time to be set.
+     * @param start An event's show time to be set.
      */
     public void setStart(LocalDate start) {
         this.start.set(start);

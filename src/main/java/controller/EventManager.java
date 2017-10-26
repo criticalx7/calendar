@@ -1,12 +1,13 @@
-package model;
+package controller;
 
+import common.MainSearcher;
+import common.Searcher;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Event;
 import persistence.EventSource;
-import search.ByDateSearcher;
-import search.Searcher;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -19,25 +20,26 @@ public class EventManager {
     private final ObjectProperty<Event> currentEvent = new SimpleObjectProperty<>(null);
     private EventSource eventSource;
 
+
     //--------------------------- Simple CRUD Operation ---------------------------
     public void loadEvent() {
-        if (eventSource != null) eventSource.load();
+        events.setAll(eventSource.load());
     }
 
     public void addEvent(Event event) {
         events.add(event);
-        if (eventSource != null) eventSource.insert(event);
+        eventSource.insert(event);
     }
 
     public void removeEvent(int removeIndex) {
         Event event = events.get(removeIndex);
         events.remove(removeIndex);
-        if (eventSource != null) eventSource.delete(event);
+        eventSource.delete(event);
     }
 
     public void cancelEvent(Event event) {
         event.setCancel(true);
-        if (eventSource != null) eventSource.delete(event);
+        eventSource.delete(event);
     }
 
     public void editEvent(Event event) {
@@ -46,12 +48,15 @@ public class EventManager {
 
     //--------------------------- Feature Related ---------------------------
     public ObservableList<Event> search(String target) {
-        Searcher searcher = new ByDateSearcher();
+        return (new MainSearcher()).search(events, target);
+    }
+
+    public ObservableList<Event> search(String target, Searcher searcher) {
         return searcher.search(events, target);
     }
 
 
-    //--------------------------- Accessor ---------------------------
+    //--------------------------- Accessor ----------------------------------
 
     public ObservableList<Event> getEvents() {
         return events;
@@ -59,6 +64,10 @@ public class EventManager {
 
     public void setEventSource(EventSource source) {
         this.eventSource = source;
+    }
+
+    public EventSource getEventSource() {
+        return eventSource;
     }
 
     public final Event getCurrentEvent() {

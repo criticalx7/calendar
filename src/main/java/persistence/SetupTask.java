@@ -20,7 +20,7 @@ class SetupTask extends Task {
 
     @Override
     protected Void call() throws SQLException {
-        try (Connection con = DBManager.getConnection()) {
+        try (Connection con = DatabaseManager.getConnection()) {
             System.out.println("Setup task initialize...");
             createDirectory();
             createDatabase(con);

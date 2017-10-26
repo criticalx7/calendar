@@ -1,11 +1,11 @@
 package persistence;
 
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import model.Event;
-import model.EventManager;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,39 +17,21 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Name: Mr.Chatchapol Rasameluangon
  * ID:   5810404901
  */
-public class DBManager implements EventSource {
-    private static final AtomicInteger primaryKey = new AtomicInteger(0);
-    private static String DB_URL;
-    private final EventManager eventManager;
-    private final ExecutorService executor;
+public class DatabaseManager implements EventSource {
+    static final AtomicInteger primaryKey = new AtomicInteger(0);
+    private final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private static DataSource dataSource;
     private Task currentTask;
     private Future taskFuture;
+
 
     /**
      * Basic constructor which accept model.
      * This uses default URL based on user home directory.
-     *
-     * @param eventManager A Event model
      */
-    public DBManager(EventManager eventManager) {
-        DB_URL = String.format("jdbc:sqlite:%s/CalendarDB/Events.db", System.getProperty("user.home"));
-        this.eventManager = eventManager;
-        executor = Executors.newFixedThreadPool(1);
+    public DatabaseManager(DataSource source) {
+        dataSource = source;
     }
-
-
-    /**
-     * Constructor which accepts both model and URL.
-     * This allows custom source location to be specify.
-     *
-     * @param eventManager A Event model
-     * @param url          Database driver url
-     */
-    DBManager(EventManager eventManager, String url) {
-        this(eventManager);
-        DB_URL = url;
-    }
-
 
     /**
      * Issues a task to setup directory and database file.
@@ -60,27 +42,35 @@ public class DBManager implements EventSource {
         taskFuture = executor.submit(currentTask);
     }
 
-
     /**
      * Issues a task to query the event records,
      * process them into objects and set them into the events list.
      */
     @Override
-    public void load() {
+    public ObservableList<Event> load() {
+        ObservableList<Event> result = null;
         LoadTask loadTask = new LoadTask();
-        loadTask.setOnSucceeded(event -> eventManager.getEvents().setAll(loadTask.getValue()));
+        //loadTask.setOnSucceeded(e -> events.addAll(loadTask.getValue()));
         currentTask = loadTask;
         taskFuture = executor.submit(currentTask);
+        try {
+            result = loadTask.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            close();
+        }
+        return result;
     }
 
 
     /**
-     * Issue a task to insert the event records.
+     * Issue a task to insert the event records,
+     * increment primaryKey then set it to the event.
      *
-     * @param event - event to be insert
+     * @param event - Event to be insert
      */
     @Override
-    public void insert(Event event) {
+    public void insert(final Event event) {
         event.setId(primaryKey.incrementAndGet());
         currentTask = new InsertTask(event);
         taskFuture = executor.submit(currentTask);
@@ -94,7 +84,7 @@ public class DBManager implements EventSource {
      * @param event - Event to be removed
      */
     @Override
-    public void delete(Event event) {
+    public void delete(final Event event) {
         currentTask = new DeleteTask(event);
         taskFuture = executor.submit(currentTask);
     }
@@ -107,7 +97,7 @@ public class DBManager implements EventSource {
      * @param event - event to be update
      */
     @Override
-    public void update(Event event) {
+    public void update(final Event event) {
         currentTask = new UpdateTask(event);
         taskFuture = executor.submit(currentTask);
     }
@@ -129,16 +119,7 @@ public class DBManager implements EventSource {
      * @throws SQLException connection can't be established.
      */
     static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
-    }
-
-    /**
-     * Getter of a primary key.
-     *
-     * @return A table's primary key
-     */
-    static AtomicInteger getPrimaryKey() {
-        return primaryKey;
+        return dataSource.getConnection();
     }
 
 
