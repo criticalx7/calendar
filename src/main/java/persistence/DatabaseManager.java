@@ -3,6 +3,8 @@ package persistence;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import model.Event;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -17,6 +19,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Name: Mr.Chatchapol Rasameluangon
  * ID:   5810404901
  */
+
+@Repository
 public class DatabaseManager implements EventSource {
     static final AtomicInteger primaryKey = new AtomicInteger(0);
     private final ExecutorService executor = Executors.newFixedThreadPool(1);
@@ -29,8 +33,9 @@ public class DatabaseManager implements EventSource {
      * Basic constructor which accept model.
      * This uses default URL based on user home directory.
      */
-    public DatabaseManager(DataSource source) {
-        dataSource = source;
+    @Autowired
+    public DatabaseManager(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     /**

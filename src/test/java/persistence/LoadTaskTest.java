@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JfxRunner.class)
-class LoadTaskTest {
+public class LoadTaskTest {
     private static final Logger LOGGER = Logger.getLogger(LoadTaskTest.class.getName());
     private DatabaseManager dbManager;
     private ObservableList<Event> mockEventList;

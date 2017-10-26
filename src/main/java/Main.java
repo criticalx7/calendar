@@ -3,10 +3,9 @@ import controller.MainController;
 import controller.ViewManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.sqlite.SQLiteDataSource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import persistence.DatabaseManager;
-
-import javax.sql.DataSource;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -16,15 +15,14 @@ import javax.sql.DataSource;
 
 public class Main extends Application {
     private DatabaseManager dao;
+    ApplicationContext context;
 
 
     @Override
     public void init() throws Exception {
         // Main source initialized, attempt to create event.
-        DataSource dataSource = new SQLiteDataSource();
-        String url = String.format("jdbc:sqlite:%s/CalendarDB/Events.db", System.getProperty("user.home"));
-        ((SQLiteDataSource) dataSource).setUrl(url);
-        dao = new DatabaseManager(dataSource);
+        context = new ClassPathXmlApplicationContext("main-context.xml");
+        dao = context.getBean("databaseManager", DatabaseManager.class);
         dao.setup();
         dao.getTaskFuture().get();
     }
@@ -32,8 +30,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // model
-        EventManager em = new EventManager();
-        em.setEventSource(dao);
+        EventManager em = context.getBean("eventManager", EventManager.class);
         em.loadEvent();
         // view
         ViewManager vm = new ViewManager(primaryStage);
@@ -45,6 +42,7 @@ public class Main extends Application {
     @Override
     public void stop() {
         dao.close();
+        System.out.println("program exits");
     }
 
     public static void main(String[] args) {
