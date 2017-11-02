@@ -2,11 +2,11 @@ package view;
 
 class ComponentFactory {
 
-    public static DateCell createDateCell() {
+    static DateCell createDateCell() {
         return new DateCell();
     }
 
-    public static EventBox createEventBox() {
+    static EventBox createEventBox() {
         return new EventBox();
     }
 }

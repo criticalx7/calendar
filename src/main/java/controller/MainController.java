@@ -10,6 +10,7 @@ public class MainController {
     public MainController(EventManager em, ViewManager vm) {
         eventManager = em;
         viewManager = vm;
+        em.loadEvent();
         viewManager.setupStageControl(this);
     }
 

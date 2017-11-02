@@ -1,4 +1,4 @@
-package common;
+package common.search;
 
 import javafx.collections.ObservableList;
 import model.Event;

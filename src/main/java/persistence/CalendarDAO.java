@@ -3,7 +3,7 @@ package persistence;
 import javafx.collections.ObservableList;
 import model.Event;
 
-public interface EventSource {
+public interface CalendarDAO {
 
 
     /**

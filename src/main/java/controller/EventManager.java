@@ -1,15 +1,15 @@
 package controller;
 
-import common.MainSearcher;
-import common.Searcher;
+import common.search.MainSearcher;
+import common.search.Searcher;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import persistence.EventSource;
+import org.springframework.stereotype.Service;
+import persistence.CalendarDAO;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -17,14 +17,14 @@ import persistence.EventSource;
  */
 
 
-@Component
+@Service
 public class EventManager {
     private final ObservableList<Event> events = FXCollections.observableArrayList();
     private final ObjectProperty<Event> currentEvent = new SimpleObjectProperty<>(null);
-    private EventSource eventSource;
+    private CalendarDAO eventSource;
 
     @Autowired
-    public EventManager(EventSource eventSource) {
+    public EventManager(CalendarDAO eventSource) {
         this.eventSource = eventSource;
     }
 
@@ -50,12 +50,12 @@ public class EventManager {
     }
 
     public void editEvent(Event event) {
-        if (eventSource != null) eventSource.update(event);
+        eventSource.update(event);
     }
 
     //--------------------------- Feature Related ---------------------------
     public ObservableList<Event> search(String target) {
-        return (new MainSearcher()).search(events, target);
+        return search(target, new MainSearcher());
     }
 
     public ObservableList<Event> search(String target, Searcher searcher) {
@@ -69,11 +69,11 @@ public class EventManager {
         return events;
     }
 
-    public void setEventSource(EventSource source) {
+    public void setEventSource(CalendarDAO source) {
         this.eventSource = source;
     }
 
-    public EventSource getEventSource() {
+    public CalendarDAO getEventSource() {
         return eventSource;
     }
 

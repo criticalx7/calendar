@@ -1,4 +1,4 @@
-package common;
+package common.search;
 
 import javafx.collections.ObservableList;
 import model.Event;
@@ -6,19 +6,17 @@ import model.Event;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
-public class MainSearcher implements Searcher {
+public class ByDateSearcher implements Searcher {
 
+    @Override
     public ObservableList<Event> search(ObservableList<Event> list, String text) {
-        ObservableList<Event> result;
+        ObservableList<Event> result = null;
+        LocalDate target;
         if (isParsable(text)) {
-            LocalDate target = LocalDate.parse(text, Event.getDefaultDatePattern());
+            target = LocalDate.parse(text, Event.getDefaultDatePattern());
             result = list
-                    .filtered(e -> !e.isCancel())
-                    .filtered(e -> e.getStart().equals(target));
-        } else {
-            result = list
-                    .filtered(e -> !e.isCancel())
-                    .filtered(e -> e.getName().toLowerCase().equals(text.toLowerCase()));
+                    .filtered(event -> !event.isCancel())
+                    .filtered(event -> event.getStart().equals(target));
         }
         return result;
     }

@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import persistence.EventSource;
+import persistence.CalendarDAO;
 
 import java.util.List;
 
@@ -87,7 +87,7 @@ public class EventManagerTest {
 
 
     // mock database class which do nothing
-    class MockDatabase implements EventSource {
+    class MockDatabase implements CalendarDAO {
 
         @Override
         public void setup() {

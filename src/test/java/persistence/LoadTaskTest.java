@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(JfxRunner.class)
 public class LoadTaskTest {
     private static final Logger LOGGER = Logger.getLogger(LoadTaskTest.class.getName());
-    private DatabaseManager dbManager;
+    private CalendarDAOImpl dbManager;
     private ObservableList<Event> mockEventList;
 
 
@@ -24,7 +24,7 @@ public class LoadTaskTest {
     public void setup() throws Exception {
         SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl("jdbc:sqlite:EventsTest.db");
-        dbManager = new DatabaseManager(dataSource);
+        dbManager = new CalendarDAOImpl(dataSource);
     }
 
     @Test
