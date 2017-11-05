@@ -14,9 +14,7 @@ public class ByDateSearcher implements Searcher {
         LocalDate target;
         if (isParsable(text)) {
             target = LocalDate.parse(text, Event.getDefaultDatePattern());
-            result = list
-                    .filtered(event -> !event.isCancel())
-                    .filtered(event -> event.getStart().equals(target));
+            result = list.filtered(event -> event.getStart().equals(target));
         }
         return result;
     }

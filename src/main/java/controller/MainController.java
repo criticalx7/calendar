@@ -15,9 +15,9 @@ public class MainController {
     }
 
     // currently hacked
-    public boolean handleCancel(Event event) {
+    public boolean handleRemove(Event event) {
         boolean confirm = viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent();
-        if (confirm) eventManager.cancelEvent(event);
+        if (confirm) eventManager.removeEvent(event);
         return confirm;
     }
 
@@ -29,7 +29,7 @@ public class MainController {
 
     public void handleEdit(Event event) {
         boolean confirm = viewManager.showEventEditor(event);
-        if (confirm) eventManager.editEvent(event);
+        if (confirm) eventManager.updateEvent(event);
     }
 
     public void handleSearch(String text) {

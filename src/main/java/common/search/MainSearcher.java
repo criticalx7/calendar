@@ -19,11 +19,9 @@ public class MainSearcher implements Searcher {
         if (isParsable(text)) {
             LocalDate target = LocalDate.parse(text, Event.getDefaultDatePattern());
             result = list
-                    .filtered(e -> !e.isCancel())
                     .filtered(e -> e.getStart().equals(target));
         } else {
             result = list
-                    .filtered(e -> !e.isCancel())
                     .filtered(e -> e.getName().toLowerCase().equals(text.toLowerCase()));
         }
         return result;

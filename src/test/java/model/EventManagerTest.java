@@ -11,7 +11,6 @@ import persistence.CalendarDAO;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Name: Mr.Chatchapol Rasameluangon
@@ -64,25 +63,15 @@ public class EventManagerTest {
     public void removeEvent() throws Exception {
         eventManager.getEvents().add(event1);
         eventManager.getEvents().add(event2);
-        eventManager.getEvents().remove(0);
+        eventManager.removeEvent(event1);
         assertEquals(1, eventManager.getEvents().size());
         assertEquals(0, eventManager.getEvents().get(0).getId());
 
     }
 
-
     @Test
-    public void getCurrentEvent() throws Exception {
-        eventManager.setCurrentEvent(event1);
-        assertEquals(event1, eventManager.getCurrentEvent());
-    }
-
-
-    @Test
-    public void setCurrentEvent() throws Exception {
-        eventManager.setCurrentEvent(event1);
-        assertNotNull(eventManager.getCurrentEvent());
-        assertEquals(event1, eventManager.getCurrentEvent());
+    void updateEvent() throws Exception {
+        // to be implemented
     }
 
 

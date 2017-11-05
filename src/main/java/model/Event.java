@@ -1,6 +1,5 @@
 package model;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.paint.Color;
@@ -25,7 +24,6 @@ public class Event {
     private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "show");
     private final SimpleObjectProperty<LocalDate> end = new SimpleObjectProperty<>(this, "end");
     private final SimpleObjectProperty<Color> color = new SimpleObjectProperty<>(this, "color");
-    private final SimpleBooleanProperty cancel = new SimpleBooleanProperty(this, "cancel", false);
 
     /**
      * Basic constructor for blank event.
@@ -184,20 +182,6 @@ public class Event {
         this.color.set(color);
     }
 
-    /**
-     * @return An event's cancel state
-     */
-    public boolean isCancel() {
-        return cancel.get();
-    }
-
-
-    /**
-     * @param cancel cancel state
-     */
-    public void setCancel(boolean cancel) {
-        this.cancel.set(cancel);
-    }
 
     // ----------------------- Properties -----------------------
 
@@ -223,10 +207,6 @@ public class Event {
 
     public SimpleObjectProperty<Color> colorProperty() {
         return color;
-    }
-
-    public SimpleBooleanProperty cancelProperty() {
-        return cancel;
     }
 
 }

@@ -38,8 +38,7 @@ public class CalendarDAOImpl implements CalendarDAO {
 
 
     /**
-     * Basic constructor which accept model.
-     * This uses default URL based on user home directory.
+     * @param dataSource An event's SQL data source
      */
     @Autowired
     public CalendarDAOImpl(DataSource dataSource) {
@@ -72,11 +71,19 @@ public class CalendarDAOImpl implements CalendarDAO {
     public void setup() {
         currentTask = new SetupTask();
         taskFuture = executor.submit(currentTask);
+        try {
+            taskFuture.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            close();
+        }
     }
+
 
     /**
      * Issues a task to query the event records,
-     * process them into objects and set them into the events list.
+     *
+     * @return A list of events instance
      */
     @Override
     public ObservableList<Event> load() {
@@ -110,7 +117,6 @@ public class CalendarDAOImpl implements CalendarDAO {
 
     /**
      * Issue a task to delete the event records
-     * based on primary key.
      *
      * @param event - Event to be removed
      */
@@ -123,7 +129,6 @@ public class CalendarDAOImpl implements CalendarDAO {
 
     /**
      * Issue a task to update the event records
-     * based on primary key.
      *
      * @param event - event to be update
      */
@@ -357,10 +362,9 @@ public class CalendarDAOImpl implements CalendarDAO {
          * If there is none, create one.
          */
         private void createDirectory() {
-            logger.info("Creating folder...");
             File eventFolder = new File(System.getProperty("user.home"), "CalendarDB");
             if (!eventFolder.exists()) {
-                // make directory
+                logger.info("Creating folder...");
                 boolean success = eventFolder.mkdirs();
                 // if not success, just close the program.
                 if (!success) {
@@ -378,11 +382,11 @@ public class CalendarDAOImpl implements CalendarDAO {
          * @throws SQLException Corruption occurs.
          */
         private void createDatabase() throws SQLException {
-            logger.info("Creating database...");
             // check if the database exist. If not, create one.
             File eventDB = new File(System.getProperty("user.home") + "/CalendarDB", "Events.db");
             // create table and insert a welcome event
             if (!eventDB.exists()) {
+                logger.info("Creating database...");
                 try (Connection con = dataSource.getConnection()) {
                     createSchema(con);
                     insertWelcome(con);

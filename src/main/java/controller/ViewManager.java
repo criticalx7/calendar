@@ -40,6 +40,7 @@ public class ViewManager {
             Scene scene = new Scene(root);
             primaryStage.setTitle("Calendar");
             primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,6 +107,12 @@ public class ViewManager {
 
             Scene scene = new Scene(page);
             stage.setScene(scene);
+
+            // Color Adjust
+            ColorAdjust effect = new ColorAdjust();
+            effect.setBrightness(-0.5);
+            root.setEffect(effect);
+            stage.setOnHidden(action -> root.setEffect(null));
 
             // Controller
             SearchView controller = loader.getController();

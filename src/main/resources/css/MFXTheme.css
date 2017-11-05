@@ -1,9 +1,7 @@
-
 /*
     Author: Chatchapol Rasameluangon
     ID: 5810404901
 */
-
 
 /*******************************************************************************
  *                                                                             *
@@ -47,7 +45,6 @@
     -fx-background-color: derive(-fx-button, 40%);
     -fx-text-fill: -fx-button;
 }
-
 
 .button:default {
     -fx-background-color: #e7e7e7;
@@ -150,7 +147,7 @@
  ******************************************************************************/
 
 .text-area, .text-area .viewport, .text-area .content {
-    -fx-background-color: #303030 ;
+    -fx-background-color: #303030;
     -fx-background-radius: 0;
     -fx-text-fill: #ececec;
 }
@@ -164,7 +161,7 @@
     -fx-text-fill: #ececec;
 }
 
-.text-area .content{
+.text-area .content {
     -fx-border-width: 1 1 1 1;
     -fx-border-color: gray;
 }
@@ -353,6 +350,11 @@
     -fx-background-color: #1d1d1d;
 }
 
+.list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:hover {
+    -fx-background-color: #008287;
+    -fx-background-insets: 0;
+}
+
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
     -fx-background-color: #d3d3d3;
 }
@@ -371,6 +373,11 @@
     -fx-background-insets: 0;
 }
 
+.list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:hover {
+    -fx-background-color: #008287;
+    -fx-background-insets: 0;
+}
+
 .list-view > .virtual-flow > .clipped-container > .sheet > .list-cell {
     -fx-text-fill: white;
 }
@@ -382,7 +389,6 @@
 .list-view:focused > .virtual-flow > .clipped-container > .sheet > .list-cell:focused {
     -fx-text-fill: white;
 }
-
 
 /*******************************************************************************
  *                                                                             *

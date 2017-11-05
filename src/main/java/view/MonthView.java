@@ -3,10 +3,10 @@ package view;
 import controller.MainController;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import model.Event;
 
 import java.time.LocalDate;
@@ -71,6 +71,8 @@ public class MonthView {
      * new date and event.
      */
     private void updateView() {
+        int row = gridView.getRowCount();
+        int col = gridView.getColumnCount();
         // set month and year text
         monthLabel.setText(currentMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
         yearLabel.setText(String.valueOf(currentMonth.getYear()));
@@ -79,13 +81,11 @@ public class MonthView {
         LocalDate firstDateOfMonth = currentMonth.withDayOfMonth(1);
         int firstDayOfWeek = firstDateOfMonth.getDayOfWeek().getValue() % 7;
         int indexDay = 0;
-        for (int i = 0; i < gridView.getRowCount(); i++) {
-            for (int j = 0; j < gridView.getColumnCount(); j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 DateCell cell = gridCells[i][j];
                 LocalDate currentDate = firstDateOfMonth.plusDays(indexDay - firstDayOfWeek);
-                cell.getChildren().clear();
-                cell.setDate(currentDate);
-                setCellDetail(cell);
+                setCellDetail(cell, currentDate);
                 indexDay++;
             }
         }
@@ -93,47 +93,58 @@ public class MonthView {
     }
 
 
-    private void setCellDetail(DateCell cell) {
-        // if the date is outside this month range disable
-        cell.setDisable(cell.getDate().getMonth() != currentMonth.getMonth());
-
-        // style setup for date header
-        cell.getDateLabel().setTextFill(cell.getDate().isEqual(LocalDate.now()) ? Color.valueOf("#817153").brighter() : Color.ALICEBLUE);
-        cell.getChildren().add(cell.getDateLabel());
+    private void setCellDetail(DateCell cell, LocalDate currentDate) {
+        cell.clear();
+        cell.setDate(currentDate);
+        cell.setDisable(cell.getDate().getMonth().getValue() != currentMonth.getMonth().getValue());
 
         // main loop to lay events
-        for (Event event : controller.getEventManager().getEvents().filtered(e -> !e.isCancel())) {
-            if (cell.getDate().equals(event.getStart()) && cell.getChildren().size() < 4) {
-                EventBox eventBox = createEventBox(event);
-                cell.getChildren().add(eventBox);
-            }
+        for (Event event : controller.getEventManager().getEvents().filtered(e -> cell.getDate().equals(e.getStart()))) {
+            addToCell(event, cell);
         }
     }
 
-    private EventBox createEventBox(Event event) {
-        EventBox box = ComponentFactory.createEventBox();
-        box.textProperty().bind(event.nameProperty());
-        box.colorProperty().bind(event.colorProperty());
-        // make box box clickable
-        box.setOnMouseClicked(action -> {
-            controller.handleEdit(event);
-            action.consume();
+    private DateCell createDateCell() {
+        DateCell cell = new DateCell();
+        cell.setOnMouseClicked(action -> {
+            if (action.getClickCount() == 2 && action.getButton() == MouseButton.PRIMARY) {
+                Event temp = new Event(cell.getDate());
+                if (controller.handleAdd(temp)) addToCell(temp, cell);
+            }
         });
-        box.getButton().setOnAction(e -> {
-            boolean confirm = controller.handleCancel(event);
-            ((VBox) box.getParent()).getChildren().remove(box);
-        });
-        return box;
+
+        return cell;
     }
 
-    private DateCell createDateCell() {
-        DateCell cell = ComponentFactory.createDateCell();
-        cell.setOnMouseClicked(action -> {
-            Event temp = new Event(cell.getDate());
-            Boolean confirm = controller.handleAdd(temp);
-            if (confirm && cell.getChildren().size() < 4) cell.getChildren().add(createEventBox(temp));
-        });
-        return cell;
+
+    private Node createEventBox(Event event, DateCell cell) {
+        if (cell.size() < DateCell.EVENT_LIMIT) {
+            EventBox box = new EventBox(event);
+            box.setOnMouseClicked(action -> controller.handleEdit(event));
+            box.getButton().setOnAction(action -> handleCancel(event));
+            return box;
+        } else if (cell.size() == DateCell.EVENT_LIMIT) {
+            Hyperlink more = new Hyperlink("more...");
+            more.setFocusTraversable(false);
+            more.setOnMouseClicked(click -> {
+                controller.handleSearch(Event.getDefaultDatePattern().format(cell.getDate()));
+                more.setVisited(false);
+            });
+            return more;
+        }
+        return null;
+    }
+
+
+    private void addToCell(Event event, DateCell cell) {
+        if (cell.size() <= DateCell.EVENT_LIMIT) {
+            cell.add(createEventBox(event, cell));
+        }
+    }
+
+    private void handleCancel(Event event) {
+        controller.handleRemove(event);
+        updateView();
     }
 
     @FXML
