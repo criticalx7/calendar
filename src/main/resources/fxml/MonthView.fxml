@@ -161,7 +161,8 @@
             </left>
             <right>
                 <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="234.0">
-                    <TextField fx:id="searchBar" onAction="#handleSearch" promptText="Search event" styleClass="search"
+                    <TextField fx:id="searchBar" onAction="#handleSearch" promptText="eg. 31-01-2017"
+                               styleClass="search"
                                BorderPane.alignment="CENTER">
                         <BorderPane.margin>
                             <Insets right="20.0"/>

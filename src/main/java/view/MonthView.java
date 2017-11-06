@@ -1,6 +1,7 @@
 package view;
 
 import controller.MainController;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -77,29 +78,33 @@ public class MonthView {
         monthLabel.setText(currentMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()));
         yearLabel.setText(String.valueOf(currentMonth.getYear()));
 
-        // layout detail of all cells
-        LocalDate firstDateOfMonth = currentMonth.withDayOfMonth(1);
-        int firstDayOfWeek = firstDateOfMonth.getDayOfWeek().getValue() % 7;
+        // get period to display
+        LocalDate firstDay = currentMonth.withDayOfMonth(1);
+        int firstDOW = firstDay.getDayOfWeek().getValue() % 7;
+        LocalDate from = firstDay.minusDays(1 + firstDOW);
+        LocalDate to = firstDay.plusDays((row * col) - firstDOW);
+        ObservableList<Event> events = controller.getEvents(from, to);
+
+        // layout detail
         int indexDay = 0;
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 DateCell cell = gridCells[i][j];
-                LocalDate currentDate = firstDateOfMonth.plusDays(indexDay - firstDayOfWeek);
-                setCellDetail(cell, currentDate);
+                LocalDate currentDate = firstDay.plusDays(indexDay - firstDOW);
+                setCellDetail(cell, currentDate, events);
                 indexDay++;
             }
         }
-
     }
 
 
-    private void setCellDetail(DateCell cell, LocalDate currentDate) {
+    private void setCellDetail(DateCell cell, LocalDate currentDate, ObservableList<Event> events) {
         cell.clear();
         cell.setDate(currentDate);
         cell.setDisable(cell.getDate().getMonth().getValue() != currentMonth.getMonth().getValue());
 
         // main loop to lay events
-        for (Event event : controller.getEventManager().getEvents().filtered(e -> cell.getDate().equals(e.getStart()))) {
+        for (Event event : events.filtered(e -> cell.getDate().equals(e.getStart()))) {
             addToCell(event, cell);
         }
     }
@@ -121,7 +126,7 @@ public class MonthView {
         if (cell.size() < DateCell.EVENT_LIMIT) {
             EventBox box = new EventBox(event);
             box.setOnMouseClicked(action -> controller.handleEdit(event));
-            box.getButton().setOnAction(action -> handleCancel(event));
+            box.getButton().setOnAction(action -> handleDelete(event));
             return box;
         } else if (cell.size() == DateCell.EVENT_LIMIT) {
             Hyperlink more = new Hyperlink("more...");
@@ -142,7 +147,7 @@ public class MonthView {
         }
     }
 
-    private void handleCancel(Event event) {
+    private void handleDelete(Event event) {
         controller.handleRemove(event);
         updateView();
     }
