@@ -23,7 +23,6 @@
     -fx-font-size: 12;
 }
 
-
 .default-cell:disabled {
     -fx-background-color: derive(#202020, -50%);
 }

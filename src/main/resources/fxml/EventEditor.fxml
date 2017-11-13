@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="234.0" styleClass="background" stylesheets="@../css/MFXTheme.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.EditorView">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="234.0" styleClass="background" stylesheets="@../css/MFXTheme.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.ui.editor.EditorView">
     <AnchorPane fx:id="headerPane" prefHeight="84.0" prefWidth="268.0" styleClass="color-pane">
-        <Label fx:id="dayLabel" layoutX="14.0" layoutY="11.0" prefHeight="38.0" prefWidth="72.0" text="18" textFill="#ececec">
+        <Label fx:id="dayLabel" layoutX="12.0" layoutY="10.0" prefHeight="38.0" prefWidth="72.0" text="18" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Semibold" size="26.0" />
+                <Font name="Arial" size="24.0" />
             </font>
         </Label>
         <Label fx:id="monthYearLabel" layoutX="14.0" layoutY="45.0" prefHeight="25.0" prefWidth="134.0" text="October 2017" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Light" size="16.0" />
+                <Font name="Arial" size="16.0" />
             </font>
         </Label>
     </AnchorPane>
     <AnchorPane prefHeight="100.0" prefWidth="268.0">
         <Label layoutX="20.0" layoutY="21.0" text="Name*" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Semilight" size="13.0" />
+                <Font name="Arial" size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="nameField" layoutX="19.0" layoutY="41.0">
+        <TextField fx:id="nameField" layoutX="20.0" layoutY="41.0" prefHeight="30.0" prefWidth="165.0">
             <font>
                 <Font name="Segoe UI Semilight" size="13.0" />
             </font>
@@ -33,49 +34,81 @@
             </font>
         </Label>
     </AnchorPane>
-    <AnchorPane prefHeight="115.0" prefWidth="234.0">
-        <DatePicker fx:id="startPicker" layoutX="14.0" layoutY="37.0" onAction="#prepareHeader" prefHeight="28.0" prefWidth="196.0" promptText="dd-mm-yyyy" style="-fx-background-color: transparent; -fx-background-radius: 0;" />
-        <Label layoutX="21.0" layoutY="13.0" text="Start*" textFill="#ececec">
+    <VBox prefHeight="155.0" prefWidth="234.0" spacing="15.0">
+        <padding>
+            <Insets left="20.0" />
+        </padding>
+        <Label text="Start*" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Semilight" size="14.0" />
+                <Font name="Arial" size="14.0" />
             </font>
         </Label>
-        <CheckBox fx:id="repeatBox" layoutX="19.0" layoutY="84.0" mnemonicParsing="false" text=" Repeat...">
+        <DatePicker fx:id="startPicker" onAction="#onDateSelect" prefHeight="28.0" prefWidth="196.0" promptText="dd-MM-yyyy" style="-fx-background-color: transparent; -fx-background-radius: 0;" />
+        <HBox spacing="20.0">
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <padding>
+                <Insets top="5.0" />
+            </padding>
+            <CheckBox fx:id="repeatBox" mnemonicParsing="false" onAction="#onRepeat" text=" Repeat...">
+                <font>
+                    <Font name="Arial" size="12.0" />
+                </font>
+            </CheckBox>
+            <CheckBox fx:id="allDayBox" disable="true" mnemonicParsing="false" selected="true" text="All day">
+                <font>
+                    <Font name="Arial" size="12.0" />
+                </font>
+            </CheckBox>
+        </HBox>
+        <HBox fx:id="repeatFrame" alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="214.0" spacing="12.0">
+            <padding>
+                <Insets top="5.0" />
+            </padding>
+            <RadioButton fx:id="yearly" mnemonicParsing="false" style="-fx-text-fill: aliceblue;" text="Yearly" textFill="WHITE">
+                <font>
+                    <Font name="Arial" size="12.0" />
+                </font>
+                <toggleGroup>
+                    <ToggleGroup fx:id="repeatGroup" />
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="monthly" mnemonicParsing="false" style="-fx-text-fill: aliceblue;" text="Monthly" textFill="WHITE" toggleGroup="$repeatGroup">
+                <font>
+                    <Font name="Arial" size="12.0" />
+                </font>
+            </RadioButton>
+            <RadioButton fx:id="daily" disable="true" mnemonicParsing="false" style="-fx-text-fill: aliceblue;" text="Daily" textFill="WHITE" toggleGroup="$repeatGroup">
+                <font>
+                    <Font name="Arial" size="12.0" />
+                </font>
+            </RadioButton>
+        </HBox>
+    </VBox>
+    <AnchorPane prefHeight="140.0" prefWidth="234.0">
+        <Label layoutX="15.0" layoutY="37.0" text="Color" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Light" size="12.0" />
-            </font>
-        </CheckBox>
-        <CheckBox fx:id="allDayBox" disable="true" layoutX="127.0" layoutY="85.0" mnemonicParsing="false" text="All day" />
-    </AnchorPane>
-    <AnchorPane prefHeight="168.0" prefWidth="234.0">
-        <Label layoutX="26.0" layoutY="14.0" text="Tag" textFill="#ececec">
-            <font>
-                <Font name="Segoe UI Semilight" size="14.0" />
+                <Font name="Arial" size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="tagField" layoutX="60.0" layoutY="2.0" prefHeight="30.0" prefWidth="149.0">
+        <ColorPicker fx:id="colorPicker" layoutX="59.0" layoutY="31.0" prefHeight="27.0" prefWidth="149.0" />
+        <Label layoutX="18.0" layoutY="84.0" text="Note" textFill="#ececec">
             <font>
-                <Font name="Segoe UI Light" size="13.0" />
-            </font>
-        </TextField>
-        <Label layoutX="17.0" layoutY="51.0" text="Color" textFill="#ececec">
-            <font>
-                <Font name="Segoe UI Semilight" size="14.0" />
+                <Font name="Arial" size="14.0" />
             </font>
         </Label>
-        <ColorPicker fx:id="colorPicker" layoutX="59.0" layoutY="49.0" onAction="#changeColor" prefHeight="27.0" prefWidth="149.0" />
-        <Label layoutX="19.0" layoutY="94.0" text="Note" textFill="#ececec">
-            <font>
-                <Font name="Segoe UI Semilight" size="14.0" />
-            </font>
-        </Label>
-        <TextArea fx:id="noteArea" layoutX="59.0" layoutY="97.0" prefHeight="56.0" prefWidth="149.0" wrapText="true">
+        <TextArea fx:id="noteArea" layoutX="59.0" layoutY="79.0" prefHeight="54.0" prefWidth="149.0" wrapText="true">
             <font>
                 <Font name="Segoe UI Semilight" size="13.0" />
             </font>
         </TextArea>
     </AnchorPane>
-    <AnchorPane prefHeight="54.0" prefWidth="260.0">
-        <Button fx:id="saveButton" defaultButton="true" layoutX="136.0" layoutY="7.0" mnemonicParsing="false" onAction="#handleAdd" prefHeight="31.0" prefWidth="74.0" text="Save" />
+    <AnchorPane prefHeight="54.0" prefWidth="234.0">
+        <Button fx:id="saveButton" defaultButton="true" layoutX="133.0" layoutY="8.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="31.0" prefWidth="74.0" text="Save" AnchorPane.bottomAnchor="15.0">
+            <font>
+                <Font name="Arial" size="15.0" />
+            </font>
+        </Button>
     </AnchorPane>
 </VBox>
