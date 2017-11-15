@@ -1,5 +1,6 @@
 package client.controls;
 
+import client.ClientApp;
 import client.ui.editor.EditorView;
 import client.ui.editor.EditorViewModel;
 import client.ui.monthview.MonthView;
@@ -16,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -28,14 +30,11 @@ import java.util.Optional;
 /**
  * A class in charge of view related construction and popup.
  */
+@Component
 public class ViewManager {
-    private final Stage primaryStage;
     private Parent root;
     private MonthView monthView;
 
-    public ViewManager(Stage stage) {
-        this.primaryStage = stage;
-    }
 
     void setupStageControl(MainController controller) {
         try {
@@ -49,16 +48,16 @@ public class ViewManager {
 
             // setup the primary stage
             Scene scene = new Scene(root);
-            primaryStage.setTitle("Calendar");
-            primaryStage.setScene(scene);
-            primaryStage.setResizable(false);
+            ClientApp.getPrimaryStage().setTitle("Calendar");
+            ClientApp.getPrimaryStage().setScene(scene);
+            ClientApp.getPrimaryStage().setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     void show() {
-        primaryStage.show();
+        ClientApp.getPrimaryStage().show();
     }
 
     boolean showEventEditor(EventAdapter eventModel) {
@@ -69,7 +68,7 @@ public class ViewManager {
             // create DIALOG
             Stage stage = new Stage();
             stage.setTitle("Event");
-            stage.initOwner(primaryStage);
+            stage.initOwner(ClientApp.getPrimaryStage());
             stage.initModality(Modality.WINDOW_MODAL);
             stage.setResizable(false);
             stage.setScene(new Scene(page));

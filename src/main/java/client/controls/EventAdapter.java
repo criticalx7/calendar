@@ -15,7 +15,7 @@ import java.time.LocalDate;
  */
 
 
- /**
+/**
  * The POJO wrapper to be used in Views layer.
  * This provide properties for various bindings.
  */
@@ -75,7 +75,7 @@ public class EventAdapter {
     }
 
     public boolean inPeriod(LocalDate from, LocalDate to) {
-        return  start.get().isAfter(from) && start.get().isBefore(to);
+        return start.get().isAfter(from) && start.get().isBefore(to);
     }
 
     // -----------------------  Accessor -----------------------

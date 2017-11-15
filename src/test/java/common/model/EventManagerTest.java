@@ -2,13 +2,11 @@ package common.model;
 
 import client.controls.EventAdapter;
 import client.controls.EventManager;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import server.persistence.CalendarDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -19,14 +17,14 @@ import static org.junit.Assert.assertEquals;
  */
 
 
-class EventManagerTest {
+public class EventManagerTest {
     private EventManager eventManager;
     private EventAdapter event1;
     private EventAdapter event2;
 
     @Before
     public void setUp() {
-        eventManager = new EventManager(new MockDatabase());
+        eventManager = new EventManager();
         event1 = new EventAdapter(new Event());
         event2 = new EventAdapter(new Event());
         event1.getBean().setId(999);
@@ -43,7 +41,7 @@ class EventManagerTest {
 
     @Test
     public void loadEvent() {
-        eventManager.loadEvent();
+        eventManager.loadEvent(getMockSource());
         assertEquals(3, eventManager.getEvents().size());
         assertEquals("t1", eventManager.getEvents().get(0).nameProperty().get());
         assertEquals("t2", eventManager.getEvents().get(1).nameProperty().get());
@@ -70,51 +68,18 @@ class EventManagerTest {
 
     }
 
-    @Test
-    void updateEvent() {
-        // to be implemented
+    private List<Event> getMockSource() {
+        List<Event> source = new ArrayList<>();
+        Event t1 = new Event();
+        Event t2 = new Event();
+        Event t3 = new Event();
+        t1.setName("t1");
+        t2.setName("t2");
+        t3.setName("t3");
+        source.add(t1);
+        source.add(t2);
+        source.add(t3);
+        return source;
     }
-
-
-    // mock database class which do nothing
-    class MockDatabase implements CalendarDAO<Event> {
-
-        @Override
-        public void setup() {
-            // no implementation
-        }
-
-        @Override
-        public ObservableList<Event> load() {
-            Event ev = new Event();
-            Event ev2 = new Event();
-            Event ev3 = new Event();
-            ev.setName("t1");
-            ev2.setName("t2");
-            ev3.setName("t3");
-            return FXCollections.observableArrayList(List.of(ev, ev2, ev3));
-        }
-
-        @Override
-        public void insert(Event event) {
-            // no implementation
-        }
-
-        @Override
-        public void delete(Event event) {
-            // no implementation
-        }
-
-        @Override
-        public void update(Event event) {
-            // no implementation
-        }
-
-        @Override
-        public void close() {
-            // no implementation
-        }
-    }
-
 
 }

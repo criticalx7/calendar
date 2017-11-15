@@ -2,22 +2,22 @@ package server.persistence;
 
 import common.model.Event;
 import de.saxsys.javafx.test.JfxRunner;
-import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sqlite.SQLiteDataSource;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JfxRunner.class)
-class LoadTaskTest {
+public class LoadTaskTest {
     private static final Logger LOGGER = Logger.getLogger(LoadTaskTest.class.getName());
     private CalendarDAOImpl dbManager;
-    private ObservableList<Event> mockEventList;
+    private List<Event> mockEventList;
 
 
     @Before

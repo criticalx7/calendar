@@ -5,11 +5,10 @@ import client.controls.search.Searcher;
 import common.model.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import server.persistence.CalendarDAO;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /*
  * Name: Mr.Chatchapol Rasameluangon
@@ -20,36 +19,23 @@ import java.time.LocalDate;
 /**
  * A class in charge of manage all event's in-memory CRUD.
  */
-@Service
+@Component
 public class EventManager {
-    private final ObservableList<EventAdapter> events;
-    private CalendarDAO<Event> eventSource;
+    private final ObservableList<EventAdapter> events = FXCollections.observableArrayList();
 
-    @Autowired
-    public EventManager(CalendarDAO<Event> eventSource) {
-        this.eventSource = eventSource;
-        events = FXCollections.observableArrayList();
-    }
 
     //--------------------------- Simple CRUD Operation ---------------------------
-    public void loadEvent() {
-        eventSource.load().forEach(event -> events.add(new EventAdapter(event)));
+    public void loadEvent(List<Event> source) {
+        events.clear();
+        source.forEach(event -> events.add(new EventAdapter(event)));
     }
 
     public void addEvent(EventAdapter eventModel) {
         events.add(eventModel);
-        eventSource.insert(eventModel.getBean());
     }
 
     public void removeEvent(EventAdapter eventModel) {
-        boolean isRemove = events.remove(eventModel);
-        if (isRemove) eventSource.delete(eventModel.getBean());
-    }
-
-
-    @SuppressWarnings("WeakerAccess")
-    public void updateEvent(EventAdapter eventModel) {
-        eventSource.update(eventModel.getBean());
+        events.remove(eventModel);
     }
 
 
@@ -73,10 +59,5 @@ public class EventManager {
     public ObservableList<EventAdapter> getEvents() {
         return events;
     }
-
-    public CalendarDAO<Event> getEventSource() {
-        return eventSource;
-    }
-
 
 }

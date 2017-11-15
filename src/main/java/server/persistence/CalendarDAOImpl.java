@@ -1,8 +1,6 @@
 package server.persistence;
 
 import common.model.Event;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.paint.Color;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +13,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.*;
 
-
+// TODO - migrate to Log4j
 /*
  * @author : Mr.Chatchapol Rasameluangon
  * ID:   5810404901
@@ -87,8 +87,8 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
      * @return A list of events instance
      */
     @Override
-    public ObservableList<Event> load() {
-        ObservableList<Event> result = null;
+    public List<Event> load() {
+        List<Event> result = null;
         LoadTask loadTask = new LoadTask();
         currentTask = loadTask;
         taskFuture = executor.submit(currentTask);
@@ -175,10 +175,9 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
         @Override
         protected Void call() {
             try (Connection con = dataSource.getConnection()) {
-                logger.info("Delete task initialize...");
                 delete(con);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                logger.config("Conflict: " + e.getMessage());
             }
             return null;
         }
@@ -212,10 +211,9 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
         @Override
         protected Void call() {
             try (Connection con = dataSource.getConnection()) {
-                logger.info("Update task initialize...");
                 update(con);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                logger.config("Conflict: " + e.getMessage());
             }
 
             return null;
@@ -260,10 +258,9 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
         @Override
         protected Void call() throws Exception {
             try (Connection con = dataSource.getConnection()) {
-                logger.info("Insert task initialize...");
                 insert(con);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (SQLException e) {
+                logger.config("Conflict: " + e.getMessage());
             }
             return null;
         }
@@ -295,12 +292,11 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
     /**
      * A task handles load/query all events record.
      */
-    class LoadTask extends Task<ObservableList<Event>> {
+    class LoadTask extends Task<List<Event>> {
 
         @Override
-        protected ObservableList<Event> call() throws Exception {
+        protected List<Event> call() throws Exception {
             try (Connection con = dataSource.getConnection()) {
-                logger.info("Load task initialize...");
                 return load(con);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -316,8 +312,8 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
          * @return List of events, ready to be set.
          * @throws SQLException Corruption occurs.
          */
-        private ObservableList<Event> load(Connection con) throws SQLException {
-            ObservableList<Event> events;
+        private List<Event> load(Connection con) throws SQLException {
+            List<Event> events;
             String sql = "SELECT * FROM Events";
             Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
@@ -334,8 +330,8 @@ public class CalendarDAOImpl implements CalendarDAO<Event> {
         }
 
 
-        private ObservableList<Event> processEvents(ResultSet set) throws SQLException {
-            ObservableList<Event> events = FXCollections.observableArrayList();
+        private ArrayList<Event> processEvents(ResultSet set) throws SQLException {
+            ArrayList<Event> events = new ArrayList<>();
             while (set.next()) {
                 Event event = new Event();
                 event.setId(set.getInt("id"));

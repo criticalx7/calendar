@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
  */
 
 /**
- * Main searcher for searching by date and name.
+ * client.ClientApp searcher for searching by date and name.
  */
 @Service
 public class MainSearcher implements Searcher<EventAdapter> {

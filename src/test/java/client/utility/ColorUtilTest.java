@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
  */
 
 
-class ColorUtilTest {
+public class ColorUtilTest {
 
     @Test
     public void getBackgroundColorFXTest() {
