@@ -6,6 +6,6 @@
 .idea
 *.iml
 out
-src/main/resources/fxml/test.fxml
 target/
 /src/main/resources/css/JMetroDarkTheme.css
+/src/main/resources/fxml/sandbox/

@@ -5,180 +5,184 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="700.0" style="-fx-background-color: #202020;" stylesheets="@../css/MainTheme.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MonthView">
-   <center>
-      <GridPane fx:id="gridView" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </GridPane>
-   </center>
-   <top>
-      <BorderPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <bottom>
-            <GridPane fx:id="dayOfWeekGrid" style="-fx-border-width: 0 0 1 0; -fx-border-color: #e5ca95;"
-                      BorderPane.alignment="CENTER">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-               </rowConstraints>
-               <Label text="Sun" textFill="#e6e6e6b8">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Mon" textFill="#e6e6e6b8" GridPane.columnIndex="1">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Tue" textFill="#e6e6e6b8" GridPane.columnIndex="2">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Wed" textFill="#e6e6e6b8" GridPane.columnIndex="3">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Thu" textFill="#e6e6e6b8" GridPane.columnIndex="4">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Fri" textFill="#e6e6e6b8" GridPane.columnIndex="5">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-               <Label text="Sat" textFill="#e6e6e6b8" GridPane.columnIndex="6">
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Label>
-            </GridPane>
-         </bottom>
-         <left>
-            <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="340.0">
-               <padding>
-                  <Insets left="15.0"/>
-               </padding>
-               <Button fx:id="backwardBtn" layoutX="20.0" layoutY="31.0" mnemonicParsing="false"
-                       onAction="#handleBackwardBtn" styleClass="month-button" text="◀" textAlignment="CENTER"
-                       textFill="WHITE">
-                  <effect>
-                     <DropShadow blurType="GAUSSIAN" color="#656060" height="9.14" radius="7.035"/>
-                  </effect>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Button>
-               <Button fx:id="forwardBtn" mnemonicParsing="false" onAction="#handleForwardBtn" styleClass="month-button"
-                       text="▶" textAlignment="CENTER" textFill="WHITE">
-                  <HBox.margin>
-                     <Insets left="2.0"/>
-                  </HBox.margin>
-                  <effect>
-                     <DropShadow color="#656060" height="9.14" radius="7.035"/>
-                  </effect>
-                  <font>
-                     <Font name="Verdana" size="15.0"/>
-                  </font>
-               </Button>
-               <Label fx:id="monthLabel" text="month" textFill="#e5ca95e3">
-                  <opaqueInsets>
-                     <Insets/>
-                  </opaqueInsets>
-                  <font>
-                     <Font name="Segoe UI Semilight" size="24.0"/>
-                  </font>
-                  <padding>
-                     <Insets left="23.0"/>
-                  </padding>
-               </Label>
-               <Label fx:id="yearLabel" style="-fx-font-smoothing-type: gray;" text="year" textFill="#e5ca95e3"
-                      BorderPane.alignment="CENTER">
-                  <opaqueInsets>
-                     <Insets/>
-                  </opaqueInsets>
-                  <padding>
-                     <Insets left="10.0"/>
-                  </padding>
-                  <font>
-                     <Font name="Segoe UI Semilight" size="24.0"/>
-                  </font>
-               </Label>
-            </HBox>
-         </left>
-         <right>
-            <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="234.0">
-               <TextField fx:id="searchBar" onAction="#handleSearch" promptText="Search event" styleClass="search"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+            prefWidth="700.0" style="-fx-background-color: #202020;" stylesheets="@../css/MainTheme.css"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="client.ui.monthview.MonthView">
+    <center>
+        <GridPane fx:id="gridView" BorderPane.alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <opaqueInsets>
+                <Insets/>
+            </opaqueInsets>
+        </GridPane>
+    </center>
+    <top>
+        <BorderPane prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <bottom>
+                <GridPane fx:id="dayOfWeekGrid" style="-fx-border-width: 0 0 1 0; -fx-border-color: #e5ca95;"
                           BorderPane.alignment="CENTER">
-                  <BorderPane.margin>
-                     <Insets right="20.0"/>
-                  </BorderPane.margin>
-                  <HBox.margin>
-                     <Insets/>
-                  </HBox.margin>
-               </TextField>
-               <Button fx:id="moreButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                       onAction="#handleMore" style="-fx-background-color: inherit;" text="..." textFill="WHITE">
-                  <font>
-                     <Font name="Segoe UI" size="19.0"/>
-                  </font>
-                  <HBox.margin>
-                     <Insets left="20.0"/>
-                  </HBox.margin>
-               </Button>
-            </HBox>
-         </right>
-      </BorderPane>
-   </top>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label text="Sun" textFill="#e6e6e6b8">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Mon" textFill="#e6e6e6b8" GridPane.columnIndex="1">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Tue" textFill="#e6e6e6b8" GridPane.columnIndex="2">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Wed" textFill="#e6e6e6b8" GridPane.columnIndex="3">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Thu" textFill="#e6e6e6b8" GridPane.columnIndex="4">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Fri" textFill="#e6e6e6b8" GridPane.columnIndex="5">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                    <Label text="Sat" textFill="#e6e6e6b8" GridPane.columnIndex="6">
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Label>
+                </GridPane>
+            </bottom>
+            <left>
+                <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="340.0">
+                    <padding>
+                        <Insets left="15.0"/>
+                    </padding>
+                    <Button fx:id="backwardBtn" layoutX="20.0" layoutY="31.0" mnemonicParsing="false"
+                            onAction="#handleBackwardBtn" styleClass="month-button" text="◀" textAlignment="CENTER"
+                            textFill="WHITE">
+                        <effect>
+                            <DropShadow blurType="GAUSSIAN" color="#656060" height="9.14" radius="7.035"/>
+                        </effect>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Button>
+                    <Button fx:id="forwardBtn" mnemonicParsing="false" onAction="#handleForwardBtn"
+                            styleClass="month-button"
+                            text="▶" textAlignment="CENTER" textFill="WHITE">
+                        <HBox.margin>
+                            <Insets left="2.0"/>
+                        </HBox.margin>
+                        <effect>
+                            <DropShadow color="#656060" height="9.14" radius="7.035"/>
+                        </effect>
+                        <font>
+                            <Font name="Verdana" size="15.0"/>
+                        </font>
+                    </Button>
+                    <Label fx:id="monthLabel" text="month" textFill="#e5ca95e3">
+                        <opaqueInsets>
+                            <Insets/>
+                        </opaqueInsets>
+                        <font>
+                            <Font name="Segoe UI Semilight" size="24.0"/>
+                        </font>
+                        <padding>
+                            <Insets left="23.0"/>
+                        </padding>
+                    </Label>
+                    <Label fx:id="yearLabel" style="-fx-font-smoothing-type: gray;" text="year" textFill="#e5ca95e3"
+                           BorderPane.alignment="CENTER">
+                        <opaqueInsets>
+                            <Insets/>
+                        </opaqueInsets>
+                        <padding>
+                            <Insets left="10.0"/>
+                        </padding>
+                        <font>
+                            <Font name="Segoe UI Semilight" size="24.0"/>
+                        </font>
+                    </Label>
+                </HBox>
+            </left>
+            <right>
+                <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="234.0">
+                    <TextField fx:id="searchBar" onAction="#handleSearch" promptText="eg. 31-01-2017"
+                               styleClass="search"
+                               BorderPane.alignment="CENTER">
+                        <BorderPane.margin>
+                            <Insets right="20.0"/>
+                        </BorderPane.margin>
+                        <HBox.margin>
+                            <Insets/>
+                        </HBox.margin>
+                    </TextField>
+                    <Button fx:id="moreButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                            onAction="#handleMore" style="-fx-background-color: inherit;" text="..." textFill="WHITE">
+                        <font>
+                            <Font name="Segoe UI" size="19.0"/>
+                        </font>
+                        <HBox.margin>
+                            <Insets left="20.0"/>
+                        </HBox.margin>
+                    </Button>
+                </HBox>
+            </right>
+        </BorderPane>
+    </top>
 </BorderPane>
