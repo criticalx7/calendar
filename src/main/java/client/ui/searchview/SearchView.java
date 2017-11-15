@@ -1,9 +1,8 @@
 package client.ui.searchview;
 
 import client.config.Setting;
+import client.controls.EventAdapter;
 import client.controls.MainController;
-import client.ui.EventAdapter;
-import common.model.Event;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -37,9 +36,7 @@ public class SearchView {
 
     @FXML
     public void onSearch() {
-        items.clear();
-        ObservableList<Event> searchItems = controller.getEventManager().search(searchBar.getText());
-        searchItems.forEach(event -> items.add(new EventAdapter(event)));
+        items.setAll(controller.getEventManager().search(searchBar.getText()));
         searchList.setItems(items);
     }
 
@@ -68,10 +65,7 @@ public class SearchView {
         // set on mouse double clicked action
         searchList.setOnMouseClicked(clicked -> {
             if (clicked.getClickCount() == 2 && clicked.getButton() == MouseButton.PRIMARY) {
-                EventAdapter model = searchList.getSelectionModel().getSelectedItem();
-                Event event = model.getEvent();
-                controller.handleEdit(event);
-                model.reload();
+                controller.handleEdit(searchList.getSelectionModel().getSelectedItem());
             }
         });
     }

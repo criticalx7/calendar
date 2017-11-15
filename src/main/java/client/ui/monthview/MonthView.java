@@ -1,6 +1,7 @@
 package client.ui.monthview;
 
 import client.config.Setting;
+import client.controls.EventAdapter;
 import common.model.Event;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -89,7 +90,7 @@ public class MonthView {
         int firstDOW = firstDay.getDayOfWeek().getValue() % 7;
         LocalDate from = firstDay.minusDays(1 + firstDOW);
         LocalDate to = firstDay.plusDays((row * col) - firstDOW);
-        ObservableList<Event> events = viewModel.query(from, to);
+        ObservableList<EventAdapter> events = viewModel.query(from, to);
 
         // layout detail
         int indexDay = 0;
@@ -104,13 +105,13 @@ public class MonthView {
     }
 
 
-    private void setCellDetail(DateCell cell, LocalDate currentDate, ObservableList<Event> events) {
+    private void setCellDetail(DateCell cell, LocalDate currentDate, ObservableList<EventAdapter> events) {
         cell.clear();
         cell.setDate(currentDate);
         cell.setDisable(cell.getDate().getMonth().getValue() != viewModel.getCurrentDate().getMonth().getValue());
 
         // main loop to lay events
-        for (Event event : events.filtered(e -> cell.getDate().equals(e.getStart()))) {
+        for (EventAdapter event : events.filtered(e -> cell.getDate().equals(e.startProperty().get()))) {
             if (cell.size() <= DateCell.EVENT_LIMIT) {
                 cell.add(createEventBox(event, cell));
             }
@@ -130,7 +131,7 @@ public class MonthView {
     }
 
 
-    private Node createEventBox(Event event, DateCell cell) {
+    private Node createEventBox(EventAdapter event, DateCell cell) {
         if (cell.size() < DateCell.EVENT_LIMIT) {
             EventBox box = new EventBox(event);
             box.setOnMouseClicked(action -> viewModel.edit(event));

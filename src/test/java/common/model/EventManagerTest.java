@@ -1,5 +1,6 @@
 package common.model;
 
+import client.controls.EventAdapter;
 import client.controls.EventManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,15 +21,15 @@ import static org.junit.Assert.assertEquals;
 
 class EventManagerTest {
     private EventManager eventManager;
-    private Event event1;
-    private Event event2;
+    private EventAdapter event1;
+    private EventAdapter event2;
 
     @Before
     public void setUp() {
         eventManager = new EventManager(new MockDatabase());
-        event1 = new Event();
-        event2 = new Event();
-        event1.setId(999);
+        event1 = new EventAdapter(new Event());
+        event2 = new EventAdapter(new Event());
+        event1.getBean().setId(999);
     }
 
 
@@ -44,9 +45,9 @@ class EventManagerTest {
     public void loadEvent() {
         eventManager.loadEvent();
         assertEquals(3, eventManager.getEvents().size());
-        assertEquals("t1", eventManager.getEvents().get(0).getName());
-        assertEquals("t2", eventManager.getEvents().get(1).getName());
-        assertEquals("t3", eventManager.getEvents().get(2).getName());
+        assertEquals("t1", eventManager.getEvents().get(0).nameProperty().get());
+        assertEquals("t2", eventManager.getEvents().get(1).nameProperty().get());
+        assertEquals("t3", eventManager.getEvents().get(2).nameProperty().get());
     }
 
 
@@ -54,8 +55,8 @@ class EventManagerTest {
     public void addEvent() {
         eventManager.addEvent(event1);
         eventManager.addEvent(event2);
-        assertEquals(999, eventManager.getEvents().get(0).getId());
-        assertEquals(0, eventManager.getEvents().get(1).getId());
+        assertEquals(999, eventManager.getEvents().get(0).getBean().getId());
+        assertEquals(0, eventManager.getEvents().get(1).getBean().getId());
     }
 
 
@@ -65,7 +66,7 @@ class EventManagerTest {
         eventManager.getEvents().add(event2);
         eventManager.removeEvent(event1);
         assertEquals(1, eventManager.getEvents().size());
-        assertEquals(0, eventManager.getEvents().get(0).getId());
+        assertEquals(0, eventManager.getEvents().get(0).getBean().getId());
 
     }
 

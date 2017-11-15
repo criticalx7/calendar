@@ -1,15 +1,18 @@
 package client.ui.editor;
 
-import client.ui.EventAdapter;
-import common.model.Event;
+import client.controls.EventAdapter;
 
 /*
  * @author Chatchapol Rasameluangon
  * id: 5810404901
  */
 public class EditorViewModel {
-    private final EventAdapter eventModel = new EventAdapter();
+    private final EventAdapter eventModel;
     private boolean confirm = false;
+
+    public EditorViewModel(EventAdapter eventModel) {
+        this.eventModel = eventModel;
+    }
 
     void save() {
         eventModel.save();
@@ -18,11 +21,6 @@ public class EditorViewModel {
 
     EventAdapter getEventModel() {
         return eventModel;
-    }
-
-    public void setEvent(Event event) {
-        eventModel.setEvent(event);
-        eventModel.reload();
     }
 
     public boolean isConfirm() {

@@ -22,7 +22,7 @@ import java.time.LocalDate;
  */
 @Service
 public class EventManager {
-    private final ObservableList<Event> events;
+    private final ObservableList<EventAdapter> events;
     private CalendarDAO<Event> eventSource;
 
     @Autowired
@@ -33,44 +33,44 @@ public class EventManager {
 
     //--------------------------- Simple CRUD Operation ---------------------------
     public void loadEvent() {
-        events.addAll(eventSource.load());
+        eventSource.load().forEach(event -> events.add(new EventAdapter(event)));
     }
 
-    public void addEvent(Event event) {
-        events.add(event);
-        eventSource.insert(event);
+    public void addEvent(EventAdapter eventModel) {
+        events.add(eventModel);
+        eventSource.insert(eventModel.getBean());
     }
 
-    public void removeEvent(Event event) {
-        boolean isRemove = events.remove(event);
-        if (isRemove) eventSource.delete(event);
+    public void removeEvent(EventAdapter eventModel) {
+        boolean isRemove = events.remove(eventModel);
+        if (isRemove) eventSource.delete(eventModel.getBean());
     }
 
 
     @SuppressWarnings("WeakerAccess")
-    public void updateEvent(Event event) {
-        eventSource.update(event);
+    public void updateEvent(EventAdapter eventModel) {
+        eventSource.update(eventModel.getBean());
     }
 
 
     //--------------------------- Feature Related ---------------------------
-    public ObservableList<Event> search(String target) {
+    public ObservableList<EventAdapter> search(String target) {
         return search(target, new MainSearcher());
     }
 
     @SuppressWarnings("WeakerAccess")
-    public ObservableList<Event> search(String target, Searcher searcher) {
+    public ObservableList<EventAdapter> search(String target, Searcher<EventAdapter> searcher) {
         return searcher.search(events, target);
     }
 
 
     //--------------------------- Accessor ----------------------------------
 
-    public ObservableList<Event> getEvents(LocalDate from, LocalDate to) {
-        return events.filtered(event -> event.getStart().isAfter(from) && event.getStart().isBefore(to));
+    public ObservableList<EventAdapter> getEvents(LocalDate from, LocalDate to) {
+        return events.filtered(event -> event.inPeriod(from, to));
     }
 
-    public ObservableList<Event> getEvents() {
+    public ObservableList<EventAdapter> getEvents() {
         return events;
     }
 

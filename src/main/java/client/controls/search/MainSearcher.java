@@ -1,14 +1,12 @@
 package client.controls.search;
 
 import client.config.Setting;
-import common.model.Event;
+import client.controls.EventAdapter;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.List;
 /*
  * @author Chatchapol Rasameluangon
  * id 5810404901
@@ -18,19 +16,17 @@ import java.util.List;
  * Main searcher for searching by date and name.
  */
 @Service
-public class MainSearcher implements Searcher {
-    private List<Searcher> searchers = new ArrayList<>();
-
+public class MainSearcher implements Searcher<EventAdapter> {
     @Override
-    public ObservableList<Event> search(ObservableList<Event> source, String text) {
-        ObservableList<Event> result;
+    public ObservableList<EventAdapter> search(ObservableList<EventAdapter> source, String text) {
+        ObservableList<EventAdapter> result;
         if (isParsable(text)) {
             LocalDate target = LocalDate.parse(text, Setting.getDatePattern());
             result = source
-                    .filtered(event -> event.getStart().equals(target));
+                    .filtered(event -> event.startProperty().get().equals(target));
         } else {
             result = source
-                    .filtered(event -> event.getName().compareToIgnoreCase(text) == 0);
+                    .filtered(event -> event.nameProperty().get().compareToIgnoreCase(text) == 0);
         }
         return result;
     }

@@ -72,7 +72,6 @@ public class EditorView {
 
     @FXML
     public void onAdd() {
-        nameErrorText.setVisible(false);
         if (nameField.getText().isEmpty()) {
             nameErrorText.setVisible(true);
             nameField.requestFocus();
@@ -80,19 +79,6 @@ public class EditorView {
             viewModel.save();
             saveButton.getScene().getWindow().hide();
         }
-    }
-
-    private void bindModel() {
-        viewModel.getEventModel().nameProperty().bindBidirectional(nameField.textProperty());
-        viewModel.getEventModel().noteProperty().bindBidirectional(noteArea.textProperty());
-        viewModel.getEventModel().startProperty().bindBidirectional(startPicker.valueProperty());
-        viewModel.getEventModel().endProperty().bindBidirectional(startPicker.valueProperty());
-        viewModel.getEventModel().colorProperty().bindBidirectional(colorPicker.valueProperty());
-        viewModel.getEventModel().recurredProperty().bindBidirectional(repeatBox.selectedProperty());
-        viewModel.getEventModel().yearlyProperty().bindBidirectional(yearly.selectedProperty());
-        viewModel.getEventModel().monthlyProperty().bindBidirectional(monthly.selectedProperty());
-        viewModel.getEventModel().colorProperty().addListener(
-                (obs, oldColor, newColor) -> headerPane.setStyle(ColorUtil.getBorderColorFX(newColor)));
     }
 
     @FXML
@@ -107,6 +93,23 @@ public class EditorView {
     public void setViewModel(EditorViewModel viewModel) {
         this.viewModel = viewModel;
         bindModel();
+        onDateSelect();
+    }
+
+    private void bindModel() {
+        if (viewModel.getEventModel() != null) {
+            nameField.textProperty().bindBidirectional(viewModel.getEventModel().nameProperty());
+            noteArea.textProperty().bindBidirectional(viewModel.getEventModel().noteProperty());
+            startPicker.valueProperty().bindBidirectional(viewModel.getEventModel().startProperty());
+            startPicker.valueProperty().bindBidirectional(viewModel.getEventModel().endProperty());
+            colorPicker.valueProperty().bindBidirectional(viewModel.getEventModel().colorProperty());
+            repeatBox.selectedProperty().bindBidirectional(viewModel.getEventModel().recurredProperty());
+            yearly.selectedProperty().bindBidirectional(viewModel.getEventModel().yearlyProperty());
+            monthly.selectedProperty().bindBidirectional(viewModel.getEventModel().monthlyProperty());
+            colorPicker.valueProperty().addListener(
+                    (obs, oldColor, newColor) -> headerPane.setStyle(ColorUtil.getBorderColorFX(newColor)));
+            viewModel.getEventModel().reload();
+        }
     }
 
 

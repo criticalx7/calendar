@@ -1,8 +1,7 @@
 package client.ui.monthview;
 
-import client.ui.EventAdapter;
+import client.controls.EventAdapter;
 import client.utility.ColorUtil;
-import common.model.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -26,9 +25,9 @@ class EventBox extends HBox {
     private final Label nameLabel = new Label();
     private final Circle circle = new Circle(3);
 
-    EventBox(Event event) {
+    EventBox(EventAdapter event) {
         super();
-        eventModel = new EventAdapter(event);
+        eventModel = event;
         setPadding(INSETS);
         setAlignment(Pos.CENTER_LEFT);
         Pane rigidArea = new Pane();

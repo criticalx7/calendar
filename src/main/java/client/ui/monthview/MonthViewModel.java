@@ -1,7 +1,7 @@
 package client.ui.monthview;
 
+import client.controls.EventAdapter;
 import client.controls.MainController;
-import common.model.Event;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -15,13 +15,13 @@ import java.time.LocalDate;
 public class MonthViewModel {
 
     private MainController controller;
-    private ObjectProperty<LocalDate> currentDate = new SimpleObjectProperty<>(LocalDate.now());
+    private final ObjectProperty<LocalDate> currentDate = new SimpleObjectProperty<>(LocalDate.now());
 
     public MonthViewModel(MainController controller) {
         this.controller = controller;
     }
 
-    ObservableList<Event> query(LocalDate from, LocalDate to) {
+    ObservableList<EventAdapter> query(LocalDate from, LocalDate to) {
         return controller.getEventManager().getEvents(from, to);
     }
 
@@ -29,12 +29,12 @@ public class MonthViewModel {
         controller.handleAdd(date);
     }
 
-    void delete(Event event) {
-        controller.handleRemove(event);
+    void delete(EventAdapter eventModel) {
+        controller.handleRemove(eventModel);
     }
 
-    void edit(Event event) {
-        controller.handleEdit(event);
+    void edit(EventAdapter eventModel) {
+        controller.handleEdit(eventModel);
     }
 
     void search(String target) {

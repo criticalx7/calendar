@@ -6,7 +6,6 @@ import client.ui.monthview.MonthView;
 import client.ui.monthview.MonthViewModel;
 import client.ui.searchview.SearchView;
 import client.utility.ColorUtil;
-import common.model.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -62,7 +61,7 @@ public class ViewManager {
         primaryStage.show();
     }
 
-    boolean showEventEditor(Event event) {
+    boolean showEventEditor(EventAdapter eventModel) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EventEditor.fxml"));
             Parent page = loader.load();
@@ -75,12 +74,10 @@ public class ViewManager {
             stage.setResizable(false);
             stage.setScene(new Scene(page));
 
-            // set Event & Stage (Very crucial)
-            EditorViewModel viewModel = new EditorViewModel();
+            // set ViewModel
             EditorView controller = loader.getController();
+            EditorViewModel viewModel = new EditorViewModel(eventModel);
             controller.setViewModel(viewModel);
-            viewModel.setEvent(event);
-            controller.onDateSelect();
 
             ColorUtil.setShadowOverlay(root, stage);
             stage.showAndWait();
@@ -112,8 +109,7 @@ public class ViewManager {
                 if (e.getCode() == KeyCode.ESCAPE) stage.hide();
             });
 
-            Scene scene = new Scene(page);
-            stage.setScene(scene);
+            stage.setScene(new Scene(page));
 
             // Controller
             SearchView controller = loader.getController();

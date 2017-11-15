@@ -1,4 +1,4 @@
-package client.ui;
+package client.controls;
 
 import client.config.Setting;
 import common.model.Event;
@@ -20,7 +20,7 @@ import java.time.LocalDate;
  * This provide properties for various bindings.
  */
 public class EventAdapter {
-    private Event event;
+    private Event bean;
     private final SimpleStringProperty name = new SimpleStringProperty(this, "name");
     private final SimpleStringProperty note = new SimpleStringProperty(this, "note");
     private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
@@ -34,8 +34,8 @@ public class EventAdapter {
         // do nothing
     }
 
-    public EventAdapter(Event event) {
-        this.event = event;
+    public EventAdapter(Event bean) {
+        this.bean = bean;
         reload();
     }
 
@@ -51,37 +51,41 @@ public class EventAdapter {
     }
 
     public void reload() {
-        name.set(event.getName());
-        note.set(event.getNote());
-        start.set(event.getStart());
-        end.set(event.getEnd());
-        color.set(Color.valueOf(event.getColor()));
-        recurred.set(event.isRecurred());
-        yearly.set(event.isYearly());
-        monthly.set(event.isMonthly());
+        name.set(bean.getName());
+        note.set(bean.getNote());
+        start.set(bean.getStart());
+        end.set(bean.getEnd());
+        color.set(Color.valueOf(bean.getColor()));
+        recurred.set(bean.isRecurred());
+        yearly.set(bean.isYearly());
+        monthly.set(bean.isMonthly());
     }
 
     public void save() {
-        if (event != null) {
-            event.setName(name.get());
-            event.setNote(note.get());
-            event.setStart(start.get());
-            event.setEnd(end.get());
-            event.setColor(color.get().toString());
-            event.setRecurred(recurred.get());
-            event.setYearly(yearly.get());
-            event.setMonthly(monthly.get());
+        if (bean != null) {
+            bean.setName(name.get());
+            bean.setNote(note.get());
+            bean.setStart(start.get());
+            bean.setEnd(end.get());
+            bean.setColor(color.get().toString());
+            bean.setRecurred(recurred.get());
+            bean.setYearly(yearly.get());
+            bean.setMonthly(monthly.get());
         }
+    }
+
+    public boolean inPeriod(LocalDate from, LocalDate to) {
+        return  start.get().isAfter(from) && start.get().isBefore(to);
     }
 
     // -----------------------  Accessor -----------------------
 
-    public Event getEvent() {
-        return event;
+    public Event getBean() {
+        return bean;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setBean(Event bean) {
+        this.bean = bean;
     }
 
     // -----------------------  Property -----------------------

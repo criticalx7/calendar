@@ -28,7 +28,7 @@ public class MainController {
     }
 
     public void handleAdd(LocalDate occur) {
-        Event temp = new Event(occur);
+        EventAdapter temp = new EventAdapter(new Event(occur));
         if (viewManager.showEventEditor(temp)) {
             eventManager.addEvent(temp);
             viewManager.updateMonthView();
@@ -36,16 +36,16 @@ public class MainController {
     }
 
     // currently hacked
-    public void handleRemove(Event event) {
+    public void handleRemove(EventAdapter eventModel) {
         if (viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent()) {
-            eventManager.removeEvent(event);
+            eventManager.removeEvent(eventModel);
             viewManager.updateMonthView();
         }
     }
 
-    public void handleEdit(Event event) {
-        if (viewManager.showEventEditor(event)) {
-            eventManager.updateEvent(event);
+    public void handleEdit(EventAdapter eventModel) {
+        if (viewManager.showEventEditor(eventModel)) {
+            eventManager.updateEvent(eventModel);
             viewManager.updateMonthView();
         }
     }
