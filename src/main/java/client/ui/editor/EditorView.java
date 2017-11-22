@@ -1,5 +1,12 @@
 package client.ui.editor;
 
+// TODO change validation into strategy
+
+/*
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
 import client.config.Setting;
 import client.utility.ColorUtil;
 import javafx.fxml.FXML;
@@ -13,12 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-// TODO - change validation into strategy
-
-/*
- * Name: Mr.Chatchapol Rasameluangon
- * ID:   5810404901
- */
 public class EditorView {
     @FXML
     private AnchorPane headerPane;

@@ -16,9 +16,9 @@ public interface CalendarService {
 
     List<Event> loadEvent();
 
-    void addEvent(Event event);
+    Event addEvent(Event event);
 
-    void deleteEvent(Event event);
+    Event deleteEvent(Event event);
 
-    void updateEvent(Event event);
+    Event updateEvent(Event event);
 }

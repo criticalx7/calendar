@@ -1,6 +1,6 @@
 package client;
 
-import client.controls.MainController;
+import client.controls.ActionController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
@@ -19,9 +19,9 @@ public class ClientApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         ClientApp.primaryStage = primaryStage;
         ApplicationContext context = new ClassPathXmlApplicationContext("client-context.xml");
-        MainController mc = context.getBean("mainController", MainController.class);
+        ActionController mc = context.getBean("actionController", ActionController.class);
         mc.handleLoad();
-        mc.start();
+        mc.getViewManager().show();
     }
 
     public static Stage getPrimaryStage() {

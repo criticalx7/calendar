@@ -7,7 +7,7 @@
 <?import javafx.scene.text.*?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="700.0" style="-fx-background-color: #202020;" stylesheets="@../css/MainTheme.css"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="client.ui.monthview.MonthView">
     <center>
         <GridPane fx:id="gridView" BorderPane.alignment="CENTER">
@@ -113,7 +113,7 @@
                         <Insets left="15.0"/>
                     </padding>
                     <Button fx:id="backwardBtn" layoutX="20.0" layoutY="31.0" mnemonicParsing="false"
-                            onAction="#handleBackwardBtn" styleClass="month-button" text="◀" textAlignment="CENTER"
+                            onAction="#onBackward" styleClass="month-button" text="◀" textAlignment="CENTER"
                             textFill="WHITE">
                         <effect>
                             <DropShadow blurType="GAUSSIAN" color="#656060" height="9.14" radius="7.035"/>
@@ -122,8 +122,7 @@
                             <Font name="Verdana" size="15.0"/>
                         </font>
                     </Button>
-                    <Button fx:id="forwardBtn" mnemonicParsing="false" onAction="#handleForwardBtn"
-                            styleClass="month-button"
+                    <Button fx:id="forwardBtn" mnemonicParsing="false" onAction="#onForward" styleClass="month-button"
                             text="▶" textAlignment="CENTER" textFill="WHITE">
                         <HBox.margin>
                             <Insets left="2.0"/>
@@ -161,9 +160,8 @@
                 </HBox>
             </left>
             <right>
-                <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="234.0">
-                    <TextField fx:id="searchBar" onAction="#handleSearch" promptText="eg. 31-01-2017"
-                               styleClass="search"
+                <HBox alignment="CENTER_RIGHT" prefHeight="69.0" prefWidth="306.0" spacing="10.0">
+                    <TextField fx:id="searchBar" onAction="#onSearch" promptText="eg. 31-01-2017" styleClass="search"
                                BorderPane.alignment="CENTER">
                         <BorderPane.margin>
                             <Insets right="20.0"/>
@@ -172,15 +170,24 @@
                             <Insets/>
                         </HBox.margin>
                     </TextField>
+                    <Button fx:id="refreshBtn" mnemonicParsing="false" onAction="#onRefresh"
+                            style="-fx-background-color: inherit;" text="R" textFill="WHITE">
+                        <font>
+                            <Font name="Arial" size="16.0"/>
+                        </font>
+                    </Button>
                     <Button fx:id="moreButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
-                            onAction="#handleMore" style="-fx-background-color: inherit;" text="..." textFill="WHITE">
+                            onAction="#onMore" style="-fx-background-color: inherit;" text="..." textFill="WHITE">
                         <font>
                             <Font name="Segoe UI" size="19.0"/>
                         </font>
                         <HBox.margin>
-                            <Insets left="20.0"/>
+                            <Insets/>
                         </HBox.margin>
                     </Button>
+                    <padding>
+                        <Insets right="5.0"/>
+                    </padding>
                 </HBox>
             </right>
         </BorderPane>

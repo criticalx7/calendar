@@ -1,8 +1,8 @@
 package client.ui.searchview;
 
 import client.config.Setting;
+import client.controls.ActionController;
 import client.controls.EventAdapter;
-import client.controls.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -26,7 +26,7 @@ public class SearchView {
     @FXML
     private ListView<EventAdapter> searchList;
 
-    private MainController controller;
+    private ActionController controller;
     private static final Label placeHolder = new Label("No items found");
     private final ObservableList<EventAdapter> items = FXCollections.observableArrayList();
 
@@ -70,7 +70,7 @@ public class SearchView {
         });
     }
 
-    public void setController(MainController controller) {
+    public void setController(ActionController controller) {
         this.controller = controller;
     }
 

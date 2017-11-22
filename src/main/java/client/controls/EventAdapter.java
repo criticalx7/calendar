@@ -74,18 +74,23 @@ public class EventAdapter {
         }
     }
 
-    public boolean inPeriod(LocalDate from, LocalDate to) {
+    boolean inPeriod(LocalDate from, LocalDate to) {
         return start.get().isAfter(from) && start.get().isBefore(to);
     }
 
     // -----------------------  Accessor -----------------------
 
-    public Event getBean() {
+    Event getBean() {
         return bean;
     }
 
-    public void setBean(Event bean) {
+    void setBean(Event bean) {
         this.bean = bean;
+    }
+
+    void setAndReload(Event bean) {
+        this.bean = bean;
+        reload();
     }
 
     // -----------------------  Property -----------------------
