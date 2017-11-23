@@ -1,14 +1,14 @@
 package client.utility;
 
-import javafx.scene.Parent;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-
 /*
  * @author Chatchapol Rasameluangon
  * id: 5810404901
  */
+
+import javafx.scene.Parent;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 
 public final class ColorUtil {

@@ -1,5 +1,10 @@
 package client.ui.monthview;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.controls.ActionController;
 import client.controls.EventAdapter;
 import javafx.beans.property.ObjectProperty;
@@ -8,10 +13,7 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
+
 public class MonthViewModel {
 
     private final ActionController controller;

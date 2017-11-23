@@ -18,12 +18,8 @@ import java.time.format.DateTimeFormatter;
  */
 public abstract class BaseEventsDAO implements SimpleDAO<Event> {
     private static final DateTimeFormatter defaultDateFormat = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    private static final String defaultColor = Color.VIOLET.toString();
+    private static final String defaultColor = Color.AQUA.toString();
 
-
-    /**
-     * Create a directory if one is not already exist.
-     */
     protected void createDirectory() {
         File eventFolder = new File(System.getProperty("user.home"), "CalendarDB");
         if (!eventFolder.exists()) {

@@ -1,11 +1,13 @@
 package client.ui.editor;
 
-import client.controls.EventAdapter;
-
 /*
  * @author Chatchapol Rasameluangon
  * id: 5810404901
  */
+
+import client.controls.EventAdapter;
+
+
 public class EditorViewModel {
     private final EventAdapter eventModel;
     private boolean confirm = false;

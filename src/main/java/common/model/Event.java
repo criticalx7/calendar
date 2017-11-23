@@ -1,15 +1,15 @@
 package common.model;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.config.Setting;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
 
 /**
  * An basic event model.

@@ -1,5 +1,10 @@
 package client.controls;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
+
 import client.ClientApp;
 import client.ui.editor.EditorView;
 import client.ui.editor.EditorViewModel;
@@ -21,10 +26,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
 
 
 /**

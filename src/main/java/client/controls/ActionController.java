@@ -1,5 +1,10 @@
 package client.controls;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
+
 import common.model.Event;
 import common.services.CalendarService;
 import javafx.scene.control.ButtonType;
@@ -7,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
 
 
 /**

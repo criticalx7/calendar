@@ -1,5 +1,10 @@
 package client.ui.monthview;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.controls.EventAdapter;
 import client.utility.ColorUtil;
 import javafx.geometry.Insets;
@@ -10,10 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.shape.Circle;
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
 
 class EventBox extends HBox {
     private static final String DEFAULT_LABEL_STYLE = "event-label";

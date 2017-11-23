@@ -1,17 +1,17 @@
 package client.controls;
 
-import client.controls.search.MainSearcher;
-import client.controls.search.Searcher;
+/*
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
+import client.search.MainSearcher;
+import client.search.Searcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-
-/*
- * Name: Mr.Chatchapol Rasameluangon
- * ID:   5810404901
- */
 
 
 /**

@@ -1,15 +1,16 @@
 package client.ui.monthview;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
 
 class DateCell extends VBox {
     static final int EVENT_LIMIT = 3;

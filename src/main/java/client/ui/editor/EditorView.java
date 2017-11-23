@@ -20,6 +20,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
+
+/**
+ * A editor view controller
+ */
 public class EditorView {
     @FXML
     private AnchorPane headerPane;

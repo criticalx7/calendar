@@ -1,14 +1,14 @@
 package client.config;
 
-import java.time.format.DateTimeFormatter;
-
-// TODO - property based initialization
+// TODO property based initialization
 
 /*
  * @author Chatchapol Rasameluangon
  * id 5810404901
  *
  */
+
+import java.time.format.DateTimeFormatter;
 
 
 /**

@@ -14,6 +14,9 @@ import server.persistence.SimpleDAO;
 import java.util.List;
 
 
+/**
+ * A handler accepting request from clients.
+ */
 @Service
 public class ServiceHandler implements CalendarService {
     private final SimpleDAO<Event> dao;

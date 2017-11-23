@@ -1,16 +1,19 @@
 package common.services;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import common.model.Event;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 /**
- * @author Chatchapol Rasameluangon
- * id: 5810404901
+ * A calendar service for basic CRED operations.
  */
-
-
 @Service
 public interface CalendarService {
 

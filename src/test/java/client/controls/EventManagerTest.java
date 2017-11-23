@@ -1,6 +1,6 @@
 package client.controls;
 
-import client.controls.search.Searcher;
+import client.search.Searcher;
 import common.model.Event;
 import javafx.collections.ObservableList;
 import org.junit.After;
@@ -10,6 +10,7 @@ import org.junit.Test;
 import util.EventsFactory;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.*;
 
@@ -77,6 +78,16 @@ public class EventManagerTest {
         assertFalse(isChange);
     }
 
+    @Test
+    public void searchByMain() throws Exception {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        ObservableList<EventAdapter> list = eventManager.search(LocalDate.now().format(formatter));
+        assertEquals(2, list.size());
+        assertEquals(0, list.get(0).getBean().getId());
+        assertEquals("one", list.get(0).nameProperty().get());
+        assertEquals(LocalDate.now(), list.get(0).startProperty().get());
+    }
+
 
     @Test
     public void searchByStrategy() throws Exception {
@@ -90,6 +101,15 @@ public class EventManagerTest {
     public void searchFail() throws Exception {
         ObservableList<EventAdapter> list = eventManager.search("test", byNameSearcher);
         assertEquals(0, list.size());
+    }
+
+
+    @Test
+    public void NormalQuery() throws Exception {
+        ObservableList<EventAdapter> list = eventManager.getEvents();
+        assertEquals(2, list.size());
+        assertEquals("one", list.get(0).nameProperty().get());
+        assertEquals("two", list.get(1).nameProperty().get());
     }
 
 
