@@ -25,7 +25,7 @@ public class ClientApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ClientApp.primaryStage = primaryStage;
-        ApplicationContext context = new ClassPathXmlApplicationContext("client-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("calendar-context.xml");
         ActionController mc = context.getBean("actionController", ActionController.class);
         mc.handleLoad();
         mc.getViewManager().show();

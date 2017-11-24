@@ -18,7 +18,7 @@ public interface SimpleDAO<T> {
     /**
      * Setting up the source.
      */
-    void setup();
+    void setup() throws Exception;
 
 
     /**

@@ -43,6 +43,30 @@ public class Event implements Serializable {
         end = occurrence;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Event event = (Event) o;
+
+        return id == event.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Event:%n" +
+                        " <id>     %d%n" +
+                        " <name>   %s%n" +
+                        " <date>   %s  -  %s%n" +
+                        " <recur>  %s [Y: %s], [M: %s]%n",
+                id, name, start, end, recurred, yearly, monthly);
+    }
 
     // ----------------------- Getter and Setter -----------------------
 
@@ -119,14 +143,5 @@ public class Event implements Serializable {
         this.monthly = monthly;
     }
 
-    @Override
-    public String toString() {
-        return String.format("Event" + " id = %d%n" +
-                        " name = '%s'%n" +
-                        " note = '%s'%n" +
-                        " start = %s end = %s%n" +
-                        " color = '%s'%n" +
-                        " recurred = %s" + " yearly = %s, monthly = %s",
-                id, name, note, start, end, color, recurred, yearly, monthly);
-    }
+
 }
