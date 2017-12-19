@@ -50,12 +50,12 @@ public class Event implements Serializable {
 
         Event event = (Event) o;
 
-        return id == event.getId();
+        return getId() == event.getId();
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return getId();
     }
 
     @Override

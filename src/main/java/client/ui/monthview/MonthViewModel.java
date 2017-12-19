@@ -23,8 +23,8 @@ public class MonthViewModel {
         this.controller = controller;
     }
 
-    ObservableList<EventAdapter> query(LocalDate from, LocalDate to) {
-        return controller.getEventManager().getEvents(from, to);
+    ObservableList<EventAdapter> query() {
+        return controller.getEventManager().getEvents();
     }
 
     void add(LocalDate date) {

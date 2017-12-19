@@ -1,9 +1,9 @@
 package client.search;
 
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
+        /*
+         * @author Chatchapol Rasameluangon
+         * id 5810404901
+         */
 
 import client.config.Setting;
 import client.controls.EventAdapter;
@@ -15,7 +15,7 @@ import java.time.format.DateTimeParseException;
 
 
 /**
- *  searcher for searching by date and name.
+ * searcher for searching by date and name.
  */
 @Service
 public class MainSearcher implements Searcher<EventAdapter> {
@@ -25,7 +25,7 @@ public class MainSearcher implements Searcher<EventAdapter> {
         if (isParsable(text)) {
             LocalDate target = LocalDate.parse(text, Setting.getDatePattern());
             result = source
-                    .filtered(event -> event.startProperty().get().equals(target));
+                    .filtered(event -> event.isOccurOn(target));
         } else {
             result = source
                     .filtered(event -> event.nameProperty().get().compareToIgnoreCase(text) == 0);

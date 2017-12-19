@@ -1,9 +1,9 @@
 package client.ui.monthview;
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
+        /*
+         * @author Chatchapol Rasameluangon
+         * id: 5810404901
+         */
 
 import client.config.Setting;
 import client.controls.EventAdapter;
@@ -90,9 +90,9 @@ public class MonthView {
         // get period to display
         LocalDate firstDay = viewModel.getCurrentDate().withDayOfMonth(1);
         int firstDOW = firstDay.getDayOfWeek().getValue() % 7;
-        LocalDate from = firstDay.minusDays(1 + firstDOW);
-        LocalDate to = firstDay.plusDays((row * col) - firstDOW);
-        ObservableList<EventAdapter> events = viewModel.query(from, to);
+        //LocalDate from = firstDay.minusDays(1 + firstDOW);
+        //LocalDate to = firstDay.plusDays((row * col) - firstDOW);
+        ObservableList<EventAdapter> events = viewModel.query();
 
         // layout detail
         int indexDay = 0;
@@ -113,7 +113,7 @@ public class MonthView {
         cell.setDisable(cell.getDate().getMonth().getValue() != viewModel.getCurrentDate().getMonth().getValue());
 
         // main loop to lay events
-        for (EventAdapter event : events.filtered(e -> cell.getDate().equals(e.startProperty().get()))) {
+        for (EventAdapter event : events.filtered(e -> e.isOccurOn(currentDate))) {
             if (cell.size() <= DateCell.EVENT_LIMIT) {
                 cell.add(createEventBox(event, cell));
             }

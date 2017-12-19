@@ -1,9 +1,9 @@
 package client.controls;
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
+        /*
+         * @author Chatchapol Rasameluangon
+         * id: 5810404901
+         */
 
 import client.config.Setting;
 import common.model.Event;
@@ -91,6 +91,19 @@ public class EventAdapter {
     void setAndReload(Event bean) {
         this.bean = bean;
         reload();
+    }
+
+    public boolean isOccurOn(LocalDate date) {
+        if (recurred.get() && date.isAfter(start.get())) {
+            if (yearly.get()) {
+                return date.getDayOfMonth() == start.get().getDayOfMonth() && date.getMonth() == start.get().getMonth();
+            } else if (monthly.get()) {
+                return date.getDayOfMonth() == start.get().getDayOfMonth();
+            }
+        } else {
+            return start.get().isEqual(date);
+        }
+        return false;
     }
 
     // -----------------------  Property -----------------------

@@ -7,7 +7,6 @@ package client.ui.searchview;
  * id: 5810404901
  */
 
-import client.config.Setting;
 import client.controls.ActionController;
 import client.controls.EventAdapter;
 import javafx.collections.FXCollections;
@@ -51,7 +50,7 @@ public class SearchView {
                     setText("");
                 } else {
                     setText(String.format("%s       %s",
-                            Setting.getDatePattern().format(item.startProperty().get()),
+                            searchBar.getText(),
                             item.nameProperty().get()));
                     setGraphicTextGap(10);
                     setGraphic(new Circle(3, item.colorProperty().get()));
