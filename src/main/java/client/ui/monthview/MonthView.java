@@ -1,5 +1,10 @@
 package client.ui.monthview;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.config.Setting;
 import client.controls.EventAdapter;
 import common.model.Event;
@@ -15,22 +20,19 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
 
+/**
+ * A month's view controller
+ */
 public class MonthView {
     //note: #817153 golden color
 
     @FXML
-    protected Button forwardBtn, backwardBtn;
-    @FXML
-    private Label monthLabel;
-    @FXML
-    private Label yearLabel;
-    @FXML
     public GridPane dayOfWeekGrid;
+    @FXML
+    protected Button backwardBtn, forwardBtn, refreshBtn;
+    @FXML
+    private Label monthLabel, yearLabel;
     @FXML
     private GridPane gridView;
     @FXML
@@ -150,28 +152,32 @@ public class MonthView {
     }
 
     @FXML
-    private void handleBackwardBtn() {
-        viewModel.nextMonth();
-    }
-
-    @FXML
-    public void handleForwardBtn() {
+    private void onBackward() {
         viewModel.prevMonth();
     }
 
     @FXML
-    private void handleSearch() {
+    public void onForward() {
+        viewModel.nextMonth();
+    }
+
+    @FXML
+    private void onSearch() {
         viewModel.search(searchBar.getText());
     }
 
     @FXML
-    private void handleMore() {
+    private void onMore() {
         menu.show(moreButton, Side.BOTTOM, 0, 0);
+    }
+
+    @FXML
+    private void onRefresh() {
+        viewModel.refresh();
     }
 
     public void setViewModel(MonthViewModel viewModel) {
         this.viewModel = viewModel;
-        viewModel.currentDateProperty().addListener((observable, oldValue, newValue) -> updateView());
-        updateView();
+        viewModel.currentDateProperty().addListener((obs, oldDate, newDate) -> updateView());
     }
 }

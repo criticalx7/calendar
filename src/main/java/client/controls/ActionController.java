@@ -1,5 +1,10 @@
 package client.controls;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
+
 import common.model.Event;
 import common.services.CalendarService;
 import javafx.scene.control.ButtonType;
@@ -7,10 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
 
 
 /**
@@ -19,27 +20,29 @@ import java.time.LocalDate;
  */
 
 @Component
-public class MainController {
-    private EventManager eventManager;
-    private ViewManager viewManager;
+public class ActionController {
+    private final EventManager eventManager;
+    private final ViewManager viewManager;
     private CalendarService calendarService;
 
-    public MainController(EventManager eventManager, ViewManager viewManager) {
+    public ActionController(EventManager eventManager, ViewManager viewManager) {
         this.eventManager = eventManager;
         this.viewManager = viewManager;
         this.viewManager.setupStageControl(this);
     }
 
     public void handleLoad() {
-        eventManager.loadEvent(calendarService.loadEvent());
+        eventManager.getEvents().clear();
+        calendarService.loadEvent().forEach(e -> eventManager.getEvents().add(new EventAdapter(e)));
         viewManager.updateMonthView();
     }
 
     public void handleAdd(LocalDate occur) {
         EventAdapter temp = new EventAdapter(new Event(occur));
         if (viewManager.showEventEditor(temp)) {
-            eventManager.addEvent(temp);
-            calendarService.addEvent(temp.getBean());
+            Event event = calendarService.addEvent(temp.getBean());
+            temp.setAndReload(event);
+            eventManager.add(temp);
             viewManager.updateMonthView();
         }
     }
@@ -47,14 +50,17 @@ public class MainController {
     // currently hacked
     public void handleRemove(EventAdapter eventModel) {
         if (viewManager.showConfirmationDialog().filter(r -> r == ButtonType.OK).isPresent()) {
-            eventManager.removeEvent(eventModel);
-            calendarService.deleteEvent(eventModel.getBean());
+            Event event = calendarService.deleteEvent(eventModel.getBean());
+            eventModel.setAndReload(event);
+            eventManager.remove(eventModel);
             viewManager.updateMonthView();
         }
     }
 
     public void handleEdit(EventAdapter eventModel) {
-        if (viewManager.showEventEditor(eventModel)) {
+        EventAdapter temp = new EventAdapter(eventModel.getBean());
+        if (viewManager.showEventEditor(temp)) {
+            eventModel.reload();
             calendarService.updateEvent(eventModel.getBean());
             viewManager.updateMonthView();
         }
@@ -62,10 +68,6 @@ public class MainController {
 
     public void handleSearch(String text) {
         viewManager.showSearchDialog(this, text);
-    }
-
-    public void start() {
-        viewManager.show();
     }
 
     public EventManager getEventManager() {

@@ -1,8 +1,15 @@
 package client.ui.searchview;
 
+//TODO - delegate all not so view related operation to ViewModel
+
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.config.Setting;
+import client.controls.ActionController;
 import client.controls.EventAdapter;
-import client.controls.MainController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,22 +20,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Circle;
 
-//TODO - delegate all not so view related operation to ViewModel
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
 public class SearchView {
-
+    private static final Label placeHolder = new Label("No items found");
+    private final ObservableList<EventAdapter> items = FXCollections.observableArrayList();
     @FXML
     private TextField searchBar;
     @FXML
     private ListView<EventAdapter> searchList;
-
-    private MainController controller;
-    private static final Label placeHolder = new Label("No items found");
-    private final ObservableList<EventAdapter> items = FXCollections.observableArrayList();
+    private ActionController controller;
 
     public void initialize() {
         prepareList();
@@ -70,7 +70,7 @@ public class SearchView {
         });
     }
 
-    public void setController(MainController controller) {
+    public void setController(ActionController controller) {
         this.controller = controller;
     }
 

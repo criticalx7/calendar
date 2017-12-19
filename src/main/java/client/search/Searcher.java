@@ -1,4 +1,9 @@
-package client.controls.search;
+package client.search;
+
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
 
 import javafx.collections.ObservableList;
 

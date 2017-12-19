@@ -1,5 +1,10 @@
 package client.controls;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
+
 import client.ClientApp;
 import client.ui.editor.EditorView;
 import client.ui.editor.EditorViewModel;
@@ -21,10 +26,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
 
 
 /**
@@ -36,14 +37,14 @@ public class ViewManager {
     private MonthView monthView;
 
 
-    void setupStageControl(MainController controller) {
+    void setupStageControl(ActionController actionController) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MonthView.fxml"));
             root = loader.load();
 
             //setup viewModel
             monthView = loader.getController();
-            MonthViewModel viewModel = new MonthViewModel(controller);
+            MonthViewModel viewModel = new MonthViewModel(actionController);
             monthView.setViewModel(viewModel);
 
             // setup the primary stage
@@ -56,7 +57,7 @@ public class ViewManager {
         }
     }
 
-    void show() {
+    public void show() {
         ClientApp.getPrimaryStage().show();
     }
 
@@ -88,7 +89,7 @@ public class ViewManager {
         }
     }
 
-    void showSearchDialog(MainController mc, String text) {
+    void showSearchDialog(ActionController actionController, String text) {
         try {
             // Load the .fxml
             FXMLLoader loader = new FXMLLoader();
@@ -112,7 +113,7 @@ public class ViewManager {
 
             // Controller
             SearchView controller = loader.getController();
-            controller.setController(mc);
+            controller.setController(actionController);
             controller.setInitText(text);
             controller.onSearch();
 

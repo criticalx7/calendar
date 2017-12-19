@@ -13,7 +13,7 @@
 
     <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
         <property name="serviceName" value="CalendarService"/>
-        <property name="service" ref="calendarServiceImpl"/>
+        <property name="service" ref="serviceHandler"/>
         <property name="serviceInterface" value="common.services.CalendarService"/>
         <property name="replaceExistingBinding" value="true"/>
         <property name="registryPort" value="1099"/>

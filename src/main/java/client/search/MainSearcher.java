@@ -1,4 +1,9 @@
-package client.controls.search;
+package client.search;
+
+/*
+ * @author Chatchapol Rasameluangon
+ * id 5810404901
+ */
 
 import client.config.Setting;
 import client.controls.EventAdapter;
@@ -7,13 +12,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-/*
- * @author Chatchapol Rasameluangon
- * id 5810404901
- */
+
 
 /**
- * client.ClientApp searcher for searching by date and name.
+ *  searcher for searching by date and name.
  */
 @Service
 public class MainSearcher implements Searcher<EventAdapter> {

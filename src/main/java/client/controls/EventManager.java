@@ -1,19 +1,17 @@
 package client.controls;
 
-import client.controls.search.MainSearcher;
-import client.controls.search.Searcher;
-import common.model.Event;
+/*
+ * Name: Mr.Chatchapol Rasameluangon
+ * ID:   5810404901
+ */
+
+import client.search.MainSearcher;
+import client.search.Searcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.List;
-
-/*
- * Name: Mr.Chatchapol Rasameluangon
- * ID:   5810404901
- */
 
 
 /**
@@ -22,30 +20,21 @@ import java.util.List;
 @Component
 public class EventManager {
     private final ObservableList<EventAdapter> events = FXCollections.observableArrayList();
+    private final MainSearcher searcher = new MainSearcher();
 
-
-    //--------------------------- Simple CRUD Operation ---------------------------
-    public void loadEvent(List<Event> source) {
-        events.clear();
-        source.forEach(event -> events.add(new EventAdapter(event)));
+    boolean add(EventAdapter eventModel) {
+        return events.add(eventModel);
     }
 
-    public void addEvent(EventAdapter eventModel) {
-        events.add(eventModel);
+    boolean remove(EventAdapter eventModel) {
+        return events.remove(eventModel);
     }
 
-    public void removeEvent(EventAdapter eventModel) {
-        events.remove(eventModel);
-    }
-
-
-    //--------------------------- Feature Related ---------------------------
     public ObservableList<EventAdapter> search(String target) {
-        return search(target, new MainSearcher());
+        return search(target, searcher);
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public ObservableList<EventAdapter> search(String target, Searcher<EventAdapter> searcher) {
+    ObservableList<EventAdapter> search(String target, Searcher<EventAdapter> searcher) {
         return searcher.search(events, target);
     }
 

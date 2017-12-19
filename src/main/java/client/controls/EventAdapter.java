@@ -1,5 +1,10 @@
 package client.controls;
 
+/*
+ * @author Chatchapol Rasameluangon
+ * id: 5810404901
+ */
+
 import client.config.Setting;
 import common.model.Event;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -9,18 +14,12 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalDate;
 
-/*
- * @author Chatchapol Rasameluangon
- * id: 5810404901
- */
-
 
 /**
  * The POJO wrapper to be used in Views layer.
  * This provide properties for various bindings.
  */
 public class EventAdapter {
-    private Event bean;
     private final SimpleStringProperty name = new SimpleStringProperty(this, "name");
     private final SimpleStringProperty note = new SimpleStringProperty(this, "note");
     private final SimpleObjectProperty<LocalDate> start = new SimpleObjectProperty<>(this, "start");
@@ -29,6 +28,7 @@ public class EventAdapter {
     private final SimpleBooleanProperty recurred = new SimpleBooleanProperty(this, "recurred");
     private final SimpleBooleanProperty yearly = new SimpleBooleanProperty(this, "yearly");
     private final SimpleBooleanProperty monthly = new SimpleBooleanProperty(this, "monthly");
+    private Event bean;
 
     public EventAdapter() {
         // do nothing
@@ -74,18 +74,23 @@ public class EventAdapter {
         }
     }
 
-    public boolean inPeriod(LocalDate from, LocalDate to) {
+    boolean inPeriod(LocalDate from, LocalDate to) {
         return start.get().isAfter(from) && start.get().isBefore(to);
     }
 
     // -----------------------  Accessor -----------------------
 
-    public Event getBean() {
+    Event getBean() {
         return bean;
     }
 
-    public void setBean(Event bean) {
+    void setBean(Event bean) {
         this.bean = bean;
+    }
+
+    void setAndReload(Event bean) {
+        this.bean = bean;
+        reload();
     }
 
     // -----------------------  Property -----------------------
